@@ -127,7 +127,7 @@
             />
 
         <ImageView
-            android:id="@+id/sigin_in"
+            android:id="@+id/sign_in"
             android:layout_width="50dp"
             android:layout_height="20dp"
             android:layout_marginLeft="10dp"
