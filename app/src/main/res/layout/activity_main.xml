@@ -38,9 +38,11 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:background="@drawable/input"
-        android:hint="        이메일"
+        android:hint="이메일"
         android:fontFamily="@font/notosans_kr_thin"
         android:textSize="15sp"
+        android:maxLength="20"
+        android:drawablePadding="15dp"
         android:drawableStart="@drawable/email_size"
         />
 
@@ -51,8 +53,10 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:background="@drawable/input"
-        android:hint="        비밀번호"
+        android:hint="비밀번호"
         android:textSize="15sp"
+        android:maxLength="20"
+        android:drawablePadding="15dp"
         android:fontFamily="@font/notosans_kr_thin"
         android:drawableStart="@drawable/lock_size"/>
 
@@ -132,7 +136,7 @@
             android:layout_height="20dp"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="20dp"
-            android:src="@drawable/sign_in" />
+            android:src="@drawable/sign_up_main" />
 
     </LinearLayout>
 

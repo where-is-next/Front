@@ -1,9 +1,11 @@
 package com.example.front;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 
 public class MainActivity extends AppCompatActivity {
@@ -13,15 +15,21 @@ public class MainActivity extends AppCompatActivity {
     Button google_login;        // 구글 로그인 변수
     Button kakao_login;         // 카카오 로그인 변수
 
-    ImageView sign_in;          // 회원가입
+    ImageView sign_up;          // 회원가입
     Button login;               // 로그인
     Button search_id;           // 아이디 찾기
     Button search_pw;           // 비밀번호 찾기
+
+    EditText id;
+    EditText pw;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        id = findViewById(R.id.input_id);
+        pw = findViewById(R.id.input_pw);
 
         // 자동 로그인 이미지 변경
         auto_login = findViewById(R.id.auto_login_check);
@@ -67,11 +75,11 @@ public class MainActivity extends AppCompatActivity {
         });
 
         // 회원가입
-        sign_in = findViewById(R.id.sign_in);
-        sign_in.setOnClickListener(new View.OnClickListener() {
+        sign_up = findViewById(R.id.sign_in);
+        sign_up.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                sign_in();
+                sign_up();
             }
         });
 
@@ -91,7 +99,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // 회원가입 함수
-    private void sign_in() {
-        System.out.println("chlick");
+    private void sign_up() {
+        Intent intent = new Intent(getApplicationContext(), sign_up.class);
+        startActivity(intent);
     }
 }
