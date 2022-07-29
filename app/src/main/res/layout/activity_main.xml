@@ -39,9 +39,9 @@
         android:layout_gravity="center"
         android:background="@drawable/input"
         android:hint="이메일"
-        android:fontFamily="@font/notosans_kr_thin"
+        android:fontFamily="@font/notosans_kr_regular"
         android:textSize="15sp"
-        android:maxLength="20"
+        android:maxLength="50"
         android:drawablePadding="15dp"
         android:drawableStart="@drawable/email_size"
         />
@@ -57,7 +57,7 @@
         android:textSize="15sp"
         android:maxLength="20"
         android:drawablePadding="15dp"
-        android:fontFamily="@font/notosans_kr_thin"
+        android:fontFamily="@font/notosans_kr_regular"
         android:drawableStart="@drawable/lock_size"/>
 
     <Button

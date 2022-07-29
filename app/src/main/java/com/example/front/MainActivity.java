@@ -3,6 +3,7 @@ package com.example.front;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -29,7 +30,24 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         id = findViewById(R.id.input_id);
+        id.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (keyCode == event.KEYCODE_ENTER)
+                    return true;
+                return false;
+            }
+        });
+
         pw = findViewById(R.id.input_pw);
+        pw.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (keyCode == event.KEYCODE_ENTER)
+                    return true;
+                return false;
+            }
+        });
 
         // 자동 로그인 이미지 변경
         auto_login = findViewById(R.id.auto_login_check);
