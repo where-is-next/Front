@@ -1,11 +1,12 @@
 package com.example.front;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class sign_up extends AppCompatActivity {
 
@@ -19,7 +20,6 @@ public class sign_up extends AppCompatActivity {
     Button nickname_vali;
     Button phone_vali;
     Button btn_sign_up;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
