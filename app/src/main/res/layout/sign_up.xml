@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".sign_up"
+    tools:context=".sign_up_activity"
     android:layout_gravity="center"
     >
 
@@ -17,98 +17,25 @@
         android:src="@drawable/sign_up"
         />
 
-    <!-- 닉네임 -->
+    <!-- 아이디 -->
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="40dp"
-        android:src="@drawable/nickname" />
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="51dp"
-        android:orientation="horizontal"
-        tools:context=".MainActivity"
-        >
-        <EditText
-            android:id="@+id/input_nickname"
-            android:layout_marginLeft="20dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/nickname_input"
-            android:hint="닉네임"
-            android:fontFamily="@font/notosans_kr_regular"
-            android:textSize="15sp"
-            android:maxLength="10"
-            />
-        <Button
-            android:id="@+id/nickname_vali"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="53dp"
-            android:background="@drawable/nickname_vali" />
+        android:src="@drawable/id_text" />
 
-    </LinearLayout>
-
-    <!-- 휴대폰 번호 -->
-    <ImageView
+    <EditText
+        android:id="@+id/sign_up_id_input"
+        android:layout_marginLeft="20dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="20dp"
-        android:src="@drawable/phone"
+        android:background="@drawable/sign_up_input_large"
+        android:hint="아이디"
+        android:fontFamily="@font/notosans_kr_regular"
+        android:textSize="15sp"
+        android:maxLength="20"
         />
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="51dp"
-        android:orientation="horizontal"
-        tools:context=".MainActivity"
-        >
-        <EditText
-            android:id="@+id/input_phone"
-            android:layout_marginLeft="20dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/input_phone"
-            android:hint="휴대폰번호"
-            android:fontFamily="@font/notosans_kr_regular"
-            android:textSize="15sp"
-            android:maxLength="20"
-            />
-        <Button
-            android:id="@+id/phone_vali"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:background="@drawable/phone_vali" />
-    </LinearLayout>
-
-    <!-- 인증번호 -->
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="20dp"
-        android:src="@drawable/valinum"
-        />
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="51dp"
-        android:orientation="horizontal"
-        tools:context=".MainActivity"
-        >
-        <EditText
-            android:id="@+id/valinum_input"
-            android:layout_marginLeft="20dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/valinum_input"
-            android:hint="인증번호"
-            android:fontFamily="@font/notosans_kr_regular"
-            android:textSize="15sp"
-            android:maxLength="20"
-            />
-    </LinearLayout>
 
     <!-- 이메일 -->
     <ImageView
@@ -116,26 +43,82 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="20dp"
-        android:src="@drawable/email_picture"
+        android:src="@drawable/email_text"
         />
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="51dp"
         android:orientation="horizontal"
-        tools:context=".MainActivity"
+        tools:context=".sign_in_activity"
         >
         <EditText
-            android:id="@+id/email_input"
+            android:id="@+id/sign_up_email_input"
             android:layout_marginLeft="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/valinum_input"
+            android:background="@drawable/sign_up_input_short"
             android:hint="이메일"
             android:fontFamily="@font/notosans_kr_regular"
             android:textSize="15sp"
             android:maxLength="50"
             />
+        <Button
+            android:id="@+id/auth_send_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:background="@drawable/auth_send_btn" />
     </LinearLayout>
+
+    <!-- 인증번호 -->
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="51dp"
+        android:orientation="horizontal"
+        tools:context=".sign_in_activity"
+        >
+        <EditText
+            android:id="@+id/sign_up_valinum_input"
+            android:layout_marginLeft="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/sign_up_input_short"
+            android:hint="인증번호"
+            android:fontFamily="@font/notosans_kr_regular"
+            android:textSize="15sp"
+            android:maxLength="8"
+            />
+
+        <Button
+            android:id="@+id/auth_confrim_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:background="@drawable/auth_confrim_btn" />
+
+    </LinearLayout>
+
+    <!-- 닉네임 -->
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/nickname_text" />
+
+    <EditText
+        android:id="@+id/sign_up_nickname_input"
+        android:layout_marginLeft="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/sign_up_input_large"
+        android:hint="닉네임"
+        android:fontFamily="@font/notosans_kr_regular"
+        android:textSize="15sp"
+        android:maxLength="10"
+        />
+
 
     <!-- 비밀번호 -->
     <ImageView
@@ -143,24 +126,25 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="20dp"
-        android:src="@drawable/pw_picture"
+        android:src="@drawable/pw_text"
         />
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="51dp"
         android:orientation="horizontal"
-        tools:context=".MainActivity"
+        tools:context=".sign_in_activity"
         >
         <EditText
-            android:id="@+id/pw_input"
+            android:id="@+id/sign_up_pw_input"
             android:layout_marginLeft="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/valinum_input"
+            android:background="@drawable/sign_up_input_large"
             android:hint="비밀번호"
             android:fontFamily="@font/notosans_kr_regular"
             android:textSize="15sp"
             android:maxLength="20"
+            android:inputType="textPassword"
             />
     </LinearLayout>
 
@@ -170,24 +154,25 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="20dp"
-        android:src="@drawable/pw_vali_picture"
+        android:src="@drawable/pw_confirm_text"
         />
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="51dp"
         android:orientation="horizontal"
-        tools:context=".MainActivity"
+        tools:context=".sign_in_activity"
         >
         <EditText
-            android:id="@+id/pw_input_vali"
+            android:id="@+id/sign_up_pw_input_vali"
             android:layout_marginLeft="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/valinum_input"
+            android:background="@drawable/sign_up_input_large"
             android:hint="비밀번호 확인"
             android:fontFamily="@font/notosans_kr_regular"
             android:textSize="15sp"
             android:maxLength="20"
+            android:inputType="textPassword"
             />
     </LinearLayout>
 
@@ -197,9 +182,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:layout_gravity="center"
-        android:background="@drawable/btn_sign_up" />
-
-
+        android:background="@drawable/sign_up_btn" />
 </LinearLayout>
 
 

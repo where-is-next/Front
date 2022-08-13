@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".sign_up"
+    tools:context=".sign_up_activity"
     android:layout_gravity="center"
     >
 
@@ -19,6 +19,12 @@
         android:layout_height="300dp"
         android:text="Sign out"
         android:id="@+id/sign_out"/>
+
+    <Button
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:text="KaKao Sign out"
+        android:id="@+id/kakao_sign_out"/>
 
 
 

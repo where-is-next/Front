@@ -18,9 +18,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Front"
         tools:targetApi="31"
-        android:usesCleartextTraffic="true">
+        android:usesCleartextTraffic="true"
+        android:name=".application.KaKaoApplication">
+
         <activity
-            android:name=".MainActivity"
+            android:name=".sign_in_activity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -29,10 +31,21 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".sign_up">
+        <activity android:name=".sign_up_activity">
         </activity>
 
         <activity android:name=".main_page">
+        </activity>
+
+        <activity android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:host="oauth"
+                    android:scheme="kakao56b9c3f9c686b60e73604a4665ddff25" />
+            </intent-filter>
         </activity>
 
         <uses-library
