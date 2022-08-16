@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_gravity="center">
+
+    <LinearLayout
+        android:layout_width="312dp"
+        android:layout_height="132dp"
+        android:background="@color/find_id_finish_background"
+        android:layout_gravity="center"
+        android:layout_marginTop="50dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="312dp"
+            android:layout_height="17dp"
+            android:layout_marginTop="30dp"
+            android:text="고객님의 정보와 일치하는 아이디 입니다."
+            android:textColor="@color/black"
+            android:textAlignment="center"
+            >
+        </TextView>
+
+        <TextView
+            android:layout_width="312dp"
+            android:layout_height="19dp"
+            android:layout_marginTop="30dp"
+            android:textColor="@color/teal_200"
+            android:textAlignment="center"
+            >
+
+        </TextView>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center"
+        android:background="@drawable/btn_login" />
+
+    <Button
+        android:id="@+id/btn_find_pw"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center"
+        android:background="@drawable/find_pw_btn" />
+
+
+</LinearLayout>

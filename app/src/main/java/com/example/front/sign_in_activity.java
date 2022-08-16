@@ -13,9 +13,9 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.front.domain.SocialUser;
-import com.example.front.domain.LoginUser;
 import com.example.front.dto.SignInDTO;
 import com.example.front.enumpack.UserEnum;
+import com.example.front.find_id_pw_pack.find_id_pw;
 import com.example.front.retorfit.RetrofitAPI;
 import com.example.front.retorfit.RetrofitClient;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -340,11 +340,14 @@ public class sign_in_activity extends AppCompatActivity {
 
     // 유저 아이디 찾기
     private void search_id() {
+        Intent intent = new Intent(getApplicationContext(), find_id_pw.class);
+        startActivity(intent);
     }
 
     // 유저 비밀번호 찾기
     private void search_pw() {
-
+        Intent intent = new Intent(getApplicationContext(), find_id_pw.class);
+        startActivity(intent);
     }
 
     // 유저 회원가입 함수

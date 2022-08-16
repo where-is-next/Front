@@ -32,7 +32,7 @@ public class sign_up_activity extends AppCompatActivity {
     EditText pw_confirm;    // 비밀번호 확인
 
     Button auth_send;       // 인증코드 전송 버튼
-    Button auth_confrim;    // 확인 버튼
+    Button auth_confirm;    // 확인 버튼
 
     Button btn_sign_up;     // 가입 버튼
 
@@ -101,8 +101,8 @@ public class sign_up_activity extends AppCompatActivity {
         });
 
         // 확인 버튼
-        auth_confrim = findViewById(R.id.auth_confrim_btn);
-        auth_confrim.setOnClickListener(new View.OnClickListener() {
+        auth_confirm = findViewById(R.id.auth_confirm_btn);
+        auth_confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 comfirm_vali_code();
@@ -261,7 +261,11 @@ public class sign_up_activity extends AppCompatActivity {
                 @Override
                 public void onResponse(Call<Boolean> call, Response<Boolean> response) {
                     if (response.isSuccessful() && response.body() != null) {
-                        if (response.body()) {
+                        if (!response.body()){
+                            alertDialog("중복된 아이디 혹은 중복된 닉네임입니다." + "\n" + "다시 입력해주세요");
+                        }
+
+                        else {
                             email_auth_send_flag = false;
                             email_auth_complete = false;
 
@@ -276,10 +280,6 @@ public class sign_up_activity extends AppCompatActivity {
                                 }
                             });
                             alert.show();
-                        }
-                        // 중복 확인 및 데이터를 DB에 넣는 과정에서 문제가 발생했을 때 실행
-                        else {
-                            alertDialog("입력하지 않은 정보가 있습니다." + "\n" + "다시 시도해주세요.");
                         }
                     }
                 }

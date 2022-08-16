@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_gravity="center"
+    >
+
+    <!-- 이메일 -->
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="50dp"
+        android:src="@drawable/email_text"
+        />
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="51dp"
+        android:orientation="horizontal"
+        >
+        <EditText
+            android:id="@+id/find_id_email_input"
+            android:layout_marginLeft="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/sign_up_input_short"
+            android:hint="이메일"
+            android:fontFamily="@font/notosans_kr_regular"
+            android:textSize="15sp"
+            android:maxLength="50"
+            />
+        <Button
+            android:id="@+id/auth_send_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:background="@drawable/auth_send_btn" />
+    </LinearLayout>
+
+    <!-- 인증번호 -->
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="51dp"
+        android:orientation="horizontal"
+        >
+        <EditText
+            android:id="@+id/find_id_valinum_input"
+            android:layout_marginLeft="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/sign_up_input_short"
+            android:hint="인증번호"
+            android:fontFamily="@font/notosans_kr_regular"
+            android:textSize="15sp"
+            android:maxLength="8"
+            />
+
+        <Button
+            android:id="@+id/auth_confrim_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:background="@drawable/auth_confirm_btn" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_confirm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:layout_gravity="center"
+        android:background="@drawable/confirm_btn" />
+
+</LinearLayout>
+
+
+

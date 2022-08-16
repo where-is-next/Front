@@ -34,6 +34,9 @@
         <activity android:name=".sign_up_activity">
         </activity>
 
+        <activity android:name=".find_id_pw_pack.find_id_pw">
+        </activity>
+
         <activity android:name=".main_page">
         </activity>
 
