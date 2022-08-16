@@ -39,6 +39,7 @@ public class find_id_pw extends FragmentActivity {
         adapter = new TabPageAdapter(this);
         viewPager.setAdapter(adapter);
 
+
         new TabLayoutMediator(tabLayout, viewPager, new TabLayoutMediator.TabConfigurationStrategy() {
             @Override
             public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
