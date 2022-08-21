@@ -56,4 +56,19 @@ dependencies {
     implementation "com.kakao.sdk:v2-friend:2.11.0" // 카카오톡 소셜 피커, 리소스 번들 파일 포함
 
     implementation "androidx.viewpager2:viewpager2:1.0.0"
+
+    implementation 'androidx.work:work-runtime:2.7.1'
+
+    //ads
+    implementation 'com.google.android.gms:play-services-ads:21.1.0'
+
+    // For apps targeting Android 12, add WorkManager dependency.
+    constraints {
+        implementation('androidx.work:work-runtime:2.7.0') {
+            because '''androidx.work:work-runtime:2.1.0 pulled from
+      play-services-ads has a bug using PendingIntent without
+      FLAG_IMMUTABLE or FLAG_MUTABLE and will fail in Apps
+      targeting S+.'''
+        }
+    }
 }

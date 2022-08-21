@@ -8,14 +8,14 @@ public class SocialUser implements Serializable {
 
     private String id;  // 소셜 로그인의 id값 ( getId() ), LoginUser의 id
     private String pw;
-    private String email;
+    private String phone;
     private String nickname; // nickname
     private UserEnum userEnum;
 
-    public SocialUser(String id, String pw, String email, String nickname, UserEnum userEnum) {
+    public SocialUser(String id, String pw, String phone, String nickname, UserEnum userEnum) {
         this.id = id;
         this.pw = pw;
-        this.email = email;
+        this.phone = phone;
         this.nickname = nickname;
         this.userEnum = userEnum;
     }
@@ -25,9 +25,29 @@ public class SocialUser implements Serializable {
         return "SocialUser{" +
                 "id='" + id + '\'' +
                 ", pw='" + pw + '\'' +
-                ", email='" + email + '\'' +
-                ", name='" + nickname + '\'' +
+                ", phone='" + phone + '\'' +
+                ", nickname='" + nickname + '\'' +
                 ", userEnum=" + userEnum +
                 '}';
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getPw() {
+        return pw;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public UserEnum getUserEnum() {
+        return userEnum;
     }
 }

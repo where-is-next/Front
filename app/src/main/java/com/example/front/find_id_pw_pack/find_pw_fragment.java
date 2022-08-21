@@ -13,6 +13,10 @@ import com.example.front.R;
 
 public class find_pw_fragment extends Fragment{
 
+    public static find_pw_fragment newInstance() {
+        return new find_pw_fragment();
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

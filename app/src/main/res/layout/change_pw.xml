@@ -48,7 +48,7 @@
         tools:context=".sign_in_activity"
         >
         <EditText
-            android:id="@+id/sign_up_pw_input"
+            android:id="@+id/change_pw_input"
             android:layout_marginLeft="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -76,7 +76,7 @@
         tools:context=".sign_in_activity"
         >
     <EditText
-        android:id="@+id/sign_up_pw_input_vali"
+        android:id="@+id/change_pw_input_vali"
         android:layout_marginLeft="20dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -90,7 +90,7 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/btn_confirm"
+        android:id="@+id/change_pw_btn_confirm"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"

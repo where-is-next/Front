@@ -9,6 +9,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -23,6 +24,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.kakao.sdk.auth.model.OAuthToken;
 import com.kakao.sdk.user.UserApiClient;
@@ -187,11 +189,11 @@ public class sign_in_activity extends AppCompatActivity {
         GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(this);
 
         String id = acct.getId();
-        String nickname = acct.getDisplayName();
-        String email = acct.getEmail();
         String pw = "go";
+        String phone = "go_phone";
+        String nickname = acct.getDisplayName();
 
-        SocialUser socialUser = new SocialUser(id, pw, nickname, email, UserEnum.GoogleUser);
+        SocialUser socialUser = new SocialUser(id, pw, phone, nickname, UserEnum.GoogleUser);
 
         //retrofit 생성
         retrofitClient = RetrofitClient.getInstance();
@@ -212,6 +214,11 @@ public class sign_in_activity extends AppCompatActivity {
                     }
                     else {
                         alertDialog("구글 로그인에 실패하였습니다." + "\n" + "다시 시도해주세요");
+                        gsc.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                            }
+                        });
                     }
                 }
             }
@@ -230,11 +237,11 @@ public class sign_in_activity extends AppCompatActivity {
             public Unit invoke(User user, Throwable throwable) {
                 if (user != null) {
                     String id = Long.toString(user.getId());
+                    String pw = "kakao";
+                    String phone = "kakao_phone";
                     String nickname = user.getKakaoAccount().getProfile().getNickname();
-                    String email = user.getKakaoAccount().getEmail();
-                    String pw = "go";
 
-                    SocialUser socialUser = new SocialUser(id, pw, nickname, email, UserEnum.KaKaoUser);
+                    SocialUser socialUser = new SocialUser(id, pw, phone, nickname, UserEnum.KaKaoUser);
 
                     //retrofit 생성
                     retrofitClient = RetrofitClient.getInstance();

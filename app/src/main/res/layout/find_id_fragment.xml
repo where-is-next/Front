@@ -1,6 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -8,13 +6,13 @@
     android:layout_gravity="center"
     >
 
-    <!-- 이메일 -->
+    <!-- 휴대폰 번호 -->
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="50dp"
-        android:src="@drawable/email_text"
+        android:src="@drawable/phone_text"
         />
     <LinearLayout
         android:layout_width="wrap_content"
@@ -22,18 +20,19 @@
         android:orientation="horizontal"
         >
         <EditText
-            android:id="@+id/find_id_email_input"
+            android:id="@+id/find_id_phone_input"
             android:layout_marginLeft="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/sign_up_input_short"
-            android:hint="이메일"
+            android:hint="휴대전화 번호"
             android:fontFamily="@font/notosans_kr_regular"
             android:textSize="15sp"
             android:maxLength="50"
+            android:inputType="phone"
             />
         <Button
-            android:id="@+id/auth_send_btn"
+            android:id="@+id/find_id_auth_send_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
@@ -56,11 +55,12 @@
             android:hint="인증번호"
             android:fontFamily="@font/notosans_kr_regular"
             android:textSize="15sp"
-            android:maxLength="8"
+            android:maxLength="6"
+            android:inputType="phone"
             />
 
         <Button
-            android:id="@+id/auth_confrim_btn"
+            android:id="@+id/find_id_auth_confirm_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
@@ -69,7 +69,7 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/btn_confirm"
+        android:id="@+id/find_id_btn_confirm"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"

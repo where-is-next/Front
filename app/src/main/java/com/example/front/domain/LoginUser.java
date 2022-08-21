@@ -7,14 +7,14 @@ import java.io.Serializable;
 public class LoginUser implements Serializable {
     private String id;
     private String pw;
-    private String email;
+    private String phone;
     private String nickname;
     private UserEnum userEnum;
 
-    public LoginUser(String id, String pw, String email, String nickname, UserEnum userEnum) {
+    public LoginUser(String id, String pw, String phone, String nickname, UserEnum userEnum) {
         this.id = id;
         this.pw = pw;
-        this.email = email;
+        this.phone = phone;
         this.nickname = nickname;
         this.userEnum = userEnum;
     }
@@ -24,9 +24,29 @@ public class LoginUser implements Serializable {
         return "LoginUser{" +
                 "id='" + id + '\'' +
                 ", pw='" + pw + '\'' +
-                ", email='" + email + '\'' +
+                ", phone='" + phone + '\'' +
                 ", nickname='" + nickname + '\'' +
                 ", userEnum=" + userEnum +
                 '}';
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getPw() {
+        return pw;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public UserEnum getUserEnum() {
+        return userEnum;
     }
 }

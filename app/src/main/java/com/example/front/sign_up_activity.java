@@ -1,22 +1,31 @@
 package com.example.front;
 
+import android.Manifest;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.telephony.SmsManager;
 import android.text.InputType;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.example.front.dto.SignUpDTO;
 import com.example.front.retorfit.RetrofitAPI;
 import com.example.front.retorfit.RetrofitClient;
+
+import java.util.Random;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -25,8 +34,8 @@ import retrofit2.Response;
 public class sign_up_activity extends AppCompatActivity {
 
     EditText id;            // 아이디
-    EditText email;         // 이메일
-    EditText email_auth;    // 이메일 인증 코드 입력
+    EditText phone;         // 휴대폰 번호
+    EditText phone_auth;    // 휴대폰 인증 코드 입력
     EditText nickname;      // 닉네임
     EditText pw;            // 비밀번호
     EditText pw_confirm;    // 비밀번호 확인
@@ -36,16 +45,28 @@ public class sign_up_activity extends AppCompatActivity {
 
     Button btn_sign_up;     // 가입 버튼
 
+    String search_id_code;  // 인증코드 저장 변수
+
+    static final int SMS_SEND_PERMISSON = 1;
+
     private RetrofitClient retrofitClient;      // retrofit2 객체 참조 변수
     private RetrofitAPI retrofitAPI;            // retrofit2 API 참조 변수
 
-    boolean email_auth_send_flag = false;
-    boolean email_auth_complete = false;        // 이메일 인증이 완료 되었는지 확인하는 flg
+    boolean phone_auth_send_flag = false;
+    boolean phone_auth_complete = false;        // 휴대폰 인증이 완료 되었는지 확인하는 flg
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sign_up);
+
+        int permissonCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS);
+        if (permissonCheck != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.SEND_SMS)) {
+                Toast.makeText(getBaseContext(), "sms 권한이 필요합니다.", Toast.LENGTH_SHORT).show();
+            }
+            ActivityCompat.requestPermissions(this, new String[] { Manifest.permission.SEND_SMS}, SMS_SEND_PERMISSON);
+        }
 
         // 아이디
         id = findViewById(R.id.sign_up_id_input);
@@ -58,9 +79,9 @@ public class sign_up_activity extends AppCompatActivity {
             }
         });
 
-        // 이메일
-        email = findViewById(R.id.sign_up_email_input);
-        email.setOnKeyListener(new View.OnKeyListener() {
+        // 휴대폰 번호
+        phone = findViewById(R.id.sign_up_phone_input);
+        phone.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if (keyCode == event.KEYCODE_ENTER)
@@ -81,7 +102,7 @@ public class sign_up_activity extends AppCompatActivity {
         });
 
         // 인증번호 전송 버튼
-        auth_send = findViewById(R.id.auth_send_btn);
+        auth_send = findViewById(R.id.sign_up_auth_send_btn);
         auth_send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -90,8 +111,8 @@ public class sign_up_activity extends AppCompatActivity {
         });
 
         // 인증번호 입력
-        email_auth = findViewById(R.id.sign_up_valinum_input);
-        email_auth.setOnKeyListener(new View.OnKeyListener() {
+        phone_auth = findViewById(R.id.sign_up_valinum_input);
+        phone_auth.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if (keyCode == event.KEYCODE_ENTER)
@@ -101,7 +122,7 @@ public class sign_up_activity extends AppCompatActivity {
         });
 
         // 확인 버튼
-        auth_confirm = findViewById(R.id.auth_confirm_btn);
+        auth_confirm = findViewById(R.id.sign_up_auth_confirm_btn);
         auth_confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -142,97 +163,89 @@ public class sign_up_activity extends AppCompatActivity {
         });
     }
 
-    // 이메일 코드 확인
+    // 휴대전화 코드 확인
     private void comfirm_vali_code() {
-        String code = email_auth.getText().toString();
+        String code = phone_auth.getText().toString();
 
         if (code.equals("")) {
-            alertDialog("코드를 입력해주세요.");
+            alertDialog("인증번호를 입력해주세요.");
         }
-        else if (!email_auth_send_flag) {
-            alertDialog("인증번호 전송을 먼저 진행해주세요.");
+
+        else if (phone_auth_complete) {
+            alertDialog("이미 휴대폰 인증에 성공하셨습니다.");
         }
-        else if (email_auth_complete) {
-            alertDialog("이미 이메일 인증에 성공하셨습니다.");
+
+        else if (code.equals(search_id_code)) {
+            phone_auth_send_flag = true;
+            phone_auth_complete = true;
+
+            phone_auth.setInputType(InputType.TYPE_NULL);
+            phone.setInputType(InputType.TYPE_NULL);
+
+            alertDialog("휴대폰 인증이 완료되었습니다.");
         }
-        else {
-            //retrofit 생성
-            retrofitClient = RetrofitClient.getInstance();
-            retrofitAPI = RetrofitClient.getRetrofitInterface();
 
-            //저장된 데이터와 함께 api에서 정의한 getLoginResponse 함수를 실행한 후 응답을 받음
-            retrofitAPI.getEmailAuthCodeConfirm(code).enqueue(new Callback<Boolean>() {
-                @Override
-                public void onResponse(Call<Boolean> call, Response<Boolean> response) {
-                    if (response.body()) {
-                        alertDialog("이메일 인증에 성공하였습니다.");
-
-                        email_auth.setInputType(InputType.TYPE_NULL);
-                        email.setInputType(InputType.TYPE_NULL);
-                        email_auth_complete = true;
-                    } else {
-                        alertDialog("이메일 인증에 실패하였습니다." + "\n" + "입력한 코드를 확인해주세요.");
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<Boolean> call, Throwable t) {
-                    alertDialog("이메일 인증에 실패하였습니다." + "\n" + "입력한 코드를 확인해주세요.");
-                }
-            });
+        else if (!code.equals(search_id_code)) {
+            alertDialog("인증번호가 다릅니다. 다시 입력해주세요");
         }
     }
 
     // 인증번호 발송 로직
     private void send_vali_code() {
-        String email_code = email.getText().toString();
+        String phone_code = phone.getText().toString();
 
-        if (email_code.equals("")) {
-            alertDialog("이메일을 입력해주세요.");
+        if (phone_code.equals("")) {
+            alertDialog("휴대폰 번호를 입력해주세요.");
         }
 
-        else if (email_auth_complete) {
-            alertDialog("이미 이메일 인증에 성공하셨습니다.");
+        else if (phone_auth_complete) {
+            alertDialog("이미 휴대폰 인증에 성공하셨습니다.");
         }
+
         else {
-            ProgressDialog progressDialog = new ProgressDialog(sign_up_activity.this);
-            progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-            progressDialog.setMessage("이메일을 확인하는 중입니다.");
-            progressDialog.setCancelable(false);
-            progressDialog.show();
-
-            //retrofit 생성
-            retrofitClient = RetrofitClient.getInstance();
-            retrofitAPI = RetrofitClient.getRetrofitInterface();
-
-            retrofitAPI.getEmailAuthCodeSend(email_code).enqueue(new Callback<String>() {
-                @Override
-                public void onResponse(Call<String> call, Response<String> response) {
-                    String res = response.body().replaceAll("\"", "");
-
-                    if (res.equals("ok")) {
-                        alertDialog("입력한 이메일로 코드를 전송하였습니다.");
-                        email_auth_send_flag = true;
-                    }
-                    else if(res.equals("mailError")){
-                        alertDialog("인증번호 발송에 실패하였습니다." + "\n" + "올바른 이메일을 입력해주세요.");
-                    }
-                    progressDialog.cancel();
-                }
-
-                @Override
-                public void onFailure(Call<String> call, Throwable t) {
-                    alertDialog("인증번호 발송에 실패하였습니다.");
-                    progressDialog.cancel();
-                }
-            });
+            search_id_code = numberGen(6, 2);
+            sendSMS(phone_code, "Where-is-next(웨이네) 회원가입 인증코드 입니다. \n" + search_id_code);
         }
+    }
+    public void sendSMS(String phone, String message) {
+        SmsManager smsManager = SmsManager.getDefault();
+        smsManager.sendTextMessage(phone, null, message, null, null);
+
+        alertDialog("인증 코드가 전송되었습니다.");
+    }
+
+    public static String numberGen(int len, int dupCd ) {
+
+        Random rand = new Random();
+        String numStr = ""; //난수가 저장될 변수
+
+        for(int i = 0; i < len; i++) {
+
+            //0~9 까지 난수 생성
+            String ran = Integer.toString(rand.nextInt(10));
+
+            if(dupCd==1) {
+                //중복 허용시 numStr에 append
+                numStr += ran;
+            }
+            else if(dupCd == 2) {
+                //중복을 허용하지 않을시 중복된 값이 있는지 검사한다
+                if(!numStr.contains(ran)) {
+                    //중복된 값이 없으면 numStr에 append
+                    numStr += ran;
+                }else {
+                    //생성된 난수가 중복되면 루틴을 다시 실행한다
+                    i -= 1;
+                }
+            }
+        }
+        return numStr;
     }
 
     // 가입하기 로직
     private void sign_up_logic() {
         String sign_up_input_id = id.getText().toString();
-        String sign_up_input_email = email.getText().toString();
+        String sign_up_input_phone = phone.getText().toString();
         String sign_up_input_nickname = nickname.getText().toString();
         String sign_up_input_pw = pw.getText().toString();
         String sign_up_input_pw_confirm = pw_confirm.getText().toString();
@@ -242,8 +255,8 @@ public class sign_up_activity extends AppCompatActivity {
 
         if (sign_up_input_id.equals("")) {
             alertDialog("아이디를 입력해주세요.");
-        } else if (!email_auth_complete) {
-            alertDialog("이메일 인증을 진행해주세요.");
+        } else if (!phone_auth_complete) {
+            alertDialog("휴대폰 인증을 진행해주세요.");
         } else if (sign_up_input_nickname.equals("")) {
             alertDialog("닉네임을 입력해주세요.");
         } else if (sign_up_input_pw.equals("") || sign_up_input_pw_confirm.equals("")) {
@@ -251,7 +264,7 @@ public class sign_up_activity extends AppCompatActivity {
         } else if (!sign_up_input_pw.equals(sign_up_input_pw_confirm)) {
             alertDialog("비밀번호가 다릅니다. 다시 확인해주세요.");
         } else {
-            SignUpDTO signUpDTO = new SignUpDTO(sign_up_input_id, sign_up_input_email, sign_up_input_nickname, sign_up_input_pw);
+            SignUpDTO signUpDTO = new SignUpDTO(sign_up_input_id, sign_up_input_phone, sign_up_input_nickname, sign_up_input_pw);
             //retrofit 생성
             retrofitClient = RetrofitClient.getInstance();
             retrofitAPI = RetrofitClient.getRetrofitInterface();
@@ -263,12 +276,15 @@ public class sign_up_activity extends AppCompatActivity {
                     if (response.isSuccessful() && response.body() != null) {
                         if (!response.body()){
                             alertDialog("중복된 아이디 혹은 중복된 닉네임입니다." + "\n" + "다시 입력해주세요");
+
+                            phone_auth_send_flag = false;
+                            phone_auth_complete = false;
+
+                            phone_auth.setInputType(InputType.TYPE_CLASS_TEXT);
+                            phone.setInputType(InputType.TYPE_CLASS_TEXT);
                         }
 
                         else {
-                            email_auth_send_flag = false;
-                            email_auth_complete = false;
-
                             AlertDialog.Builder alert = new AlertDialog.Builder(sign_up_activity.this);
                             alert.setTitle("알림");
                             alert.setMessage("회원가입이 완료되었습니다." + "\n" + "로그인을 진행해주세요.");
@@ -286,6 +302,12 @@ public class sign_up_activity extends AppCompatActivity {
 
                 @Override
                 public void onFailure(Call<Boolean> call, Throwable t) {
+                    phone_auth_send_flag = false;
+                    phone_auth_complete = false;
+
+                    phone_auth.setInputType(InputType.TYPE_CLASS_TEXT);
+                    phone.setInputType(InputType.TYPE_CLASS_TEXT);
+
                     alertDialog("회원 가입에 실패하였습니다.");
                 }
             });

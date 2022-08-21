@@ -2,13 +2,13 @@ package com.example.front.dto;
 
 public class SignUpDTO {
     private String id;
-    private String email;
+    private String phone;
     private String nickname;
     private String pw;
 
-    public SignUpDTO(String id, String email, String nickname, String pw) {
+    public SignUpDTO(String id, String phone, String nickname, String pw) {
         this.id = id;
-        this.email = email;
+        this.phone = phone;
         this.nickname = nickname;
         this.pw = pw;
     }
@@ -17,7 +17,7 @@ public class SignUpDTO {
     public String toString() {
         return "SignUpDTO{" +
                 "id='" + id + '\'' +
-                ", email='" + email + '\'' +
+                ", phone='" + phone + '\'' +
                 ", nickname='" + nickname + '\'' +
                 ", pw='" + pw + '\'' +
                 '}';

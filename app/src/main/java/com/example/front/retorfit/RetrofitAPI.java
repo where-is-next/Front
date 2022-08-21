@@ -7,7 +7,9 @@ import com.example.front.dto.SignUpDTO;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 
 public interface RetrofitAPI {
     //@통신 방식("통신 API명")
@@ -24,11 +26,7 @@ public interface RetrofitAPI {
     @POST("user_sign_up")
     Call<Boolean> getSignUpResponse(@Body SignUpDTO signUpDTO);
 
-    // 일반회원 가입 시 이메일 인증 요청 API : 이메일 전송
-    @POST("email_service/mail_send")
-    Call<String> getEmailAuthCodeSend(@Body String email);
-
-    // 일반회원 가입 시 이메일 인증 요청 API : 인증번호 확인
-    @POST("email_service/mail_confirm")
-    Call<Boolean> getEmailAuthCodeConfirm(@Body String code);
+    // 아이디 찾기 API
+    @GET("user_search_id/{phoneNum}")
+    Call<String> getIDResponse(@Path("phoneNum") String phoneNum);
 }

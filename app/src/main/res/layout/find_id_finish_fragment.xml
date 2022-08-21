@@ -24,18 +24,20 @@
         </TextView>
 
         <TextView
+            android:id="@+id/searched_id"
             android:layout_width="312dp"
-            android:layout_height="19dp"
-            android:layout_marginTop="30dp"
+            android:layout_height="70dp"
             android:textColor="@color/teal_200"
             android:textAlignment="center"
+            android:fontFamily="@font/notosans_kr_bold"
+            android:textSize="25sp"
             >
 
         </TextView>
     </LinearLayout>
 
     <Button
-        android:id="@+id/btn_login"
+        android:id="@+id/find_id_finish_btn_login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
@@ -43,7 +45,7 @@
         android:background="@drawable/btn_login" />
 
     <Button
-        android:id="@+id/btn_find_pw"
+        android:id="@+id/qwer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
