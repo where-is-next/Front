@@ -2,30 +2,25 @@ package com.example.front.find_id_pw_pack;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.View;
-import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.front.R;
-import com.example.front.sign_in_activity;
+import com.example.front.SignIn;
 import com.google.android.material.tabs.TabLayout;
-import com.google.android.material.tabs.TabLayoutMediator;
 
-public class find_id_pw extends FragmentActivity {
+public class FindIdPw extends FragmentActivity {
+
     // 전역변수
     TabLayout tabLayout;
     View back_view;
 
-    Fragment find_id = find_id_fragment.newInstance();
-    Fragment find_pw = find_pw_fragment.newInstance();
+    Fragment find_id = FindIdFragment.newInstance();
+    Fragment find_pw = FindPwFragment.newInstance();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -43,10 +38,10 @@ public class find_id_pw extends FragmentActivity {
 
                 Fragment selected = null;
                 if(position == 0){
-                    selected = find_id_fragment.newInstance();
+                    selected = FindIdFragment.newInstance();
 
                 }else if (position == 1){
-                    selected = find_pw_fragment.newInstance();;
+                    selected = FindPwFragment.newInstance();;
                 }
 
                 getSupportFragmentManager().beginTransaction().replace(R.id.frame, selected).commit();
@@ -67,8 +62,7 @@ public class find_id_pw extends FragmentActivity {
         back_view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), sign_in_activity.class);
-                startActivity(intent);
+                finish();
             }
         });
     }

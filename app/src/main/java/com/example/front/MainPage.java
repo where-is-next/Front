@@ -19,7 +19,7 @@ import com.kakao.sdk.user.UserApiClient;
 import kotlin.Unit;
 import kotlin.jvm.functions.Function1;
 
-public class main_page extends AppCompatActivity {
+public class MainPage extends AppCompatActivity {
     GoogleSignInOptions gso;
     GoogleSignInClient gsc;
     GoogleSignInAccount acct;
@@ -69,7 +69,7 @@ public class main_page extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 finish();
-                startActivity(new Intent(main_page.this, sign_in_activity.class));
+                startActivity(new Intent(MainPage.this, SignIn.class));
             }
         });
     }
@@ -80,7 +80,7 @@ public class main_page extends AppCompatActivity {
             public Unit invoke(Throwable throwable) {
                 System.out.println("로그아웃");
                 finish();
-                startActivity(new Intent(main_page.this, sign_in_activity.class));
+                startActivity(new Intent(MainPage.this, SignIn.class));
 
                 return null;
             }

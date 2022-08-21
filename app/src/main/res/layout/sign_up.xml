@@ -4,13 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".sign_up_activity">
+    tools:context=".SignUp">
 
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    tools:context=".sign_up_activity"
+    tools:context=".SignUp"
     >
 
     <ImageView
@@ -53,7 +53,7 @@
         android:layout_width="wrap_content"
         android:layout_height="51dp"
         android:orientation="horizontal"
-        tools:context=".sign_in_activity"
+        tools:context=".SignIn"
         >
         <EditText
             android:id="@+id/sign_up_phone_input"
@@ -81,7 +81,7 @@
         android:layout_width="wrap_content"
         android:layout_height="51dp"
         android:orientation="horizontal"
-        tools:context=".sign_in_activity"
+        tools:context=".SignIn"
         >
         <EditText
             android:id="@+id/sign_up_valinum_input"
@@ -138,7 +138,7 @@
         android:layout_width="wrap_content"
         android:layout_height="51dp"
         android:orientation="horizontal"
-        tools:context=".sign_in_activity"
+        tools:context=".SignIn"
         >
         <EditText
             android:id="@+id/sign_up_pw_input"
@@ -166,7 +166,7 @@
         android:layout_width="wrap_content"
         android:layout_height="51dp"
         android:orientation="horizontal"
-        tools:context=".sign_in_activity"
+        tools:context=".SignIn"
         >
         <EditText
             android:id="@+id/sign_up_pw_input_vali"

@@ -15,7 +15,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="50dp"
         android:src="@drawable/id_text"
         />
 
@@ -28,7 +28,7 @@
         android:hint="아이디"
         android:fontFamily="@font/notosans_kr_regular"
         android:textSize="15sp"
-        android:maxLength="10"
+        android:maxLength="20"
         />
 
         <!-- 휴대폰 번호 -->
@@ -94,7 +94,7 @@
         </LinearLayout>
 
     <Button
-        android:id="@+id/btn_confirm"
+        android:id="@+id/find_pw_btn_confirm"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"

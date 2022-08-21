@@ -1,8 +1,6 @@
 package com.example.front;
 
 import android.Manifest;
-import android.app.PendingIntent;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -13,7 +11,6 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
@@ -31,7 +28,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class sign_up_activity extends AppCompatActivity {
+public class SignUp extends AppCompatActivity {
 
     EditText id;            // 아이디
     EditText phone;         // 휴대폰 번호
@@ -285,14 +282,13 @@ public class sign_up_activity extends AppCompatActivity {
                         }
 
                         else {
-                            AlertDialog.Builder alert = new AlertDialog.Builder(sign_up_activity.this);
+                            AlertDialog.Builder alert = new AlertDialog.Builder(SignUp.this);
                             alert.setTitle("알림");
                             alert.setMessage("회원가입이 완료되었습니다." + "\n" + "로그인을 진행해주세요.");
                             alert.setPositiveButton("확인", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    Intent intent = new Intent(sign_up_activity.this, sign_in_activity.class);
-                                    startActivity(intent);
+                                    finish();
                                 }
                             });
                             alert.show();
@@ -316,7 +312,7 @@ public class sign_up_activity extends AppCompatActivity {
 
     // 다이얼로그 띄우는 함수
     public void alertDialog(String message) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(sign_up_activity.this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(SignUp.this);
         builder.setTitle("알림")
                 .setMessage(message)
                 .setPositiveButton("확인", null)

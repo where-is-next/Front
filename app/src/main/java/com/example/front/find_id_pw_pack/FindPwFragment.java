@@ -1,6 +1,4 @@
 package com.example.front.find_id_pw_pack;
-
-import android.content.Context;
 import android.os.Bundle;
 import android.telephony.SmsManager;
 import android.text.InputType;
@@ -15,7 +13,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.front.R;
@@ -28,11 +25,13 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class find_id_fragment extends Fragment {
+public class FindPwFragment extends Fragment{
 
-    public static find_id_fragment newInstance() {
-        return new find_id_fragment();
+    public static FindPwFragment newInstance() {
+        return new FindPwFragment();
     }
+
+    EditText user_id;
 
     EditText phone;
     EditText phone_auth;
@@ -48,15 +47,26 @@ public class find_id_fragment extends Fragment {
     RetrofitAPI retrofitAPI;            // retrofit2 API 참조 변수
 
     boolean phone_auth_send_flag = false;
-    boolean phone_auth_complete = false;        // 휴대폰 인증이 완료 되었는지 확인하는 flg
+    boolean phone_auth_complete = false;        // 휴대폰 인증이 완료 되었는지 확인하는 flag
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.find_id_fragment, container, false);
+        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.find_pw_fragment, container, false);
+
+        // 아이디 입력
+        user_id = rootView.findViewById(R.id.find_pw_input_id);
+        user_id.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (keyCode == event.KEYCODE_ENTER)
+                    return true;
+                return false;
+            }
+        });
 
         // 휴대전화 번호 입력
-        phone = rootView.findViewById(R.id.find_id_phone_input);
+        phone = rootView.findViewById(R.id.find_pw_phone_input);
         phone.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
@@ -67,7 +77,7 @@ public class find_id_fragment extends Fragment {
         });
 
         // 인증번호 전송 버튼
-        auth_send_btn = rootView.findViewById(R.id.find_id_auth_send_btn);
+        auth_send_btn = rootView.findViewById(R.id.find_pw_auth_send_btn);
         auth_send_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -76,7 +86,7 @@ public class find_id_fragment extends Fragment {
         });
 
         // 인증번호 입력
-        phone_auth = rootView.findViewById(R.id.find_id_valinum_input);
+        phone_auth = rootView.findViewById(R.id.find_pw_valinum_input);
         phone_auth.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
@@ -87,7 +97,7 @@ public class find_id_fragment extends Fragment {
         });
 
         // 확인 버튼
-        auth_confirm_btn = rootView.findViewById(R.id.find_id_auth_confirm_btn);
+        auth_confirm_btn = rootView.findViewById(R.id.find_pw_auth_confirm_btn);
         auth_confirm_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -96,13 +106,14 @@ public class find_id_fragment extends Fragment {
         });
 
         // 찾기 확인 버튼
-        btn_confirm = rootView.findViewById(R.id.find_id_btn_confirm);
+        btn_confirm = rootView.findViewById(R.id.find_pw_btn_confirm);
         btn_confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                search_id();
+                search_pw();
             }
         });
+
         return rootView;
     }
 
@@ -146,7 +157,7 @@ public class find_id_fragment extends Fragment {
 
         else {
             search_id_code = numberGen(6, 2);
-            sendSMS(phone_code, "Where-is-next(웨이네) 아이디 찾기 인증코드 입니다. \n" + search_id_code);
+            sendSMS(phone_code, "Where-is-next(웨이네) 비밀번호 찾기 인증코드 입니다. \n" + search_id_code);
         }
     }
     public void sendSMS(String phone, String message) {
@@ -184,44 +195,49 @@ public class find_id_fragment extends Fragment {
         return numStr;
     }
 
-    // 아이디 찾기
-    private void search_id() {
+    // 비밀번호 찾기
+    private void search_pw() {
         if(!phone_auth_complete) {
             alertDialog("휴대전화 인증을 진행해주세요.");
         }
         else {
             String phoneNum = phone.getText().toString();
+            String id = user_id.getText().toString();
 
             //retrofit 생성
             retrofitClient = RetrofitClient.getInstance();
             retrofitAPI = RetrofitClient.getRetrofitInterface();
 
-            //저장된 데이터와 함께 api에서 정의한 getLoginResponse 함수를 실행한 후 응답을 받음
-            retrofitAPI.getIDResponse(phoneNum).enqueue(new Callback<String>() {
+            retrofitAPI.getPwResponse(id, phoneNum).enqueue(new Callback<Boolean>() {
                 @Override
-                public void onResponse(Call<String> call, Response<String> response) {
-                    String search_id = response.body().replaceAll("\"","");;
+                public void onResponse(Call<Boolean> call, Response<Boolean> response) {
+                    if (response.body()) {
+                        Bundle bundle = new Bundle();                   // 번들을 통해 프래그먼트에서 프래그먼트로 값 전달
+                        bundle.putString("id", id);                     //번들에 넘길 값 저장
+                        bundle.putString("phoneNum", phoneNum);
 
-                    Bundle bundle = new Bundle();                   // 번들을 통해 값 전달
-                    bundle.putString("search_id", search_id);       //번들에 넘길 값 저장
-                    FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
 
-                    Fragment find_id_finish = find_id_finish_fragment.newInstance();
-                    find_id_finish.setArguments(bundle);
+                        Fragment changePw = ChangePw.newInstance();
+                        changePw.setArguments(bundle);
 
-                    transaction.replace(R.id.frame, find_id_finish);
-                    transaction.commit();
+                        transaction.replace(R.id.frame, changePw);
+                        transaction.commit();
+                    }
+                    else {
+                        phone_auth_send_flag = false;
+                        phone_auth_complete = false;
+
+                        phone_auth.setInputType(InputType.TYPE_CLASS_TEXT);
+                        phone.setInputType(InputType.TYPE_CLASS_TEXT);
+
+                        alertDialog("가입되어 있는 아이디가 없습니다." + "\n" + "다시 시도해주세요");
+                    }
                 }
 
                 @Override
-                public void onFailure(Call<String> call, Throwable t) {
-                    phone_auth_send_flag = false;
-                    phone_auth_complete = false;
-
-                    phone_auth.setInputType(InputType.TYPE_CLASS_TEXT);
-                    phone.setInputType(InputType.TYPE_CLASS_TEXT);
-
-                    alertDialog("가입되어 있는 아이디가 없습니다." + "\n" + "다시 시도해주세요");
+                public void onFailure(Call<Boolean> call, Throwable t) {
+                    alertDialog("비밀번호 찾기에 실패하였습니다." + "\n" + "다시 시도해주세요");
                 }
             });
         }
@@ -236,5 +252,4 @@ public class find_id_fragment extends Fragment {
                 .create()
                 .show();
     }
-
 }

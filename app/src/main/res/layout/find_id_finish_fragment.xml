@@ -44,13 +44,4 @@
         android:layout_gravity="center"
         android:background="@drawable/btn_login" />
 
-    <Button
-        android:id="@+id/qwer"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_gravity="center"
-        android:background="@drawable/find_pw_btn" />
-
-
 </LinearLayout>

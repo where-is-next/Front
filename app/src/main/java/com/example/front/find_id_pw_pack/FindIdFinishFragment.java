@@ -1,25 +1,29 @@
 package com.example.front.find_id_pw_pack;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
-import androidx.annotation.Dimension;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 
 import com.example.front.R;
+import com.example.front.SignIn;
 
-public class find_id_finish_fragment extends Fragment {
+public class FindIdFinishFragment extends Fragment {
 
-    public static find_id_finish_fragment newInstance() {
-        return new find_id_finish_fragment();
+    public static FindIdFinishFragment newInstance() {
+        return new FindIdFinishFragment();
     }
 
     TextView searchedId;
+    Button login;
 
     @Nullable
     @Override
@@ -32,6 +36,14 @@ public class find_id_finish_fragment extends Fragment {
             String id = getArguments().getString("search_id"); // 프래그먼트1에서 받아온 값 넣기
             searchedId.setText(id);
         }
+
+        login = rootView.findViewById(R.id.find_id_finish_btn_login);
+        login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((FindIdPw)getActivity()).finish();
+            }
+        });
 
         return rootView;
     }

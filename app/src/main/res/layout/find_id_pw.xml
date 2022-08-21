@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".find_id_pw_pack.find_id_pw">
+    tools:context=".find_id_pw_pack.FindIdPw">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -45,17 +45,9 @@
             android:text="비밀번호 찾기"/>
     </com.google.android.material.tabs.TabLayout>
 
-<!--    <androidx.viewpager2.widget.ViewPager2-->
-<!--        android:id="@+id/pager"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"-->
-<!--        />-->
-
     <FrameLayout
         android:id="@+id/frame"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/find_id_pw_tab"
-        ></FrameLayout>
+        android:layout_height="match_parent" />
 
 </LinearLayout>

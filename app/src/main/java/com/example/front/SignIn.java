@@ -16,7 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.front.domain.SocialUser;
 import com.example.front.dto.SignInDTO;
 import com.example.front.enumpack.UserEnum;
-import com.example.front.find_id_pw_pack.find_id_pw;
+import com.example.front.find_id_pw_pack.FindIdPw;
 import com.example.front.retorfit.RetrofitAPI;
 import com.example.front.retorfit.RetrofitClient;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -36,7 +36,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class sign_in_activity extends AppCompatActivity {
+public class SignIn extends AppCompatActivity {
     static boolean auto_login_flag = false;
     Button auto_login;          // 자동 로그인 이미지 변경
 
@@ -207,7 +207,7 @@ public class sign_in_activity extends AppCompatActivity {
 
                     if (response.body()) {
                         finish();
-                        Intent intent = new Intent(sign_in_activity.this, main_page.class);
+                        Intent intent = new Intent(SignIn.this, MainPage.class);
 
                         intent.putExtra("user", socialUser);
                         startActivity(intent);
@@ -255,7 +255,7 @@ public class sign_in_activity extends AppCompatActivity {
 
                                 if (response.body()) {
                                     finish();
-                                    Intent intent = new Intent(sign_in_activity.this, main_page.class);
+                                    Intent intent = new Intent(SignIn.this, MainPage.class);
                                     intent.putExtra("user", socialUser);
                                     startActivity(intent);
                                 }
@@ -280,8 +280,8 @@ public class sign_in_activity extends AppCompatActivity {
     }
     private void KaKaoLogin() {
         // 해딩 기기에 카카오톡 설치가 되있는 경우
-        if(UserApiClient.getInstance().isKakaoTalkLoginAvailable(sign_in_activity.this)) {
-            UserApiClient.getInstance().loginWithKakaoTalk(sign_in_activity.this, new Function2<OAuthToken, Throwable, Unit>() {
+        if(UserApiClient.getInstance().isKakaoTalkLoginAvailable(SignIn.this)) {
+            UserApiClient.getInstance().loginWithKakaoTalk(SignIn.this, new Function2<OAuthToken, Throwable, Unit>() {
                 @Override
                 public Unit invoke(OAuthToken oAuthToken, Throwable throwable) {
                     if (oAuthToken != null) {
@@ -296,7 +296,7 @@ public class sign_in_activity extends AppCompatActivity {
         }
         // 카카오톡 설치가 안되어 있는 경우 : 웹으로 로그인
         else {
-            UserApiClient.getInstance().loginWithKakaoAccount(sign_in_activity.this, new Function2<OAuthToken, Throwable, Unit>() {
+            UserApiClient.getInstance().loginWithKakaoAccount(SignIn.this, new Function2<OAuthToken, Throwable, Unit>() {
                 @Override
                 public Unit invoke(OAuthToken oAuthToken, Throwable throwable) {
                     if (oAuthToken != null) {
@@ -328,7 +328,7 @@ public class sign_in_activity extends AppCompatActivity {
 
                     if (response.body()) {
                         finish();
-                        Intent intent = new Intent(sign_in_activity.this, main_page.class);
+                        Intent intent = new Intent(SignIn.this, MainPage.class);
                         intent.putExtra("user", signInDTO);
                         startActivity(intent);
                     }
@@ -347,25 +347,25 @@ public class sign_in_activity extends AppCompatActivity {
 
     // 유저 아이디 찾기
     private void search_id() {
-        Intent intent = new Intent(getApplicationContext(), find_id_pw.class);
+        Intent intent = new Intent(getApplicationContext(), FindIdPw.class);
         startActivity(intent);
     }
 
     // 유저 비밀번호 찾기
     private void search_pw() {
-        Intent intent = new Intent(getApplicationContext(), find_id_pw.class);
+        Intent intent = new Intent(getApplicationContext(), FindIdPw.class);
         startActivity(intent);
     }
 
     // 유저 회원가입 함수
     private void sign_up() {
-        Intent intent = new Intent(getApplicationContext(), sign_up_activity.class);
+        Intent intent = new Intent(getApplicationContext(), SignUp.class);
         startActivity(intent);
     }
 
     // 다이얼로그 띄우는 함수
     public void alertDialog(String message) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(sign_in_activity.this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(SignIn.this);
         builder.setTitle("알림")
                 .setMessage(message)
                 .setPositiveButton("확인", null)

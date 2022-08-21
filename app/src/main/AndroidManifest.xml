@@ -27,7 +27,7 @@
         android:name=".application.KaKaoApplication">
 
         <activity
-            android:name=".sign_in_activity"
+            android:name=".SignIn"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -36,13 +36,13 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".sign_up_activity">
+        <activity android:name=".SignUp">
         </activity>
 
-        <activity android:name=".find_id_pw_pack.find_id_pw">
+        <activity android:name=".find_id_pw_pack.FindIdPw">
         </activity>
 
-        <activity android:name=".main_page">
+        <activity android:name=".MainPage">
         </activity>
 
         <activity android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity"
