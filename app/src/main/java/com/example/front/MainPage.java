@@ -1,6 +1,7 @@
 package com.example.front;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -27,26 +28,23 @@ public class MainPage extends AppCompatActivity {
     Button signOut;
     Button kakao_sign_out;
 
+    private String user_id;
+    private SharedPreferences sp;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_page);
 
+        sp = getSharedPreferences("UserInfo", MODE_PRIVATE);
+        user_id = sp.getString("user_id", "");
+        System.out.println("유저 아이디 : " + user_id);
+
         signOut = findViewById(R.id.sign_out);
+
         gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
         gsc = GoogleSignIn.getClient(this, gso);
-
         acct = GoogleSignIn.getLastSignedInAccount(this);
-
-        Intent intent = getIntent();
-        Object object = intent.getSerializableExtra("user");
-
-        if (object.getClass().toString().equals("class com.example.front.domain.LoginUser")) {
-            System.out.println("일반 유저 로그인 성공");
-        }
-        else {
-            System.out.println("객체를 버립니다.");
-        }
 
         signOut.setOnClickListener(new View.OnClickListener() {
             @Override

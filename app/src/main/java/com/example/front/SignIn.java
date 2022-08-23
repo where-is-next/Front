@@ -1,6 +1,7 @@
 package com.example.front;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
@@ -57,10 +58,14 @@ public class SignIn extends AppCompatActivity {
     private RetrofitClient retrofitClient;      // retrofit2 객체 참조 변수
     private RetrofitAPI retrofitAPI;            // retrofit2 api 객체 참조 변수
 
+    private SharedPreferences sp;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sign_in);
+
+        sp = getSharedPreferences("UserInfo", MODE_PRIVATE);
 
         // 아이디 입력
         id = findViewById(R.id.input_id);
@@ -206,10 +211,10 @@ public class SignIn extends AppCompatActivity {
                 if (response.isSuccessful() && response.body() != null) {
 
                     if (response.body()) {
+                        sharedPreferenceMethod(id);
+
                         finish();
                         Intent intent = new Intent(SignIn.this, MainPage.class);
-
-                        intent.putExtra("user", socialUser);
                         startActivity(intent);
                     }
                     else {
@@ -254,9 +259,10 @@ public class SignIn extends AppCompatActivity {
                             if (response.isSuccessful() && response.body() != null) {
 
                                 if (response.body()) {
+                                    sharedPreferenceMethod(id);
+
                                     finish();
                                     Intent intent = new Intent(SignIn.this, MainPage.class);
-                                    intent.putExtra("user", socialUser);
                                     startActivity(intent);
                                 }
                                 else {
@@ -327,6 +333,8 @@ public class SignIn extends AppCompatActivity {
                 if (response.isSuccessful() && response.body() != null) {
 
                     if (response.body()) {
+                        sharedPreferenceMethod(id);
+
                         finish();
                         Intent intent = new Intent(SignIn.this, MainPage.class);
                         intent.putExtra("user", signInDTO);
@@ -371,5 +379,12 @@ public class SignIn extends AppCompatActivity {
                 .setPositiveButton("확인", null)
                 .create()
                 .show();
+    }
+
+    // SharedPreference 함수
+    public void sharedPreferenceMethod(String id) {
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putString("user_id", id);
+        editor.commit();
     }
 }
