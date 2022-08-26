@@ -19,7 +19,7 @@
         android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:background="@android:color/white"
+        android:background="@drawable/navigation_shape"
         app:menu="@menu/main_navigation_items" />
 </RelativeLayout>
 

@@ -18,6 +18,7 @@
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.2995" />
         <entry key="app/src/main/res/drawable/ic_sign_up.xml" value="0.3375" />
         <entry key="app/src/main/res/drawable/logo_login.xml" value="0.329" />
+        <entry key="app/src/main/res/drawable/navigation_shape.xml" value="0.1455" />
         <entry key="app/src/main/res/drawable/pw_text.xml" value="0.31" />
         <entry key="app/src/main/res/drawable/search_id.xml" value="0.2995" />
         <entry key="app/src/main/res/drawable/sign_up_main.xml" value="0.3375" />
@@ -31,7 +32,7 @@
         <entry key="app/src/main/res/layout/hone_fragment.xml" value="0.2151268115942029" />
         <entry key="app/src/main/res/layout/login_false_dialog.xml" value="0.2735562310030395" />
         <entry key="app/src/main/res/layout/main_navigation_items.xml" value="0.2151268115942029" />
-        <entry key="app/src/main/res/layout/main_page.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/main_page.xml" value="0.6224066390041494" />
         <entry key="app/src/main/res/layout/map_fragment.xml" value="0.2151268115942029" />
         <entry key="app/src/main/res/layout/my_info_fragment.xml" value="0.2151268115942029" />
         <entry key="app/src/main/res/layout/post_fragment.xml" value="0.2151268115942029" />

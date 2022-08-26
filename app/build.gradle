@@ -73,4 +73,8 @@ dependencies {
     }
 
     implementation 'com.google.android.material:material:1.6.1'
+
+    // 카카오맵
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation files('libs/libDaumMapAndroid.jar')
 }
