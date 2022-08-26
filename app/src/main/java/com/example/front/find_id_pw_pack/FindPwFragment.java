@@ -246,6 +246,7 @@ public class FindPwFragment extends Fragment{
     // 다이얼로그 띄우는 함수
     public void alertDialog(String message) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setCancelable(false);
         builder.setTitle("알림")
                 .setMessage(message)
                 .setPositiveButton("확인", null)

@@ -43,7 +43,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:background="@drawable/input"
-        android:hint="이메일"
+        android:hint="아이디"
         android:fontFamily="@font/notosans_kr_regular"
         android:textSize="15sp"
         android:maxLength="50"

@@ -18,20 +18,29 @@
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.2995" />
         <entry key="app/src/main/res/drawable/ic_sign_up.xml" value="0.3375" />
         <entry key="app/src/main/res/drawable/logo_login.xml" value="0.329" />
+        <entry key="app/src/main/res/drawable/pw_text.xml" value="0.31" />
         <entry key="app/src/main/res/drawable/search_id.xml" value="0.2995" />
         <entry key="app/src/main/res/drawable/sign_up_main.xml" value="0.3375" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.5" />
         <entry key="app/src/main/res/layout/change_pw.xml" value="0.5625" />
-        <entry key="app/src/main/res/layout/find_id_finish_fragment.xml" value="0.5625" />
+        <entry key="app/src/main/res/layout/find_id_finish_fragment.xml" value="0.5357917570498916" />
         <entry key="app/src/main/res/layout/find_id_fragment.xml" value="0.42938931297709926" />
         <entry key="app/src/main/res/layout/find_id_pw.xml" value="0.47962962962962963" />
         <entry key="app/src/main/res/layout/find_pw_fragment.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/home_fragment.xml" value="0.2151268115942029" />
+        <entry key="app/src/main/res/layout/hone_fragment.xml" value="0.2151268115942029" />
         <entry key="app/src/main/res/layout/login_false_dialog.xml" value="0.2735562310030395" />
-        <entry key="app/src/main/res/layout/main_page.xml" value="0.5208333333333334" />
+        <entry key="app/src/main/res/layout/main_navigation_items.xml" value="0.2151268115942029" />
+        <entry key="app/src/main/res/layout/main_page.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/map_fragment.xml" value="0.2151268115942029" />
+        <entry key="app/src/main/res/layout/my_info_fragment.xml" value="0.2151268115942029" />
+        <entry key="app/src/main/res/layout/post_fragment.xml" value="0.2151268115942029" />
         <entry key="app/src/main/res/layout/progressbar.xml" value="0.2735562310030395" />
+        <entry key="app/src/main/res/layout/qr_fragment.xml" value="0.2151268115942029" />
         <entry key="app/src/main/res/layout/sign_in.xml" value="0.33" />
         <entry key="app/src/main/res/layout/sign_up.xml" value="0.33" />
         <entry key="app/src/main/res/layout/test.xml" value="0.3677536231884058" />
+        <entry key="app/src/main/res/menu/main_navigation_items.xml" value="0.3567708333333333" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.411" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.411" />
       </map>

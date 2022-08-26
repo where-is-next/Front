@@ -1,16 +1,24 @@
-package com.example.front;
+package com.example.front.main;
+import static android.content.Context.MODE_PRIVATE;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.Fragment;
 
+import com.example.front.R;
+import com.example.front.SignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -20,31 +28,26 @@ import com.kakao.sdk.user.UserApiClient;
 import kotlin.Unit;
 import kotlin.jvm.functions.Function1;
 
-public class MainPage extends AppCompatActivity {
+public class HomeFragment extends Fragment{
+
     GoogleSignInOptions gso;
     GoogleSignInClient gsc;
-    GoogleSignInAccount acct;
 
     Button signOut;
     Button kakao_sign_out;
 
-    private String user_id;
     private SharedPreferences sp;
 
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.main_page);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View v = inflater.inflate(R.layout.home_fragment, container, false);
+        sp = getActivity().getSharedPreferences("UserInfo", MODE_PRIVATE);
 
-        sp = getSharedPreferences("UserInfo", MODE_PRIVATE);
-        user_id = sp.getString("user_id", "");
-        System.out.println("유저 아이디 : " + user_id);
-
-        signOut = findViewById(R.id.sign_out);
+        signOut = v.findViewById(R.id.sign_out);
 
         gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
-        gsc = GoogleSignIn.getClient(this, gso);
-        acct = GoogleSignIn.getLastSignedInAccount(this);
+        gsc = GoogleSignIn.getClient(getActivity(), gso);
 
         signOut.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -53,21 +56,22 @@ public class MainPage extends AppCompatActivity {
             }
         });
 
-        kakao_sign_out = findViewById(R.id.kakao_sign_out);
+        kakao_sign_out = v.findViewById(R.id.kakao_sign_out);
         kakao_sign_out.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 kakao_out();
             }
         });
+
+        return v;
     }
 
     private void sign_out() {
         gsc.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-                finish();
-                startActivity(new Intent(MainPage.this, SignIn.class));
+                logout_alertDialog();
             }
         });
     }
@@ -76,12 +80,25 @@ public class MainPage extends AppCompatActivity {
         UserApiClient.getInstance().logout(new Function1<Throwable, Unit>() {
             @Override
             public Unit invoke(Throwable throwable) {
-                System.out.println("로그아웃");
-                finish();
-                startActivity(new Intent(MainPage.this, SignIn.class));
-
+                logout_alertDialog();
                 return null;
             }
         });
+    }
+
+    public void logout_alertDialog() {
+        AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
+        alert.setCancelable(false);
+        alert.setTitle("알림");
+        alert.setMessage("로그아웃되었습니다.");
+        alert.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                getActivity().finish();
+                Intent intent = new Intent(getActivity(), SignIn.class);
+                startActivity(intent);
+            }
+        });
+        alert.show();
     }
 }

@@ -1,7 +1,6 @@
 package com.example.front.retorfit;
 
 import com.example.front.domain.SocialUser;
-import com.example.front.domain.LoginUser;
 import com.example.front.dto.ChangePwDTO;
 import com.example.front.dto.SignInDTO;
 import com.example.front.dto.SignUpDTO;
@@ -11,7 +10,6 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
-import retrofit2.http.Query;
 
 public interface RetrofitAPI {
     //@통신 방식("통신 API명")

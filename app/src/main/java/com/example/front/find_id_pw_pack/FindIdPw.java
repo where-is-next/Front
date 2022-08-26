@@ -20,7 +20,6 @@ public class FindIdPw extends FragmentActivity {
     View back_view;
 
     Fragment find_id = FindIdFragment.newInstance();
-    Fragment find_pw = FindPwFragment.newInstance();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

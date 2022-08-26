@@ -109,6 +109,7 @@ public class ChangePw extends Fragment {
                 public void onResponse(Call<Boolean> call, Response<Boolean> response) {
                     if (response.body()) {              // 비밀번호 변경 성공하면 실행
                         AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
+                        alert.setCancelable(false);
                         alert.setTitle("알림");
                         alert.setMessage("비밀번호가 변경되었습니다." + "\n" + "로그인을 진행해주세요.");
                         alert.setPositiveButton("확인", new DialogInterface.OnClickListener() {
@@ -140,6 +141,7 @@ public class ChangePw extends Fragment {
     // 다이얼로그 띄우는 함수
     public void alertDialog(String message) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setCancelable(false);
         builder.setTitle("알림")
                 .setMessage(message)
                 .setPositiveButton("확인", null)

@@ -18,6 +18,7 @@ import com.example.front.domain.SocialUser;
 import com.example.front.dto.SignInDTO;
 import com.example.front.enumpack.UserEnum;
 import com.example.front.find_id_pw_pack.FindIdPw;
+import com.example.front.main.MainPage;
 import com.example.front.retorfit.RetrofitAPI;
 import com.example.front.retorfit.RetrofitClient;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -59,6 +60,7 @@ public class SignIn extends AppCompatActivity {
     private RetrofitAPI retrofitAPI;            // retrofit2 api 객체 참조 변수
 
     private SharedPreferences sp;
+    private long backpressedTime = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -337,7 +339,6 @@ public class SignIn extends AppCompatActivity {
 
                         finish();
                         Intent intent = new Intent(SignIn.this, MainPage.class);
-                        intent.putExtra("user", signInDTO);
                         startActivity(intent);
                     }
                     else {
@@ -374,6 +375,7 @@ public class SignIn extends AppCompatActivity {
     // 다이얼로그 띄우는 함수
     public void alertDialog(String message) {
         AlertDialog.Builder builder = new AlertDialog.Builder(SignIn.this);
+        builder.setCancelable(false);
         builder.setTitle("알림")
                 .setMessage(message)
                 .setPositiveButton("확인", null)
@@ -386,5 +388,16 @@ public class SignIn extends AppCompatActivity {
         SharedPreferences.Editor editor = sp.edit();
         editor.putString("user_id", id);
         editor.commit();
+    }
+
+    // 뒤로가기 막기 함수
+    @Override
+    public void onBackPressed() {
+        if (System.currentTimeMillis() > backpressedTime + 2000) {
+            backpressedTime = System.currentTimeMillis();
+            Toast.makeText(this, "\'뒤로\' 버튼을 한번 더 누르시면 종료됩니다.", Toast.LENGTH_SHORT).show();
+        } else if (System.currentTimeMillis() <= backpressedTime + 2000) {
+            finish();
+        }
     }
 }

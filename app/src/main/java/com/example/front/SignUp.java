@@ -283,6 +283,7 @@ public class SignUp extends AppCompatActivity {
 
                         else {
                             AlertDialog.Builder alert = new AlertDialog.Builder(SignUp.this);
+                            alert.setCancelable(false);
                             alert.setTitle("알림");
                             alert.setMessage("회원가입이 완료되었습니다." + "\n" + "로그인을 진행해주세요.");
                             alert.setPositiveButton("확인", new DialogInterface.OnClickListener() {
@@ -313,6 +314,7 @@ public class SignUp extends AppCompatActivity {
     // 다이얼로그 띄우는 함수
     public void alertDialog(String message) {
         AlertDialog.Builder builder = new AlertDialog.Builder(SignUp.this);
+        builder.setCancelable(false);
         builder.setTitle("알림")
                 .setMessage(message)
                 .setPositiveButton("확인", null)
