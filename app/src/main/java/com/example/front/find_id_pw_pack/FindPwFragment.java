@@ -172,7 +172,7 @@ public class FindPwFragment extends Fragment{
         Random rand = new Random();
         String numStr = ""; //난수가 저장될 변수
 
-        for(int i=0;i<len;i++) {
+        for(int i = 0; i < len; i++) {
 
             //0~9 까지 난수 생성
             String ran = Integer.toString(rand.nextInt(10));

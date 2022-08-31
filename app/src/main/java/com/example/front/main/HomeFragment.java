@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,15 +19,28 @@ import androidx.fragment.app.Fragment;
 
 import com.example.front.R;
 import com.example.front.SignIn;
+import com.example.front.domain.Location;
+import com.example.front.retorfit.RetrofitAPI;
+import com.example.front.retorfit.RetrofitClient;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.gson.Gson;
 import com.kakao.sdk.user.UserApiClient;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import kotlin.Unit;
 import kotlin.jvm.functions.Function1;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class HomeFragment extends Fragment{
 
@@ -37,18 +51,28 @@ public class HomeFragment extends Fragment{
     Button kakao_sign_out;
 
     private SharedPreferences sp;
+    private List<Location> locationList;
+
+    private RetrofitClient retrofitClient;      // retrofit2 객체 참조 변수
+    private RetrofitAPI retrofitAPI;            // retrofit2 api 객체 참조 변수
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.home_fragment, container, false);
-        sp = getActivity().getSharedPreferences("UserInfo", MODE_PRIVATE);
 
+        // 관광지 정보 불러오기
+        settingList();
+
+        // sharedPreference
+        sp = getActivity().getSharedPreferences("UserInfo", MODE_PRIVATE); // 로그인한 유저 ID를 담고 있는 변수
+
+        // 로그아웃 버튼
         signOut = v.findViewById(R.id.sign_out);
 
+        // 구글
         gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
         gsc = GoogleSignIn.getClient(getActivity(), gso);
-
         signOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -56,6 +80,7 @@ public class HomeFragment extends Fragment{
             }
         });
 
+        // 카카오
         kakao_sign_out = v.findViewById(R.id.kakao_sign_out);
         kakao_sign_out.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,6 +111,29 @@ public class HomeFragment extends Fragment{
         });
     }
 
+    // 관광지 리스트 추가 함수
+    private void settingList() {
+        //retrofit 생성
+        retrofitClient = RetrofitClient.getInstance();
+        retrofitAPI = RetrofitClient.getRetrofitInterface();
+
+        //저장된 데이터와 함께 api에서 정의한 getLoginResponse 함수를 실행한 후 응답을 받음
+        retrofitAPI.getLocationResponse().enqueue(new Callback<List<Location>>() {
+            @Override
+            public void onResponse(Call<List<Location>> call, Response<List<Location>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    locationList = response.body();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Location>> call, Throwable t) {
+                alertDialog("관광지 정보를 불러올 수 없습니다. 다시 시도해주세요");
+            }
+        });
+    }
+
+    // 로그아웃시 띄우는 다이얼로그
     public void logout_alertDialog() {
         AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
         alert.setCancelable(false);
@@ -100,5 +148,16 @@ public class HomeFragment extends Fragment{
             }
         });
         alert.show();
+    }
+
+    // 다이얼로그 띄우는 함수
+    public void alertDialog(String message) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setCancelable(false);
+        builder.setTitle("알림")
+                .setMessage(message)
+                .setPositiveButton("확인", null)
+                .create()
+                .show();
     }
 }

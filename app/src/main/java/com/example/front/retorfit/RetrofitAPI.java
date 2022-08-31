@@ -1,9 +1,12 @@
 package com.example.front.retorfit;
 
+import com.example.front.domain.Location;
 import com.example.front.domain.SocialUser;
 import com.example.front.dto.ChangePwDTO;
 import com.example.front.dto.SignInDTO;
 import com.example.front.dto.SignUpDTO;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -38,4 +41,8 @@ public interface RetrofitAPI {
     // 비밀번호 변경 API
     @POST("user_change_pw")
     Call<Boolean> changePwResponse(@Body ChangePwDTO changePwDTO);
+
+    // 현재 서비스에 등록된 관광지 리스트 가져오는 API
+    @GET("location_list")
+    Call<List<Location>> getLocationResponse();
 }

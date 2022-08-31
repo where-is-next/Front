@@ -383,7 +383,7 @@ public class SignIn extends AppCompatActivity {
                 .show();
     }
 
-    // SharedPreference 함수
+    // SharedPreference : 로그인한 유저의 아이디를 담는 함수
     public void sharedPreferenceMethod(String id) {
         SharedPreferences.Editor editor = sp.edit();
         editor.putString("user_id", id);

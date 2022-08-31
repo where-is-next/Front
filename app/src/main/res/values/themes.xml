@@ -5,7 +5,7 @@
         <item name="colorPrimary">@color/purple_500</item>
         <item name="colorPrimaryDark">@color/purple_700</item>
         <item name="colorAccent">@color/teal_200</item>
-        <item name="windowNoTitle">true</item>
+        <item name="windowNoTitle">true</item>  <!-- windowNoTitle : true , 툴바 없애기-->
         <!-- Customize your theme here. -->
     </style>
 </resources>

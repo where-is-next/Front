@@ -4,9 +4,30 @@
     android:layout_height="match_parent"
     >
 
+    <AutoCompleteTextView
+        android:id="@+id/autoCompleteText"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@null"
+        android:imeOptions="actionSearch"
+        android:inputType="text"
+        android:fontFamily="@font/notosans_kr_regular"
+        android:textSize="15sp"
+        android:drawablePadding="15dp"
+        android:drawableStart="@drawable/search_icon"
+        />
+
+<!--    <SearchView-->
+<!--        android:id="@+id/searchView"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="50dp"-->
+<!--        />-->
+
     <RelativeLayout
         android:id="@+id/map_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent"
+        android:layout_marginTop="50dp"
+        />
 
 </FrameLayout>
