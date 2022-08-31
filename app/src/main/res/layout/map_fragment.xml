@@ -1,33 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     >
+    <RelativeLayout
+        android:id="@+id/map_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </RelativeLayout>
 
     <AutoCompleteTextView
         android:id="@+id/autoCompleteText"
-        android:layout_width="match_parent"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="300dp"
         android:layout_height="50dp"
-        android:background="@null"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/search_text_round"
         android:imeOptions="actionSearch"
         android:inputType="text"
         android:fontFamily="@font/notosans_kr_regular"
         android:textSize="15sp"
         android:drawablePadding="15dp"
         android:drawableStart="@drawable/search_icon"
-        />
+        android:paddingStart="15dp"
+        android:maxLength="20"
+        android:hint="검색어를 입력하세요"
 
-<!--    <SearchView-->
-<!--        android:id="@+id/searchView"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="50dp"-->
-<!--        />-->
-
-    <RelativeLayout
-        android:id="@+id/map_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="50dp"
-        />
-
+        tools:ignore="RtlSymmetry" />
 </FrameLayout>

@@ -23,7 +23,10 @@ import com.example.front.R;
 import com.example.front.domain.Location;
 import com.example.front.retorfit.RetrofitAPI;
 import com.example.front.retorfit.RetrofitClient;
+import com.google.gson.internal.bind.ArrayTypeAdapter;
 
+import net.daum.mf.map.api.MapPOIItem;
+import net.daum.mf.map.api.MapPoint;
 import net.daum.mf.map.api.MapView;
 
 import java.util.ArrayList;
@@ -35,28 +38,31 @@ import retrofit2.Response;
 
 public class MapFragment extends Fragment {
 
-    private SharedPreferences sp;
-
     MapView mapView;
 
     private RetrofitClient retrofitClient;      // retrofit2 객체 참조 변수
     private RetrofitAPI retrofitAPI;            // retrofit2 api 객체 참조 변수
 
-    List<Location> locationList;   // 관광지 객체 저장 리스트
+    List<Location> locationList = new ArrayList<>();   // 관광지 객체 저장 리스트
     List<String> locationNameList = new ArrayList<>(); // 관광지 이름 저장 리스트(자동완성을 위한 리스트)
+
+    MapPoint MARKER_POINT;
+    MapPOIItem marker;
+
+    boolean searchFlag = false;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.map_fragment, container, false);
 
-        // 관광지 리스트 추가
-        settingList();
-
-        //지도
+        // 지도 : 지도 띄우기
         mapView = new MapView(requireActivity());
         ViewGroup mapViewContainer = (ViewGroup) v.findViewById(R.id.map_view);
         mapViewContainer.addView(mapView);
+
+        // 관광지 리스트 추가
+        settingList();
 
         // 자동완성 텍스트 기능
         InputMethodManager mInputMethodManager = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -68,8 +74,25 @@ public class MapFragment extends Fragment {
             public boolean onEditorAction(TextView textView, int actionSearch, KeyEvent keyEvent) {
                 switch (actionSearch) {
                     case EditorInfo.IME_ACTION_SEARCH:
-                        mInputMethodManager.hideSoftInputFromWindow(autoCompleteTextView.getWindowToken(), 0); // 검색을 누르면 키보드 내림
-                        Toast.makeText(getActivity(), "검색", Toast.LENGTH_LONG).show();
+
+                        String inputText = autoCompleteTextView.getText().toString();
+                        for (Location lo : locationList) {
+                            if (inputText.equals(lo.getName())) {
+                                mapView.setMapCenterPointAndZoomLevel(MapPoint.mapPointWithGeoCoord(
+                                        Double.parseDouble(lo.getLatitude()), Double.parseDouble(lo.getLongitude())),
+                                        2, true);
+
+                                mapView.zoomIn(true);
+
+                                mInputMethodManager.hideSoftInputFromWindow(autoCompleteTextView.getWindowToken(), 0); // 검색을 누르면 키보드 내림
+                                searchFlag = true;
+                            }
+                        }
+
+                        if (!searchFlag) {
+                            Toast.makeText(getActivity(), "현재 서비스 지역이 아닙니다.", Toast.LENGTH_LONG).show();
+                        }
+                        searchFlag = false;
                         break;
                 }
                 return true;
@@ -90,11 +113,24 @@ public class MapFragment extends Fragment {
             @Override
             public void onResponse(Call<List<Location>> call, Response<List<Location>> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    locationList = response.body();
+                    List<Location> tempList = response.body();
 
-                    for (Location lo : locationList) {
-                        locationNameList.add(lo.getName().replaceAll("\"",""));
+                    if (locationNameList.isEmpty()) {
+                        for (Location lo : tempList) {
+                            locationNameList.add(lo.getName().replaceAll("\"",""));
+                        }
                     }
+
+                    if (locationList.isEmpty()) {
+                        for (Location temp : tempList) {
+                            locationList.add(new Location(temp.getName().replaceAll("\"",""),
+                                    temp.getLatitude().replaceAll("\"",""),
+                                    temp.getLongitude().replaceAll("\"",""),
+                                    temp.getAddress().replaceAll("\"","")));
+                        }
+                    }
+
+                    settingMaker();
                 }
             }
 
@@ -103,6 +139,21 @@ public class MapFragment extends Fragment {
                 alertDialog("관광지 정보를 불러올 수 없습니다. 다시 시도해주세요");
             }
         });
+    }
+
+    // 지도 : 마커 찍기
+    public void settingMaker() {
+        for (Location lo : locationList) {
+            MARKER_POINT = MapPoint.mapPointWithGeoCoord(Double.parseDouble(lo.getLatitude()), Double.parseDouble(lo.getLongitude()));
+            marker = new MapPOIItem();
+            marker.setItemName(lo.getName());
+            marker.setTag(0);
+            marker.setMapPoint(MARKER_POINT);
+            marker.setMarkerType(MapPOIItem.MarkerType.BluePin); // 기본으로 제공하는 BluePin 마커 모양.
+            marker.setSelectedMarkerType(MapPOIItem.MarkerType.RedPin); // 마커를 클릭했을때, 기본으로 제공하는 RedPin 마커 모양.
+
+            mapView.addPOIItem(marker);
+        }
     }
 
     // 다이얼로그 함수

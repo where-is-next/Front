@@ -21,6 +21,7 @@
         <entry key="app/src/main/res/drawable/navigation_shape.xml" value="0.1455" />
         <entry key="app/src/main/res/drawable/pw_text.xml" value="0.31" />
         <entry key="app/src/main/res/drawable/search_id.xml" value="0.2995" />
+        <entry key="app/src/main/res/drawable/search_text_round.xml" value="0.168" />
         <entry key="app/src/main/res/drawable/sign_up_main.xml" value="0.3375" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.5" />
         <entry key="app/src/main/res/layout/change_pw.xml" value="0.5625" />
