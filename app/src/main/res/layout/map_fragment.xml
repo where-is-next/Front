@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     >
+
     <RelativeLayout
         android:id="@+id/map_view"
         android:layout_width="match_parent"
@@ -13,10 +14,10 @@
     <AutoCompleteTextView
         android:id="@+id/autoCompleteText"
         android:layout_gravity="center_horizontal"
+        android:background="@drawable/search_text_round"
         android:layout_width="300dp"
         android:layout_height="50dp"
         android:layout_marginTop="20dp"
-        android:background="@drawable/search_text_round"
         android:imeOptions="actionSearch"
         android:inputType="text"
         android:fontFamily="@font/notosans_kr_regular"

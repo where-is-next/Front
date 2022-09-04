@@ -12,11 +12,11 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainPage extends AppCompatActivity {
 
-    private String user_id;
+    private String userId;
     private SharedPreferences sp;
     private long backpressedTime = 0;
 
-    Fragment[] fragments = {new HomeFragment(), new MapFragment(), new QRFragment(), new PostFragment(), new MyInfoFragment()};
+    Fragment[] fragments = {new MapFragment()};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,7 +25,7 @@ public class MainPage extends AppCompatActivity {
 
         // 현재 로그인한 유저 아이디
         sp = getSharedPreferences("UserInfo", MODE_PRIVATE);
-        user_id = sp.getString("user_id", "");
+        userId = sp.getString("userId", "");
 
         BottomNavigationView mBottomNavigationView = findViewById(R.id.bottom_navigation);
 
@@ -35,19 +35,19 @@ public class MainPage extends AppCompatActivity {
         mBottomNavigationView.setOnItemSelectedListener(item -> {
             switch (item.getItemId()){
                 case R.id.nav_home:
-                    getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, fragments[0]).commit();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, new HomeFragment()).commit();
                     break;
                 case R.id.nav_map:
-                    getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, fragments[1]).commit();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, fragments[0]).commit();
                     break;
                 case R.id.nav_qr:
-                    getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, fragments[2]).commit();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, new QRFragment()).commit();
                     break;
                 case R.id.nav_post:
-                    getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, fragments[3]).commit();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, new PostFragment()).commit();
                     break;
                 case R.id.nav_myinfo:
-                    getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, fragments[4]).commit();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, new MyInfoFragment()).commit();
                     break;
             }
             return true;

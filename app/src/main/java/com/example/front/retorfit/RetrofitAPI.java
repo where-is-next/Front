@@ -2,6 +2,7 @@ package com.example.front.retorfit;
 
 import com.example.front.domain.Location;
 import com.example.front.domain.SocialUser;
+import com.example.front.dto.AddStampDTO;
 import com.example.front.dto.ChangePwDTO;
 import com.example.front.dto.SignInDTO;
 import com.example.front.dto.SignUpDTO;
@@ -45,4 +46,12 @@ public interface RetrofitAPI {
     // 현재 서비스에 등록된 관광지 리스트 가져오는 API
     @GET("location_list")
     Call<List<Location>> getLocationResponse();
+
+    // QR 코드 스캔 시 서버에 등록되어 있는 여행지 QR 코드 인지 확인하는 API
+    @POST("confirm_location")
+    Call<Boolean> getConfrimLocationResponse(@Body String qrRequest);
+
+    // QR 코드 스캔 성공 시 스탬프를 추가하는 API
+    @POST("add_stamp")
+    Call<Boolean> getAddStampResponse(@Body AddStampDTO addStampDTO);
 }

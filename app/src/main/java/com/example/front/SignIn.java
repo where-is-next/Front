@@ -186,7 +186,7 @@ public class SignIn extends AppCompatActivity {
                 task.getResult(ApiException.class);
                 navigateToSecondActivity();
             } catch (ApiException e) {
-                Toast.makeText(getApplicationContext(), "Something went wrong", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "구글 로그인을 취소하였습니다.", Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -386,7 +386,7 @@ public class SignIn extends AppCompatActivity {
     // SharedPreference : 로그인한 유저의 아이디를 담는 함수
     public void sharedPreferenceMethod(String id) {
         SharedPreferences.Editor editor = sp.edit();
-        editor.putString("user_id", id);
+        editor.putString("userId", id);
         editor.commit();
     }
 
