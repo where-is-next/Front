@@ -2,6 +2,8 @@ package com.example.front.main;
 
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AlertDialog;
@@ -10,10 +12,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.front.R;
 
 import android.content.Intent;
-import android.widget.Toast;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.TextView;
 
 import com.example.front.dto.AddStampDTO;
-import com.example.front.find_id_pw_pack.FindIdPw;
 import com.example.front.retorfit.RetrofitAPI;
 import com.example.front.retorfit.RetrofitClient;
 import com.google.zxing.integration.android.IntentIntegrator;
@@ -78,11 +84,11 @@ public class ScannerActivity extends AppCompatActivity {
                                     public void onResponse(Call<Boolean> call, Response<Boolean> response) {
                                         if (response.isSuccessful() && response.body() != null) {
                                             if (response.body()) {
-                                                buttonAlertDialog(qrRequest + " 스탬프가 적립되었습니다.");
+                                                buttonAlertDialog("[" + qrRequest + "]" + " 스탬프가 적립되었습니다.");
                                             }
 
                                             else {
-                                                buttonAlertDialog("이미 스탬프를 적립한 관광지입니다.");
+                                                custom_dialog("이미 스탬프를 적립한 관광지입니다.");
                                             }
                                         }
                                     }
@@ -124,5 +130,33 @@ public class ScannerActivity extends AppCompatActivity {
             }
         });
         alert.show();
+    }
+
+    // 커스텀 다이얼로그
+    public void custom_dialog(String message) {
+        LayoutInflater inflater= getLayoutInflater();
+        View view = inflater.inflate(R.layout.custom_alert_dialog, null);
+        ((TextView)view.findViewById(R.id.first_text)).setText(message);
+
+        AlertDialog alert = new AlertDialog.Builder(this)
+                .setView(view)
+                .setCancelable(false)
+                .create();
+
+        alert.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        alert.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+        view.findViewById(R.id.alert_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+
+        alert.show();
+
+        WindowManager.LayoutParams params = alert.getWindow().getAttributes();
+        params.width = 900;
+        alert.getWindow().setAttributes(params);
     }
 }

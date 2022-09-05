@@ -6,25 +6,37 @@
         <entry key="../../../../../layout/custom_preview.xml" value="0.1439623276152035" />
         <entry key="app/src/main/res/drawable-v24/email_size.xml" value="0.5" />
         <entry key="app/src/main/res/drawable-v24/lock_size.xml" value="0.411" />
+        <entry key="app/src/main/res/drawable/asdqwd.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/auth_confirm_btn.xml" value="0.4955" />
+        <entry key="app/src/main/res/drawable/auth_send_btn.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/auto_login_no.xml" value="0.3445" />
         <entry key="app/src/main/res/drawable/back_btn.xml" value="0.3025" />
         <entry key="app/src/main/res/drawable/bar.xml" value="0.2995" />
         <entry key="app/src/main/res/drawable/change_pw_text.xml" value="0.3445" />
         <entry key="app/src/main/res/drawable/confirm_btn.xml" value="0.3025" />
+        <entry key="app/src/main/res/drawable/custom_alert_dialog_background.xml" value="0.2005" />
+        <entry key="app/src/main/res/drawable/custom_alert_dialog_title.xml" value="0.196" />
+        <entry key="app/src/main/res/drawable/dirlog_btn.xml" value="0.2095" />
         <entry key="app/src/main/res/drawable/find_id_pw_text.xml" value="0.4955" />
         <entry key="app/src/main/res/drawable/find_pw_btn.xml" value="0.4955" />
         <entry key="app/src/main/res/drawable/google_login.xml" value="0.1985" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.2995" />
         <entry key="app/src/main/res/drawable/ic_sign_up.xml" value="0.3375" />
         <entry key="app/src/main/res/drawable/logo_login.xml" value="0.329" />
+        <entry key="app/src/main/res/drawable/map_icon.xml" value="0.1325" />
         <entry key="app/src/main/res/drawable/navigation_shape.xml" value="0.1455" />
+        <entry key="app/src/main/res/drawable/nickname_text.xml" value="0.1325" />
         <entry key="app/src/main/res/drawable/pw_text.xml" value="0.31" />
         <entry key="app/src/main/res/drawable/search_id.xml" value="0.2995" />
         <entry key="app/src/main/res/drawable/search_text_round.xml" value="0.168" />
+        <entry key="app/src/main/res/drawable/sign_up.xml" value="0.1325" />
+        <entry key="app/src/main/res/drawable/sign_up_btn.xml" value="0.2005" />
         <entry key="app/src/main/res/drawable/sign_up_main.xml" value="0.3375" />
+        <entry key="app/src/main/res/drawable/testqwer.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.5" />
         <entry key="app/src/main/res/layout/change_pw.xml" value="0.5625" />
+        <entry key="app/src/main/res/layout/custom_alert_dialog.xml" value="0.2" />
+        <entry key="app/src/main/res/layout/custom_alert_dialog_back_ground.xml" value="0.48007246376811596" />
         <entry key="app/src/main/res/layout/find_id_finish_fragment.xml" value="0.5357917570498916" />
         <entry key="app/src/main/res/layout/find_id_fragment.xml" value="0.42938931297709926" />
         <entry key="app/src/main/res/layout/find_id_pw.xml" value="0.47962962962962963" />
