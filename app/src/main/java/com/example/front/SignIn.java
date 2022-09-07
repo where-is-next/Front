@@ -1,18 +1,30 @@
 package com.example.front;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
 
 import com.example.front.domain.SocialUser;
 import com.example.front.dto.SignInDTO;
@@ -53,8 +65,8 @@ public class SignIn extends AppCompatActivity {
     Button search_id;           // 아이디 찾기
     Button search_pw;           // 비밀번호 찾기
 
-    EditText id;             // 로그인 화면에서의 id
-    EditText pw;                // 로그인 화면에서의 pw
+    IdEditTextXBtn id;             // 로그인 화면에서의 id
+    PwEditTextXBtn pw;                // 로그인 화면에서의 pw
 
     private RetrofitClient retrofitClient;      // retrofit2 객체 참조 변수
     private RetrofitAPI retrofitAPI;            // retrofit2 api 객체 참조 변수
@@ -70,7 +82,7 @@ public class SignIn extends AppCompatActivity {
         sp = getSharedPreferences("UserInfo", MODE_PRIVATE);
 
         // 아이디 입력
-        id = findViewById(R.id.input_id);
+        id = (IdEditTextXBtn) findViewById(R.id.input_id);
         id.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
@@ -79,17 +91,23 @@ public class SignIn extends AppCompatActivity {
                 return false;
             }
         });
+        Drawable idIcon = DrawableCompat.wrap(ContextCompat.getDrawable(this, R.drawable.email_size));
+        id.setCompoundDrawablesWithIntrinsicBounds(idIcon, null, null, null);
 
-        // 패스워드 입력
-        pw = findViewById(R.id.input_pw);
+        // 패스워드 입력 및 키보드 내리기
+        pw = (PwEditTextXBtn) findViewById(R.id.input_pw);
         pw.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if (keyCode == event.KEYCODE_ENTER)
-                    return true;
+                if ((event.getAction() == KeyEvent.ACTION_DOWN) && keyCode == KeyEvent.KEYCODE_ENTER) {
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(pw.getWindowToken(), 0);
+                }
                 return false;
             }
         });
+        Drawable pwIcon = DrawableCompat.wrap(ContextCompat.getDrawable(this, R.drawable.lock_size));
+        pw.setCompoundDrawablesWithIntrinsicBounds(pwIcon, null, null, null);
 
         // 자동 로그인 이미지 변경
         auto_login = findViewById(R.id.auto_login_check);
@@ -109,9 +127,6 @@ public class SignIn extends AppCompatActivity {
 
         // 로그인
         login = findViewById(R.id.btn_login);
-        id = (EditText)findViewById(R.id.input_id);
-        pw = (EditText)findViewById(R.id.input_pw);
-
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -220,7 +235,7 @@ public class SignIn extends AppCompatActivity {
                         startActivity(intent);
                     }
                     else {
-                        alertDialog("구글 로그인에 실패하였습니다." + "\n" + "다시 시도해주세요");
+                        custom_dialog_two_text("구글 로그인에 실패하였습니다.","다시 시도해주세요.");
                         gsc.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
@@ -232,7 +247,7 @@ public class SignIn extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<Boolean> call, Throwable t) {
-                alertDialog("구글 서버 전송에 실패하였습니다.");
+                custom_dialog_one_text("구글 서버 전송에 실패하였습니다.");
             }
         });
     }
@@ -268,19 +283,19 @@ public class SignIn extends AppCompatActivity {
                                     startActivity(intent);
                                 }
                                 else {
-                                    alertDialog("카카오톡 로그인에 실패하였습니다." + "\n" + "다시 시도해주세요.");
+                                    custom_dialog_two_text("카카오톡 로그인에 실패하였습니다.","다시 시도해주세요.");
                                 }
                             }
                         }
 
                         @Override
                         public void onFailure(Call<Boolean> call, Throwable t) {
-                            alertDialog("카카오톡 서버 전송에 실패하였습니다.");
+                            custom_dialog_one_text("카카오톡 서버 전송에 실패하였습니다.");
                         }
                     });
                 }
                 else {
-                    alertDialog("카카오톡 로그인에 실패하였습니다." + "\n" + "다시 시도해주세요.");
+                    custom_dialog_two_text("카카오톡 로그인에 실패하였습니다.", "다시 시도해주세요.");
                 }
                 return null;
             }
@@ -296,7 +311,7 @@ public class SignIn extends AppCompatActivity {
                         getKaKaoLoginInfo();
                     }
                     if (throwable != null) {
-                        alertDialog("카카오톡 로그인에 실패하였습니다." + "\n" + "다시 시도해주세요.");
+                        custom_dialog_two_text("카카오톡 로그인에 실패하였습니다.","다시 시도해주세요.");
                     }
                     return null;
                 }
@@ -311,7 +326,7 @@ public class SignIn extends AppCompatActivity {
                         getKaKaoLoginInfo();
                     }
                     if (throwable != null) {
-                        alertDialog("카카오톡 로그인에 실패하였습니다." + "\n" + "다시 시도해주세요.");
+                        custom_dialog_two_text("카카오톡 로그인에 실패하였습니다.","다시 시도해주세요.");
                     }
                     return null;
                 }
@@ -342,14 +357,14 @@ public class SignIn extends AppCompatActivity {
                         startActivity(intent);
                     }
                     else {
-                        alertDialog("아이디 혹은 비밀번호가 일치하지 않습니다." + "\n" + "다시 시도해주세요.");
+                        custom_dialog_two_text("아이디 혹은 비밀번호가 일치하지 않습니다.","다시 시도해주세요.");
                     }
                 }
             }
 
             @Override
             public void onFailure(Call<Boolean> call, Throwable t) {
-                alertDialog("로그인에 실패하였습니다.");
+                custom_dialog_one_text("로그인에 실패하였습니다.");
             }
         });
     }
@@ -372,15 +387,61 @@ public class SignIn extends AppCompatActivity {
         startActivity(intent);
     }
 
-    // 다이얼로그 띄우는 함수
-    public void alertDialog(String message) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(SignIn.this);
-        builder.setCancelable(false);
-        builder.setTitle("알림")
-                .setMessage(message)
-                .setPositiveButton("확인", null)
-                .create()
-                .show();
+    // 커스텀 다이얼로그 : one_text
+    public void custom_dialog_one_text(String message) {
+        LayoutInflater inflater= getLayoutInflater();
+        View view = inflater.inflate(R.layout.custom_alert_dialog_one_text, null);
+        ((TextView)view.findViewById(R.id.first_text)).setText(message);
+
+        AlertDialog alert = new AlertDialog.Builder(this)
+                .setView(view)
+                .setCancelable(false)
+                .create();
+
+        alert.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        alert.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+        view.findViewById(R.id.alert_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                alert.dismiss();
+            }
+        });
+
+        alert.show();
+
+        WindowManager.LayoutParams params = alert.getWindow().getAttributes();
+        params.width = 900;
+        alert.getWindow().setAttributes(params);
+    }
+
+    // 커스텀 다이얼로그 : two_text
+    public void custom_dialog_two_text(String messageOne, String messageTwo) {
+        LayoutInflater inflater= getLayoutInflater();
+        View view = inflater.inflate(R.layout.custom_alert_dialog_two_text, null);
+        ((TextView)view.findViewById(R.id.first_text)).setText(messageOne);
+        ((TextView)view.findViewById(R.id.second_text)).setText(messageTwo);
+
+        AlertDialog alert = new AlertDialog.Builder(this)
+                .setView(view)
+                .setCancelable(false)
+                .create();
+
+        alert.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        alert.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+        view.findViewById(R.id.alert_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                alert.dismiss();
+            }
+        });
+
+        alert.show();
+
+        WindowManager.LayoutParams params = alert.getWindow().getAttributes();
+        params.width = 900;
+        alert.getWindow().setAttributes(params);
     }
 
     // SharedPreference : 로그인한 유저의 아이디를 담는 함수

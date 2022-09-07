@@ -36,7 +36,7 @@
         android:layout_gravity="center"
         android:background="@drawable/kakao_login" />
     
-    <EditText
+    <com.example.front.IdEditTextXBtn
         android:id="@+id/input_id"
         android:layout_marginTop="30dp"
         android:layout_width="wrap_content"
@@ -48,10 +48,9 @@
         android:textSize="15sp"
         android:maxLength="50"
         android:drawablePadding="15dp"
-        android:drawableStart="@drawable/email_size"
         />
 
-    <EditText
+    <com.example.front.PwEditTextXBtn
         android:id="@+id/input_pw"
         android:layout_marginTop="10dp"
         android:layout_width="wrap_content"
@@ -64,7 +63,7 @@
         android:drawablePadding="15dp"
         android:inputType="textPassword"
         android:fontFamily="@font/notosans_kr_regular"
-        android:drawableStart="@drawable/lock_size"/>
+        />
 
     <Button
         android:id="@+id/btn_login"

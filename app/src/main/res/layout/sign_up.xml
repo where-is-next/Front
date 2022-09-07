@@ -13,13 +13,28 @@
     tools:context=".SignUp"
     >
 
-    <ImageView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
+        android:orientation="horizontal"
         android:layout_marginTop="50dp"
-        android:src="@drawable/sign_up"
-        />
+        tools:context=".SignUp"
+        >
+        <ImageView
+            android:id="@+id/sign_up_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/back_btn"
+            android:layout_marginLeft="20dp"
+            />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/sign_up"
+            android:layout_marginLeft="105dp"
+            />
+    </LinearLayout>
 
     <!-- 아이디 -->
     <ImageView
@@ -53,7 +68,6 @@
         android:layout_width="wrap_content"
         android:layout_height="51dp"
         android:orientation="horizontal"
-        tools:context=".SignIn"
         >
         <EditText
             android:id="@+id/sign_up_phone_input"

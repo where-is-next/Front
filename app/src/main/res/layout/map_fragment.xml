@@ -11,7 +11,7 @@
         android:layout_height="match_parent">
     </RelativeLayout>
 
-    <AutoCompleteTextView
+    <com.example.front.AutoCompleteTextXBtn
         android:id="@+id/autoCompleteText"
         android:layout_gravity="center_horizontal"
         android:background="@drawable/search_text_round"
@@ -23,7 +23,6 @@
         android:fontFamily="@font/notosans_kr_regular"
         android:textSize="15sp"
         android:drawablePadding="15dp"
-        android:drawableStart="@drawable/search_icon"
         android:paddingStart="15dp"
         android:maxLength="20"
         android:hint="검색어를 입력하세요"

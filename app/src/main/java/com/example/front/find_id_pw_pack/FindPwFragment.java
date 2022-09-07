@@ -1,4 +1,6 @@
 package com.example.front.find_id_pw_pack;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.telephony.SmsManager;
 import android.text.InputType;
@@ -6,8 +8,11 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -122,11 +127,11 @@ public class FindPwFragment extends Fragment{
         String code = phone_auth.getText().toString();
 
         if (code.equals("")) {
-            alertDialog("인증번호를 입력해주세요.");
+            custom_dialog_one_text("인증번호를 입력해주세요.");
         }
 
         else if (phone_auth_complete) {
-            alertDialog("이미 휴대폰 인증에 성공하셨습니다.");
+            custom_dialog_one_text("이미 휴대폰 인증에 성공하셨습니다.");
         }
 
         else if (code.equals(search_id_code)) {
@@ -136,10 +141,10 @@ public class FindPwFragment extends Fragment{
             phone_auth.setInputType(InputType.TYPE_NULL);
             phone.setInputType(InputType.TYPE_NULL);
 
-            alertDialog("휴대폰 인증이 완료되었습니다.");
+            custom_dialog_one_text("휴대폰 인증이 완료되었습니다.");
         }
         else if (!code.equals(search_id_code)) {
-            alertDialog("인증번호가 다릅니다. 다시 입력해주세요");
+            custom_dialog_two_text("인증번호가 다릅니다.","다시 입력해주세요.");
         }
     }
 
@@ -148,11 +153,11 @@ public class FindPwFragment extends Fragment{
         String phone_code = phone.getText().toString();
 
         if (phone_code.equals("")) {
-            alertDialog("휴대폰 번호를 입력해주세요.");
+            custom_dialog_one_text("휴대폰 번호를 입력해주세요.");
         }
 
         else if (phone_auth_complete) {
-            alertDialog("이미 휴대폰 인증에 성공하셨습니다.");
+            custom_dialog_one_text("이미 휴대폰 인증에 성공하셨습니다.");
         }
 
         else {
@@ -164,7 +169,7 @@ public class FindPwFragment extends Fragment{
         SmsManager smsManager = SmsManager.getDefault();
         smsManager.sendTextMessage(phone, null, message, null, null);
 
-        alertDialog("인증 코드가 전송되었습니다.");
+        custom_dialog_one_text("인증 코드가 전송되었습니다.");
     }
 
     public static String numberGen(int len, int dupCd ) {
@@ -197,8 +202,11 @@ public class FindPwFragment extends Fragment{
 
     // 비밀번호 찾기
     private void search_pw() {
-        if(!phone_auth_complete) {
-            alertDialog("휴대전화 인증을 진행해주세요.");
+        if (user_id.getText().toString().equals("")) {
+            custom_dialog_one_text("아이디를 입력해주세요.");
+        }
+        else if(!phone_auth_complete) {
+            custom_dialog_one_text("휴대전화 인증을 진행해주세요.");
         }
         else {
             String phoneNum = phone.getText().toString();
@@ -231,26 +239,72 @@ public class FindPwFragment extends Fragment{
                         phone_auth.setInputType(InputType.TYPE_CLASS_TEXT);
                         phone.setInputType(InputType.TYPE_CLASS_TEXT);
 
-                        alertDialog("가입되어 있는 아이디가 없습니다." + "\n" + "다시 시도해주세요");
+                        custom_dialog_two_text("가입되어 있는 아이디가 없습니다.", "다시 시도해주세요.");
                     }
                 }
 
                 @Override
                 public void onFailure(Call<Boolean> call, Throwable t) {
-                    alertDialog("비밀번호 찾기에 실패하였습니다." + "\n" + "다시 시도해주세요");
+                    custom_dialog_two_text("비밀번호 찾기에 실패하였습니다." , "다시 시도해주세요.");
                 }
             });
         }
     }
 
-    // 다이얼로그 띄우는 함수
-    public void alertDialog(String message) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setCancelable(false);
-        builder.setTitle("알림")
-                .setMessage(message)
-                .setPositiveButton("확인", null)
-                .create()
-                .show();
+    // 커스텀 다이얼로그 : one_text
+    public void custom_dialog_one_text(String message) {
+        LayoutInflater inflater= getLayoutInflater();
+        View view = inflater.inflate(R.layout.custom_alert_dialog_one_text, null);
+        ((TextView)view.findViewById(R.id.first_text)).setText(message);
+
+        AlertDialog alert = new AlertDialog.Builder(requireActivity())
+                .setView(view)
+                .setCancelable(false)
+                .create();
+
+        alert.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        alert.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+        view.findViewById(R.id.alert_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                alert.dismiss();
+            }
+        });
+
+        alert.show();
+
+        WindowManager.LayoutParams params = alert.getWindow().getAttributes();
+        params.width = 900;
+        alert.getWindow().setAttributes(params);
+    }
+
+    // 커스텀 다이얼로그 : two_text
+    public void custom_dialog_two_text(String messageOne, String messageTwo) {
+        LayoutInflater inflater= getLayoutInflater();
+        View view = inflater.inflate(R.layout.custom_alert_dialog_two_text, null);
+        ((TextView)view.findViewById(R.id.first_text)).setText(messageOne);
+        ((TextView)view.findViewById(R.id.second_text)).setText(messageTwo);
+
+        AlertDialog alert = new AlertDialog.Builder(requireActivity())
+                .setView(view)
+                .setCancelable(false)
+                .create();
+
+        alert.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        alert.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+        view.findViewById(R.id.alert_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                alert.dismiss();
+            }
+        });
+
+        alert.show();
+
+        WindowManager.LayoutParams params = alert.getWindow().getAttributes();
+        params.width = 900;
+        alert.getWindow().setAttributes(params);
     }
 }

@@ -4,13 +4,20 @@ import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.telephony.SmsManager;
 import android.text.InputType;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
@@ -43,6 +50,8 @@ public class SignUp extends AppCompatActivity {
     Button btn_sign_up;     // 가입 버튼
 
     String search_id_code;  // 인증코드 저장 변수
+
+    private ImageView backImage;      // 회원 가입에서 메인으로 돌아가는 이미지
 
     static final int SMS_SEND_PERMISSON = 1;
 
@@ -158,6 +167,15 @@ public class SignUp extends AppCompatActivity {
                 sign_up_logic();
             }
         });
+
+        // 뒤로 돌아가기
+        backImage = (ImageView) findViewById(R.id.sign_up_back);
+        backImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
     }
 
     // 휴대전화 코드 확인
@@ -165,11 +183,11 @@ public class SignUp extends AppCompatActivity {
         String code = phone_auth.getText().toString();
 
         if (code.equals("")) {
-            alertDialog("인증번호를 입력해주세요.");
+            custom_dialog_one_text("인증번호를 입력해주세요.");
         }
 
         else if (phone_auth_complete) {
-            alertDialog("이미 휴대폰 인증에 성공하셨습니다.");
+            custom_dialog_one_text("이미 휴대폰 인증에 성공하셨습니다.");
         }
 
         else if (code.equals(search_id_code)) {
@@ -179,11 +197,11 @@ public class SignUp extends AppCompatActivity {
             phone_auth.setInputType(InputType.TYPE_NULL);
             phone.setInputType(InputType.TYPE_NULL);
 
-            alertDialog("휴대폰 인증이 완료되었습니다.");
+            custom_dialog_one_text("휴대폰 인증이 완료되었습니다.");
         }
 
         else if (!code.equals(search_id_code)) {
-            alertDialog("인증번호가 다릅니다. 다시 입력해주세요");
+            custom_dialog_two_text("인증번호가 다릅니다.", "다시 입력해주세요.");
         }
     }
 
@@ -192,11 +210,11 @@ public class SignUp extends AppCompatActivity {
         String phone_code = phone.getText().toString();
 
         if (phone_code.equals("")) {
-            alertDialog("휴대폰 번호를 입력해주세요.");
+            custom_dialog_one_text("휴대폰 번호를 입력해주세요.");
         }
 
         else if (phone_auth_complete) {
-            alertDialog("이미 휴대폰 인증에 성공하셨습니다.");
+            custom_dialog_one_text("이미 휴대폰 인증에 성공하셨습니다.");
         }
 
         else {
@@ -208,7 +226,7 @@ public class SignUp extends AppCompatActivity {
         SmsManager smsManager = SmsManager.getDefault();
         smsManager.sendTextMessage(phone, null, message, null, null);
 
-        alertDialog("인증 코드가 전송되었습니다.");
+        custom_dialog_one_text("인증 코드가 전송되었습니다.");
     }
 
     public static String numberGen(int len, int dupCd ) {
@@ -251,15 +269,15 @@ public class SignUp extends AppCompatActivity {
         System.out.println("확인 = " + sign_up_input_pw_confirm);
 
         if (sign_up_input_id.equals("")) {
-            alertDialog("아이디를 입력해주세요.");
+            custom_dialog_one_text("아이디를 입력해주세요.");
         } else if (!phone_auth_complete) {
-            alertDialog("휴대폰 인증을 진행해주세요.");
+            custom_dialog_one_text("휴대폰 인증을 진행해주세요.");
         } else if (sign_up_input_nickname.equals("")) {
-            alertDialog("닉네임을 입력해주세요.");
+            custom_dialog_one_text("닉네임을 입력해주세요.");
         } else if (sign_up_input_pw.equals("") || sign_up_input_pw_confirm.equals("")) {
-            alertDialog("비밀번호를 올바르게 입력해주세요.");
+            custom_dialog_one_text("비밀번호를 올바르게 입력해주세요.");
         } else if (!sign_up_input_pw.equals(sign_up_input_pw_confirm)) {
-            alertDialog("비밀번호가 다릅니다. 다시 확인해주세요.");
+            custom_dialog_two_text("비밀번호가 다릅니다.", "다시 확인해주세요.");
         } else {
             SignUpDTO signUpDTO = new SignUpDTO(sign_up_input_id, sign_up_input_phone, sign_up_input_nickname, sign_up_input_pw);
             //retrofit 생성
@@ -272,7 +290,7 @@ public class SignUp extends AppCompatActivity {
                 public void onResponse(Call<Boolean> call, Response<Boolean> response) {
                     if (response.isSuccessful() && response.body() != null) {
                         if (!response.body()){
-                            alertDialog("중복된 아이디 혹은 중복된 닉네임입니다." + "\n" + "다시 입력해주세요");
+                            custom_dialog_two_text("중복된 아이디 혹은 중복된 닉네임입니다.", "다시 입력해주세요.");
 
                             phone_auth_send_flag = false;
                             phone_auth_complete = false;
@@ -282,17 +300,7 @@ public class SignUp extends AppCompatActivity {
                         }
 
                         else {
-                            AlertDialog.Builder alert = new AlertDialog.Builder(SignUp.this);
-                            alert.setCancelable(false);
-                            alert.setTitle("알림");
-                            alert.setMessage("회원가입이 완료되었습니다." + "\n" + "로그인을 진행해주세요.");
-                            alert.setPositiveButton("확인", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    finish();
-                                }
-                            });
-                            alert.show();
+                            custom_dialog_sign_up("회원가입이 완료되었습니다.","로그인을 진행해주세요.");
                         }
                     }
                 }
@@ -305,20 +313,96 @@ public class SignUp extends AppCompatActivity {
                     phone_auth.setInputType(InputType.TYPE_CLASS_TEXT);
                     phone.setInputType(InputType.TYPE_CLASS_TEXT);
 
-                    alertDialog("회원 가입에 실패하였습니다.");
+                    custom_dialog_one_text("회원 가입에 실패하였습니다.");
                 }
             });
         }
     }
 
-    // 다이얼로그 띄우는 함수
-    public void alertDialog(String message) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(SignUp.this);
-        builder.setCancelable(false);
-        builder.setTitle("알림")
-                .setMessage(message)
-                .setPositiveButton("확인", null)
-                .create()
-                .show();
+    // 커스텀 다이얼로그 : one_text
+    public void custom_dialog_one_text(String message) {
+        LayoutInflater inflater= getLayoutInflater();
+        View view = inflater.inflate(R.layout.custom_alert_dialog_one_text, null);
+        ((TextView)view.findViewById(R.id.first_text)).setText(message);
+
+        AlertDialog alert = new AlertDialog.Builder(this)
+                .setView(view)
+                .setCancelable(false)
+                .create();
+
+        alert.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        alert.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+        view.findViewById(R.id.alert_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                alert.dismiss();
+            }
+        });
+
+        alert.show();
+
+        WindowManager.LayoutParams params = alert.getWindow().getAttributes();
+        params.width = 900;
+        alert.getWindow().setAttributes(params);
+    }
+
+    // 커스텀 다이얼로그 : two_text
+    public void custom_dialog_two_text(String messageOne, String messageTwo) {
+        LayoutInflater inflater= getLayoutInflater();
+        View view = inflater.inflate(R.layout.custom_alert_dialog_two_text, null);
+        ((TextView)view.findViewById(R.id.first_text)).setText(messageOne);
+        ((TextView)view.findViewById(R.id.second_text)).setText(messageTwo);
+
+        AlertDialog alert = new AlertDialog.Builder(this)
+                .setView(view)
+                .setCancelable(false)
+                .create();
+
+        alert.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        alert.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+        view.findViewById(R.id.alert_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                alert.dismiss();
+            }
+        });
+
+        alert.show();
+
+        WindowManager.LayoutParams params = alert.getWindow().getAttributes();
+        params.width = 900;
+        alert.getWindow().setAttributes(params);
+    }
+
+    // 커스텀 다이얼로그 : 회원 가입 버튼 전용
+    public void custom_dialog_sign_up(String messageOne, String messageTwo) {
+        LayoutInflater inflater= getLayoutInflater();
+        View view = inflater.inflate(R.layout.custom_alert_dialog_two_text, null);
+        ((TextView)view.findViewById(R.id.first_text)).setText(messageOne);
+        ((TextView)view.findViewById(R.id.second_text)).setText(messageTwo);
+
+        AlertDialog alert = new AlertDialog.Builder(this)
+                .setView(view)
+                .setCancelable(false)
+                .create();
+
+        alert.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        alert.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+        view.findViewById(R.id.alert_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                alert.dismiss();
+                finish();
+            }
+        });
+
+        alert.show();
+
+        WindowManager.LayoutParams params = alert.getWindow().getAttributes();
+        params.width = 900;
+        alert.getWindow().setAttributes(params);
     }
 }

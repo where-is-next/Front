@@ -5,12 +5,14 @@ public class Location {
     private String latitude; // 위도
     private String longitude; // 경도
     private String address; // 주소
+    private String url;     // 상세 페이지
 
-    public Location(String name, String latitude, String longitude, String address) {
+    public Location(String name, String latitude, String longitude, String address, String url) {
         this.name = name;
         this.latitude = latitude;
         this.longitude = longitude;
         this.address = address;
+        this.url = url;
     }
 
     @Override
@@ -20,6 +22,7 @@ public class Location {
                 ", latitude='" + latitude + '\'' +
                 ", longitude='" + longitude + '\'' +
                 ", address='" + address + '\'' +
+                ", url='" + url + '\'' +
                 '}';
     }
 
@@ -37,5 +40,9 @@ public class Location {
 
     public String getAddress() {
         return address;
+    }
+
+    public String getUrl() {
+        return url;
     }
 }

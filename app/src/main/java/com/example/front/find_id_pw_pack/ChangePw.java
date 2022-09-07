@@ -2,13 +2,18 @@ package com.example.front.find_id_pw_pack;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -108,44 +113,110 @@ public class ChangePw extends Fragment {
                 @Override
                 public void onResponse(Call<Boolean> call, Response<Boolean> response) {
                     if (response.body()) {              // 비밀번호 변경 성공하면 실행
-                        AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
-                        alert.setCancelable(false);
-                        alert.setTitle("알림");
-                        alert.setMessage("비밀번호가 변경되었습니다." + "\n" + "로그인을 진행해주세요.");
-                        alert.setPositiveButton("확인", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                ((FindIdPw)getActivity()).finish();
-                            }
-                        });
-                        alert.show();
+                        custom_dialog_change_pw("비밀번호가 변경되었습니다.", "로그인을 진행해주세요.");
                     }
                     else {                              // 가입된 유저는 이미 판단했으므로 원래 비밀번호와 같으면 실행
-                        alertDialog("변경하려는 비밀번호가 기존의 비밀번호와 같습니다." + "\n" + "다른 비밀번호를 입력해주세요");
+                        custom_dialog_two_text("변경하려는 비밀번호가 기존의 비밀번호와 같습니다.","다른 비밀번호를 입력해주세요.");
                     }
                 }
 
                 @Override
                 public void onFailure(Call<Boolean> call, Throwable t) {
-                    alertDialog("비밀번호 찾기에 실패하였습니다." + "\n" + "다시 시도해주세요");
+                    custom_dialog_two_text("비밀번호 찾기에 실패하였습니다.","다시 시도해주세요.");
                 }
             });
         }
 
         else {          // 입력한 비밀번호와 비밀번호 확인이 다를 때
-            alertDialog("비밀번호가 다릅니다. " + "\n" + "다시 확인해주세요.");
+            custom_dialog_two_text("비밀번호가 다릅니다. " ,"다시 확인해주세요.");
             pw_confirm = true;
         }
     }
 
-    // 다이얼로그 띄우는 함수
-    public void alertDialog(String message) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setCancelable(false);
-        builder.setTitle("알림")
-                .setMessage(message)
-                .setPositiveButton("확인", null)
-                .create()
-                .show();
+    // 커스텀 다이얼로그 : one_text
+    public void custom_dialog_one_text(String message) {
+        LayoutInflater inflater= getLayoutInflater();
+        View view = inflater.inflate(R.layout.custom_alert_dialog_one_text, null);
+        ((TextView)view.findViewById(R.id.first_text)).setText(message);
+
+        AlertDialog alert = new AlertDialog.Builder(requireActivity())
+                .setView(view)
+                .setCancelable(false)
+                .create();
+
+        alert.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        alert.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+        view.findViewById(R.id.alert_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                alert.dismiss();
+            }
+        });
+
+        alert.show();
+
+        WindowManager.LayoutParams params = alert.getWindow().getAttributes();
+        params.width = 900;
+        alert.getWindow().setAttributes(params);
+    }
+
+    // 커스텀 다이얼로그 : two_text
+    public void custom_dialog_two_text(String messageOne, String messageTwo) {
+        LayoutInflater inflater= getLayoutInflater();
+        View view = inflater.inflate(R.layout.custom_alert_dialog_two_text, null);
+        ((TextView)view.findViewById(R.id.first_text)).setText(messageOne);
+        ((TextView)view.findViewById(R.id.second_text)).setText(messageTwo);
+
+        AlertDialog alert = new AlertDialog.Builder(requireActivity())
+                .setView(view)
+                .setCancelable(false)
+                .create();
+
+        alert.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        alert.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+        view.findViewById(R.id.alert_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                alert.dismiss();
+            }
+        });
+
+        alert.show();
+
+        WindowManager.LayoutParams params = alert.getWindow().getAttributes();
+        params.width = 900;
+        alert.getWindow().setAttributes(params);
+    }
+
+    // 커스텀 다이얼로그 : 비밀번호 변경 전용
+    public void custom_dialog_change_pw(String messageOne, String messageTwo) {
+        LayoutInflater inflater= getLayoutInflater();
+        View view = inflater.inflate(R.layout.custom_alert_dialog_two_text, null);
+        ((TextView)view.findViewById(R.id.first_text)).setText(messageOne);
+        ((TextView)view.findViewById(R.id.second_text)).setText(messageTwo);
+
+        AlertDialog alert = new AlertDialog.Builder(requireActivity())
+                .setView(view)
+                .setCancelable(false)
+                .create();
+
+        alert.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        alert.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+        view.findViewById(R.id.alert_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                alert.dismiss();
+                ((FindIdPw)getActivity()).finish();
+            }
+        });
+
+        alert.show();
+
+        WindowManager.LayoutParams params = alert.getWindow().getAttributes();
+        params.width = 900;
+        alert.getWindow().setAttributes(params);
     }
 }

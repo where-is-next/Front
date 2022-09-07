@@ -4,12 +4,17 @@ import static android.content.Context.MODE_PRIVATE;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -111,7 +116,7 @@ public class HomeFragment extends Fragment{
         });
     }
 
-    // 관광지 리스트 추가 함수
+    // 관광지 리스트 추가 함수 , 수정 필요
     private void settingList() {
         //retrofit 생성
         retrofitClient = RetrofitClient.getInstance();
@@ -128,7 +133,7 @@ public class HomeFragment extends Fragment{
 
             @Override
             public void onFailure(Call<List<Location>> call, Throwable t) {
-                alertDialog("관광지 정보를 불러올 수 없습니다. 다시 시도해주세요");
+                custom_dialog_two_text("관광지 정보를 불러올 수 없습니다.", "다시 시도해주세요");
             }
         });
     }
@@ -150,14 +155,32 @@ public class HomeFragment extends Fragment{
         alert.show();
     }
 
-    // 다이얼로그 띄우는 함수
-    public void alertDialog(String message) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setCancelable(false);
-        builder.setTitle("알림")
-                .setMessage(message)
-                .setPositiveButton("확인", null)
-                .create()
-                .show();
+    // 커스텀 다이얼로그 : two_text
+    public void custom_dialog_two_text(String messageOne, String messageTwo) {
+        LayoutInflater inflater= getLayoutInflater();
+        View view = inflater.inflate(R.layout.custom_alert_dialog_two_text, null);
+        ((TextView)view.findViewById(R.id.first_text)).setText(messageOne);
+        ((TextView)view.findViewById(R.id.second_text)).setText(messageTwo);
+
+        AlertDialog alert = new AlertDialog.Builder(getActivity())
+                .setView(view)
+                .setCancelable(false)
+                .create();
+
+        alert.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        alert.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+        view.findViewById(R.id.alert_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                alert.dismiss();
+            }
+        });
+
+        alert.show();
+
+        WindowManager.LayoutParams params = alert.getWindow().getAttributes();
+        params.width = 900;
+        alert.getWindow().setAttributes(params);
     }
 }

@@ -14,7 +14,6 @@ import com.example.front.R;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
@@ -84,11 +83,11 @@ public class ScannerActivity extends AppCompatActivity {
                                     public void onResponse(Call<Boolean> call, Response<Boolean> response) {
                                         if (response.isSuccessful() && response.body() != null) {
                                             if (response.body()) {
-                                                buttonAlertDialog("[" + qrRequest + "]" + " 스탬프가 적립되었습니다.");
+                                                custom_dialog_icon("[" + qrRequest + "]" + " 스탬프가 적립되었습니다.");
                                             }
 
                                             else {
-                                                custom_dialog("이미 스탬프를 적립한 관광지입니다.");
+                                                custom_dialog_one_text("이미 스탬프를 적립한 관광지입니다.");
                                             }
                                         }
                                     }
@@ -100,14 +99,14 @@ public class ScannerActivity extends AppCompatActivity {
                             }
 
                             else {
-                                buttonAlertDialog("서비스중인 관광지가 아닙니다. 다시 시도해주세요");
+                                custom_dialog_two_text("서비스중인 관광지가 아닙니다.", "다시 시도해주세요.");
                             }
                         }
                     }
 
                     @Override
                     public void onFailure(Call<Boolean> call, Throwable t) {
-                        buttonAlertDialog("서버와 통신할 수 없습니다. 다시 시도해주세요");
+                        custom_dialog_two_text("서버와 통신할 수 없습니다.","다시 시도해주세요.");
                     }
                 });
             }
@@ -117,25 +116,10 @@ public class ScannerActivity extends AppCompatActivity {
         }
     }
 
-    // 버튼 다이얼로그
-    public void buttonAlertDialog(String message) {
-        AlertDialog.Builder alert = new AlertDialog.Builder(this);
-        alert.setCancelable(false);
-        alert.setTitle("알림");
-        alert.setMessage(message);
-        alert.setPositiveButton("확인", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                finish();
-            }
-        });
-        alert.show();
-    }
-
-    // 커스텀 다이얼로그
-    public void custom_dialog(String message) {
+    // 커스텀 다이얼로그 : one_text
+    public void custom_dialog_one_text(String message) {
         LayoutInflater inflater= getLayoutInflater();
-        View view = inflater.inflate(R.layout.custom_alert_dialog, null);
+        View view = inflater.inflate(R.layout.custom_alert_dialog_one_text, null);
         ((TextView)view.findViewById(R.id.first_text)).setText(message);
 
         AlertDialog alert = new AlertDialog.Builder(this)
@@ -149,6 +133,66 @@ public class ScannerActivity extends AppCompatActivity {
         view.findViewById(R.id.alert_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                alert.dismiss();
+                finish();
+            }
+        });
+
+        alert.show();
+
+        WindowManager.LayoutParams params = alert.getWindow().getAttributes();
+        params.width = 900;
+        alert.getWindow().setAttributes(params);
+    }
+
+    // 커스텀 다이얼로그 : icon
+    public void custom_dialog_icon(String message) {
+        LayoutInflater inflater= getLayoutInflater();
+        View view = inflater.inflate(R.layout.custom_alert_dialog_icon_text, null);
+        ((TextView)view.findViewById(R.id.first_text)).setText(message);
+
+        AlertDialog alert = new AlertDialog.Builder(this)
+                .setView(view)
+                .setCancelable(false)
+                .create();
+
+        alert.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        alert.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+        view.findViewById(R.id.alert_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                alert.dismiss();
+                finish();
+            }
+        });
+
+        alert.show();
+
+        WindowManager.LayoutParams params = alert.getWindow().getAttributes();
+        params.width = 900;
+        alert.getWindow().setAttributes(params);
+    }
+
+    // 커스텀 다이얼로그 : two_text
+    public void custom_dialog_two_text(String messageOne, String messageTwo) {
+        LayoutInflater inflater= getLayoutInflater();
+        View view = inflater.inflate(R.layout.custom_alert_dialog_two_text, null);
+        ((TextView)view.findViewById(R.id.first_text)).setText(messageOne);
+        ((TextView)view.findViewById(R.id.second_text)).setText(messageTwo);
+
+        AlertDialog alert = new AlertDialog.Builder(this)
+                .setView(view)
+                .setCancelable(false)
+                .create();
+
+        alert.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        alert.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+        view.findViewById(R.id.alert_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                alert.dismiss();
                 finish();
             }
         });
