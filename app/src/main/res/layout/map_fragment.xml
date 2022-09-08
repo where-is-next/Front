@@ -11,7 +11,7 @@
         android:layout_height="match_parent">
     </RelativeLayout>
 
-    <com.example.front.AutoCompleteTextXBtn
+    <com.win.front.AutoCompleteTextXBtn
         android:id="@+id/autoCompleteText"
         android:layout_gravity="center_horizontal"
         android:background="@drawable/search_text_round"

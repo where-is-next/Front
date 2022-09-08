@@ -36,7 +36,7 @@
         android:layout_gravity="center"
         android:background="@drawable/kakao_login" />
     
-    <com.example.front.IdEditTextXBtn
+    <com.win.front.IdEditTextXBtn
         android:id="@+id/input_id"
         android:layout_marginTop="30dp"
         android:layout_width="wrap_content"
@@ -50,7 +50,7 @@
         android:drawablePadding="15dp"
         />
 
-    <com.example.front.PwEditTextXBtn
+    <com.win.front.PwEditTextXBtn
         android:id="@+id/input_pw"
         android:layout_marginTop="10dp"
         android:layout_width="wrap_content"
