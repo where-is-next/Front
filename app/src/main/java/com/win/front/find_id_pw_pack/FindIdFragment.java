@@ -204,7 +204,7 @@ public class FindIdFragment extends Fragment {
             retrofitAPI.getIDResponse(phoneNum).enqueue(new Callback<String>() {
                 @Override
                 public void onResponse(Call<String> call, Response<String> response) {
-                    String search_id = response.body().replaceAll("\"","");;
+                    String search_id = response.body().replaceAll("\"","");
 
                     Bundle bundle = new Bundle();                   // 번들을 통해 프래그먼트에서 프래그먼트로 값 전달
                     bundle.putString("search_id", search_id);       //번들에 넘길 값 저장

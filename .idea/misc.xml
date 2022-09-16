@@ -4,6 +4,7 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="../../../../../layout/custom_preview.xml" value="0.1439623276152035" />
+        <entry key="../../../Library/Android/sdk/platforms/android-32/data/res/layout/simple_list_item_1.xml" value="0.3151041666666667" />
         <entry key="app/src/main/res/drawable-v24/email_size.xml" value="0.5" />
         <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.2395" />
         <entry key="app/src/main/res/drawable-v24/lock_size.xml" value="0.411" />
@@ -40,6 +41,9 @@
         <entry key="app/src/main/res/drawable/nickname_text.xml" value="0.1325" />
         <entry key="app/src/main/res/drawable/no_id.xml" value="0.2395" />
         <entry key="app/src/main/res/drawable/phone_text.xml" value="0.2395" />
+        <entry key="app/src/main/res/drawable/post_add_bar_text.xml" value="0.316" />
+        <entry key="app/src/main/res/drawable/post_add_btn.xml" value="0.299" />
+        <entry key="app/src/main/res/drawable/post_add_completed_btn.xml" value="0.259" />
         <entry key="app/src/main/res/drawable/post_icon.xml" value="0.2395" />
         <entry key="app/src/main/res/drawable/pw_confirm_text.xml" value="0.2395" />
         <entry key="app/src/main/res/drawable/pw_text.xml" value="0.31" />
@@ -69,12 +73,21 @@
         <entry key="app/src/main/res/layout/find_pw_fragment.xml" value="0.33" />
         <entry key="app/src/main/res/layout/home_fragment.xml" value="0.2151268115942029" />
         <entry key="app/src/main/res/layout/hone_fragment.xml" value="0.2151268115942029" />
+        <entry key="app/src/main/res/layout/itemasdasd.xml" value="0.3183876811594203" />
         <entry key="app/src/main/res/layout/login_false_dialog.xml" value="0.2735562310030395" />
         <entry key="app/src/main/res/layout/main_navigation_items.xml" value="0.2151268115942029" />
         <entry key="app/src/main/res/layout/main_page.xml" value="0.33" />
         <entry key="app/src/main/res/layout/map_fragment.xml" value="0.5" />
         <entry key="app/src/main/res/layout/my_info_fragment.xml" value="0.2151268115942029" />
         <entry key="app/src/main/res/layout/post_fragment.xml" value="0.2151268115942029" />
+        <entry key="app/src/main/res/layout/post_fragment_add_post.xml" value="0.48233695652173914" />
+        <entry key="app/src/main/res/layout/post_fragment_add_post_activity.xml" value="0.5" />
+        <entry key="app/src/main/res/layout/post_fragment_card_view.xml" value="0.75" />
+        <entry key="app/src/main/res/layout/post_fragment_grid_item.xml" value="0.4057971014492754" />
+        <entry key="app/src/main/res/layout/post_fragment_gridview_list_item.xml" value="0.3140625" />
+        <entry key="app/src/main/res/layout/post_fragment_my_post.xml" value="0.4947916666666667" />
+        <entry key="app/src/main/res/layout/post_fragment_post_list.xml" value="0.22" />
+        <entry key="app/src/main/res/layout/post_fragment_post_list_item.xml" value="0.33" />
         <entry key="app/src/main/res/layout/progressbar.xml" value="0.2735562310030395" />
         <entry key="app/src/main/res/layout/qr_activity.xml" value="0.38768115942028986" />
         <entry key="app/src/main/res/layout/qr_fragment.xml" value="0.2151268115942029" />
