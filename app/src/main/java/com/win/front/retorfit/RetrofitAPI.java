@@ -1,5 +1,7 @@
 package com.win.front.retorfit;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.win.front.domain.Location;
 import com.win.front.domain.SocialUser;
 import com.win.front.dto.AddStampDTO;
@@ -9,13 +11,21 @@ import com.win.front.dto.PostDTO;
 import com.win.front.dto.SignInDTO;
 import com.win.front.dto.SignUpDTO;
 
+import org.json.JSONArray;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
+import retrofit2.http.PartMap;
 import retrofit2.http.Path;
 
 public interface RetrofitAPI {
@@ -72,5 +82,9 @@ public interface RetrofitAPI {
 
     // 모든 포스트를 가져오는 API
     @GET("all_post")
-    Call<List<AllPostDTO>> getAllPostResponse();
+    Call<JsonArray> getAllPostResponse();
+
+    // 현재 로그인한 사용자의 포스트를 가져오는 API
+    @GET("my_post/{id}")
+    Call<JsonArray> getMyPostResponse(@Path("id") String id);
 }

@@ -1,15 +1,16 @@
 package com.win.front.dto;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class AllPostDTO {
+public class AllPostDTO implements Serializable {
     Long number;
     String id;
     String nickname;
     String date;
     String title;
     String contents;
-    ArrayList<String> images;
+    ArrayList<byte[]> allImages;
 
     public Long getNumber() {
         return number;
@@ -59,24 +60,11 @@ public class AllPostDTO {
         this.contents = contents;
     }
 
-    public ArrayList<String> getImages() {
-        return images;
+    public ArrayList<byte[]> getAllImages() {
+        return allImages;
     }
 
-    public void setImages(ArrayList<String> images) {
-        this.images = images;
-    }
-
-    @Override
-    public String toString() {
-        return "AllPostDTO{" +
-                "number=" + number +
-                ", id='" + id + '\'' +
-                ", nickname='" + nickname + '\'' +
-                ", date='" + date + '\'' +
-                ", title='" + title + '\'' +
-                ", contents='" + contents + '\'' +
-                ", images=" + images +
-                '}';
+    public void setAllImages(ArrayList<byte[]> allImages) {
+        this.allImages = allImages;
     }
 }

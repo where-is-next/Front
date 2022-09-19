@@ -1,7 +1,14 @@
 package com.win.front.main;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.ImageDecoder;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
+import android.provider.MediaStore;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +21,8 @@ import android.widget.TextView;
 
 import com.win.front.R;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 
@@ -55,9 +64,9 @@ public class PostListAdapter extends BaseAdapter{
         tv_date.setText(myItem.getDate());
         tv_contents.setText(myItem.getContents());
 
-        if (!myItem.getImageURI().equals("")) {
+        if (myItem.getImageURI() != null) {
             ImageView tv_imageView = (ImageView) converView.findViewById(R.id.post_view_image);
-            tv_imageView.setImageURI(Uri.parse(myItem.getImageURI()));
+            tv_imageView.setImageBitmap(byteArrayToBitmap(myItem.getImageURI()));
 
             ViewGroup.LayoutParams params = (ViewGroup.LayoutParams) tv_imageView.getLayoutParams();
             params.width = 1050;
@@ -69,7 +78,7 @@ public class PostListAdapter extends BaseAdapter{
         return converView;
     }
 
-    public void addItem(String title, String nickname, String date, String contents, String imageUri) {
+    public void addItem(String title, String nickname, String date, String contents, byte[] imageUri, String post_number) {
 
         PostListItem mItem = new PostListItem();
 
@@ -78,7 +87,18 @@ public class PostListAdapter extends BaseAdapter{
         mItem.setDate(date);
         mItem.setContents(contents);
         mItem.setImageURI(imageUri);
+        mItem.setPost_number(post_number);
 
         items.add(mItem);
+    }
+
+    // Byte를 Bitmap으로 변환
+    public Bitmap byteArrayToBitmap( byte[] byteArray ) {
+        byte[] decodedImageBytes = Base64.decode(byteArray, Base64.DEFAULT);
+        ByteArrayInputStream inStream = new ByteArrayInputStream(decodedImageBytes);
+
+        Bitmap bitmap = BitmapFactory.decodeStream(inStream);
+
+        return bitmap;
     }
 }

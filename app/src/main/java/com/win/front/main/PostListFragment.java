@@ -1,34 +1,36 @@
 package com.win.front.main;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
+import android.widget.SearchView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.win.front.R;
 import com.win.front.dto.AllPostDTO;
-import com.win.front.dto.PostDTO;
-import com.win.front.find_id_pw_pack.FindIdFinishFragment;
 import com.win.front.retorfit.RetrofitAPI;
 import com.win.front.retorfit.RetrofitClient;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.zip.CheckedOutputStream;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -51,11 +53,14 @@ public class PostListFragment extends Fragment {
     ListView listView;
     PostListAdapter postListAdapter;
 
+    SearchView post_search_text;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.post_fragment_post_list, container, false);
 
+        // 포스트 추가 버튼
         post_add_btn = rootView.findViewById(R.id.post_add_btn);
         post_add_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,8 +74,55 @@ public class PostListFragment extends Fragment {
         linearLayout = rootView.findViewById(R.id.post_list_layout);
         listView = (ListView) rootView.findViewById(R.id.listView);
 
+        // 리스트 아이템 클릭 시 뷰로 보여줌
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                PostListItem selectedItem = (PostListItem) adapterView.getAdapter().getItem(i);
+            }
+        });
+
         // 포스트를 저장
         setAllPost();
+
+        // 포스트 검색검색
+        post_search_text = rootView.findViewById(R.id.post_search_text);
+        post_search_text.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                postListAdapter = new PostListAdapter();
+
+                for (AllPostDTO temp_allPostItem : allPost) {
+                    if (temp_allPostItem.getTitle().contains(s) || temp_allPostItem.getContents().contains(s)) {
+                        PostListItem postListItem = new PostListItem();
+
+                        postListItem.setTitle(temp_allPostItem.getTitle());
+                        postListItem.setNickname(temp_allPostItem.getNickname());
+                        postListItem.setDate(temp_allPostItem.getDate());
+                        postListItem.setContents(temp_allPostItem.getContents());
+                        postListItem.setPost_number(Long.toString(temp_allPostItem.getNumber()));
+
+                        if (!temp_allPostItem.getAllImages().isEmpty()) {
+                            postListItem.setImageURI(temp_allPostItem.getAllImages().get(0));
+                        }
+                        else {
+                            postListItem.setImageURI(null);
+                        }
+
+                        postListAdapter.addItem(postListItem.getTitle(), postListItem.getNickname(), postListItem.getDate(),
+                                postListItem.getContents(), postListItem.getImageURI(), postListItem.getPost_number());
+                    }
+                }
+
+                listView.setAdapter(postListAdapter);
+                return false;
+            }
+        });
 
         return rootView;
     }
@@ -97,29 +149,67 @@ public class PostListFragment extends Fragment {
 
                     param.gravity = Gravity.CENTER;
                     param.topMargin = 800;
-                    linearLayout.addView(textViewNm, param);
+                    textViewNm.setLayoutParams(param);
+                    linearLayout.addView(textViewNm);
                 }
 
                 // 포스트가 존재하므로 가져온다.
                 else {
-                    retrofitAPI.getAllPostResponse().enqueue(new Callback<List<AllPostDTO>>() {
+                    retrofitAPI.getAllPostResponse().enqueue(new Callback<JsonArray>() {
                         @Override
-                        public void onResponse(Call<List<AllPostDTO>> call, Response<List<AllPostDTO>> response) {
-                            allPost = response.body();
+                        public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
+                            JsonArray jsonArray = response.body();
+
+                            allPost = new ArrayList<>();
+
+                            for (int i = 0; i < jsonArray.size(); i++) {
+                                AllPostDTO input = new AllPostDTO();
+                                JsonObject object = (JsonObject) jsonArray.get(i);
+
+                                Long number = Long.parseLong(object.get("number").getAsString());
+                                String id = object.get("id").getAsString();
+                                String nickname = object.get("nickname").getAsString();
+                                String date = object.get("date").getAsString();
+                                String title = object.get("title").getAsString();
+                                String contents = object.get("contents").getAsString();
+
+                                ArrayList<byte[]> allImages = new ArrayList<>();
+                                JsonArray tempImageArr = (JsonArray) object.get("allImages");
+                                for (int j = 0; j < tempImageArr.size(); j++) {
+                                    JsonElement jsonElement = tempImageArr.get(j);
+                                    byte[] bytes = new Gson().toJson(jsonElement).getBytes(StandardCharsets.UTF_8);
+
+                                    allImages.add(bytes);
+                                }
+
+                                input.setNumber(number);
+                                input.setId(id);
+                                input.setNickname(nickname);
+                                input.setDate(date);
+                                input.setTitle(title);
+                                input.setContents(contents);
+                                input.setAllImages(allImages);
+
+                                allPost.add(input);
+                            }
+
                             setAllPostList();
                         }
                         @Override
-                        public void onFailure(Call<List<AllPostDTO>> call, Throwable t) {
+                        public void onFailure(Call<JsonArray> call, Throwable t) {
+                            System.out.println("에러 : " + t.getMessage());
                         }
                     });
                 }
             }
             @Override
             public void onFailure(Call<Boolean> call, Throwable t) {
+                System.out.println("서버통신 실패");
             }
         });
     }
 
+    // 포스트를 리스트에 셋팅
     public void setAllPostList() {
         postListAdapter = new PostListAdapter();
 
@@ -132,15 +222,17 @@ public class PostListFragment extends Fragment {
             postListItem.setNickname(allPostDTO.getNickname());
             postListItem.setDate(allPostDTO.getDate());
             postListItem.setContents(allPostDTO.getContents());
+            postListItem.setPost_number(Long.toString(allPostDTO.getNumber()));
 
-            if (!allPostDTO.getImages().isEmpty()) {
-                postListItem.setImageURI(allPostDTO.getImages().get(0));
+            if (!allPostDTO.getAllImages().isEmpty()) {
+                postListItem.setImageURI(allPostDTO.getAllImages().get(0));
             }
             else {
-                postListItem.setImageURI("");
+                postListItem.setImageURI(null);
             }
 
-            postListAdapter.addItem(postListItem.getTitle(), postListItem.getNickname(), postListItem.getDate(), postListItem.getContents(), postListItem.getImageURI());
+            postListAdapter.addItem(postListItem.getTitle(), postListItem.getNickname(), postListItem.getDate(),
+                    postListItem.getContents(), postListItem.getImageURI(), postListItem.getPost_number());
         }
 
         listView.setAdapter(postListAdapter);

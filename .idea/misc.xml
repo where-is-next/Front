@@ -19,6 +19,7 @@
         <entry key="app/src/main/res/drawable/bar.xml" value="0.2995" />
         <entry key="app/src/main/res/drawable/btn_login.xml" value="0.2085" />
         <entry key="app/src/main/res/drawable/change_pw_text.xml" value="0.3445" />
+        <entry key="app/src/main/res/drawable/community_text.xml" value="0.2145" />
         <entry key="app/src/main/res/drawable/confirm_btn.xml" value="0.3025" />
         <entry key="app/src/main/res/drawable/custom_alert_dialog_background.xml" value="0.2005" />
         <entry key="app/src/main/res/drawable/custom_alert_dialog_title.xml" value="0.196" />
@@ -29,6 +30,7 @@
         <entry key="app/src/main/res/drawable/google_login.xml" value="0.1985" />
         <entry key="app/src/main/res/drawable/home_icon.xml" value="0.2395" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.2995" />
+        <entry key="app/src/main/res/drawable/ic_main_icon.xml" value="0.2935" />
         <entry key="app/src/main/res/drawable/ic_sign_up.xml" value="0.3375" />
         <entry key="app/src/main/res/drawable/id_text.xml" value="0.2395" />
         <entry key="app/src/main/res/drawable/input.xml" value="0.2395" />
@@ -79,15 +81,16 @@
         <entry key="app/src/main/res/layout/main_page.xml" value="0.33" />
         <entry key="app/src/main/res/layout/map_fragment.xml" value="0.5" />
         <entry key="app/src/main/res/layout/my_info_fragment.xml" value="0.2151268115942029" />
-        <entry key="app/src/main/res/layout/post_fragment.xml" value="0.2151268115942029" />
+        <entry key="app/src/main/res/layout/post_fragment.xml" value="0.33" />
         <entry key="app/src/main/res/layout/post_fragment_add_post.xml" value="0.48233695652173914" />
         <entry key="app/src/main/res/layout/post_fragment_add_post_activity.xml" value="0.5" />
         <entry key="app/src/main/res/layout/post_fragment_card_view.xml" value="0.75" />
         <entry key="app/src/main/res/layout/post_fragment_grid_item.xml" value="0.4057971014492754" />
         <entry key="app/src/main/res/layout/post_fragment_gridview_list_item.xml" value="0.3140625" />
-        <entry key="app/src/main/res/layout/post_fragment_my_post.xml" value="0.4947916666666667" />
+        <entry key="app/src/main/res/layout/post_fragment_my_post.xml" value="0.33" />
         <entry key="app/src/main/res/layout/post_fragment_post_list.xml" value="0.22" />
         <entry key="app/src/main/res/layout/post_fragment_post_list_item.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/post_fragment_view_all_post.xml" value="0.302536231884058" />
         <entry key="app/src/main/res/layout/progressbar.xml" value="0.2735562310030395" />
         <entry key="app/src/main/res/layout/qr_activity.xml" value="0.38768115942028986" />
         <entry key="app/src/main/res/layout/qr_fragment.xml" value="0.2151268115942029" />

@@ -43,12 +43,19 @@ import com.win.front.retorfit.RetrofitAPI;
 import com.win.front.retorfit.RetrofitClient;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.List;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -72,6 +79,8 @@ public class PostAddActivity extends AppCompatActivity {
 
     ProgressDialog dialog;  // 프로그레스 다이얼로그
 
+    ImageView post_add_back_view;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,6 +92,15 @@ public class PostAddActivity extends AppCompatActivity {
         PostAddImage = new ArrayList<>();
 
         dialog = new ProgressDialog(this);
+
+        // 뒤로 돌아가기
+        post_add_back_view = findViewById(R.id.post_add_back_view);
+        post_add_back_view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
 
         // 제목
         post_title = findViewById(R.id.post_add_title);
@@ -145,6 +163,7 @@ public class PostAddActivity extends AppCompatActivity {
                     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd");
                     String formatedNow = now.format(formatter);
 
+
                     AddPost(input_title, input_contents, formatedNow);
                 }
             }
@@ -201,15 +220,24 @@ public class PostAddActivity extends AppCompatActivity {
                 }
             });
 
+    // 포스트 추가
     private void AddPost(String input_title, String input_contents, String formatedNow) {
         retrofitClient = RetrofitClient.getInstance();
         retrofitAPI = RetrofitClient.getRetrofitInterface();
 
-        ArrayList<String> input_image = new ArrayList<>();
+        ArrayList<byte[]> input_image = new ArrayList<>();
 
         if (!PostAddImage.isEmpty()) {
+            dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);  // 다이얼로그 스타일 설정
+            dialog.setCancelable(false);    // 화면 밖 터치해도 종료되지 않게
+            dialog.setMessage("Loading ...");   // 메세지
+            dialog.show();  // 다이얼로그 시작
+
             for (int i = 0; i < PostAddImage.size(); i++) {
-                input_image.add(getImageUri(this, PostAddImage.get(i)).toString());
+                Bitmap resizeBitmap = resize(PostAddImage.get(i)); //사이즈 조정
+                byte[] image = bitmapToByteArray(resizeBitmap);
+
+                input_image.add(image);
             }
         }
 
@@ -219,11 +247,6 @@ public class PostAddActivity extends AppCompatActivity {
                 String nickname = response.body().replaceAll("\"", "");
 
                 PostDTO postAddDTO = new PostDTO(userId, nickname, formatedNow, input_title, input_contents, input_image);
-
-                dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);  // 다이얼로그 스타일 설정
-                dialog.setCancelable(false);    // 화면 밖 터치해도 종료되지 않게
-                dialog.setMessage("Loading ...");   // 메세지
-                dialog.show();  // 다이얼로그 시작
 
                 // 포스트를 저장
                 retrofitAPI.addPostMethod(postAddDTO).enqueue(new Callback<Boolean>() {
@@ -246,12 +269,19 @@ public class PostAddActivity extends AppCompatActivity {
         });
     }
 
-    // 이미지를 URI로 변경
-    private Uri getImageUri(Context context, Bitmap inImage) {
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-        String path = MediaStore.Images.Media.insertImage(context.getContentResolver(), inImage, "Title", null);
-        return Uri.parse(path);
+    //비트맵을 바이너리 바이트배열로 바꾸어주는 메서드
+    public byte[] bitmapToByteArray(Bitmap bitmap) {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 90, stream);
+        byte[] byteArray = stream.toByteArray();
+        return byteArray;
+    }
+
+    // 비트맵 사이즈 조정
+    private Bitmap resize(Bitmap bm){
+        bm = Bitmap.createScaledBitmap(bm, 1050, 800, true);
+
+        return bm;
     }
 
     // 커스텀 다이얼로그 : one_text, 등록 완료용

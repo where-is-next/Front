@@ -1,19 +1,14 @@
 package com.win.front.main;
 
+import java.util.Arrays;
+
 public class PostListItem {
     String title;
     String nickname;
     String date;
     String contents;
-    String imageURI;
-
-    public String getImageURI() {
-        return imageURI;
-    }
-
-    public void setImageURI(String imageURI) {
-        this.imageURI = imageURI;
-    }
+    byte[] imageURI;
+    String post_number;
 
     public String getTitle() {
         return title;
@@ -47,6 +42,22 @@ public class PostListItem {
         this.contents = contents;
     }
 
+    public byte[] getImageURI() {
+        return imageURI;
+    }
+
+    public void setImageURI(byte[] imageURI) {
+        this.imageURI = imageURI;
+    }
+
+    public String getPost_number() {
+        return post_number;
+    }
+
+    public void setPost_number(String post_number) {
+        this.post_number = post_number;
+    }
+
     @Override
     public String toString() {
         return "PostListItem{" +
@@ -54,7 +65,8 @@ public class PostListItem {
                 ", nickname='" + nickname + '\'' +
                 ", date='" + date + '\'' +
                 ", contents='" + contents + '\'' +
-                ", imageURI='" + imageURI + '\'' +
+                ", imageURI=" + Arrays.toString(imageURI) +
+                ", post_number='" + post_number + '\'' +
                 '}';
     }
 }
