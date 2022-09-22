@@ -53,12 +53,14 @@ public class PostMyPostFragment extends Fragment {
     LinearLayout my_post_list_layout;
 
     ListView my_listView;
-    PostListAdapter postListAdapter;
+    PostMyListAdapter postMyListAdapter;
 
     SearchView my_post_search_text;
 
     private SharedPreferences sp;
     String userId;
+
+    String selected_number;
 
     @Nullable
     @Override
@@ -87,6 +89,20 @@ public class PostMyPostFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 PostListItem selectedItem = (PostListItem) adapterView.getAdapter().getItem(i);
+
+                // 포스트 넘버가 같은 allPostDTO를 가져옴
+                for (AllPostDTO selected : myAllPost) {
+                    if (selected.getNumber() == Long.parseLong(selectedItem.getPost_number())) {
+                        Long number = selected.getNumber();
+                        selected_number = Long.toString(number);
+                        break;
+                    }
+                }
+
+                Intent intent = new Intent(getActivity(), PostAllView.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                intent.putExtra("selected_number", selected_number);
+                startActivity(intent);
             }
         });
 
@@ -103,7 +119,7 @@ public class PostMyPostFragment extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String s) {
-                postListAdapter = new PostListAdapter();
+                postMyListAdapter = new PostMyListAdapter();
 
                 for (AllPostDTO temp_allPostItem : myAllPost) {
                     if (temp_allPostItem.getTitle().contains(s) || temp_allPostItem.getContents().contains(s)) {
@@ -122,12 +138,12 @@ public class PostMyPostFragment extends Fragment {
                             postListItem.setImageURI(null);
                         }
 
-                        postListAdapter.addItem(postListItem.getTitle(), postListItem.getNickname(), postListItem.getDate(),
+                        postMyListAdapter.addItem(postListItem.getTitle(), postListItem.getNickname(), postListItem.getDate(),
                                 postListItem.getContents(), postListItem.getImageURI(), postListItem.getPost_number());
                     }
                 }
 
-                my_listView.setAdapter(postListAdapter);
+                my_listView.setAdapter(postMyListAdapter);
                 return false;
             }
         });
@@ -219,7 +235,7 @@ public class PostMyPostFragment extends Fragment {
 
     // 포스트를 리스트에 셋팅
     public void setAllPostList() {
-        postListAdapter = new PostListAdapter();
+        postMyListAdapter = new PostMyListAdapter();
 
         Collections.reverse(myAllPost);
 
@@ -239,10 +255,10 @@ public class PostMyPostFragment extends Fragment {
                 postListItem.setImageURI(null);
             }
 
-            postListAdapter.addItem(postListItem.getTitle(), postListItem.getNickname(), postListItem.getDate(),
+            postMyListAdapter.addItem(postListItem.getTitle(), postListItem.getNickname(), postListItem.getDate(),
                     postListItem.getContents(), postListItem.getImageURI(), postListItem.getPost_number());
         }
 
-        my_listView.setAdapter(postListAdapter);
+        my_listView.setAdapter(postMyListAdapter);
     }
 }

@@ -3,6 +3,7 @@ package com.win.front.main;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,7 +37,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class PostListFragment extends Fragment {
+public class PostListFragment extends Fragment{
 
     public static PostListFragment newInstance() {
         return new PostListFragment();
@@ -54,6 +55,8 @@ public class PostListFragment extends Fragment {
     PostListAdapter postListAdapter;
 
     SearchView post_search_text;
+
+    String selected_number;
 
     @Nullable
     @Override
@@ -79,7 +82,22 @@ public class PostListFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 PostListItem selectedItem = (PostListItem) adapterView.getAdapter().getItem(i);
+
+                // 포스트 넘버가 같은 allPostDTO를 가져옴
+                for (AllPostDTO selected : allPost) {
+                    if (selected.getNumber() == Long.parseLong(selectedItem.getPost_number())) {
+                        Long number = selected.getNumber();
+                        selected_number = Long.toString(number);
+                        break;
+                    }
+                }
+
+                Intent intent = new Intent(getActivity(), PostAllView.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                intent.putExtra("selected_number", selected_number);
+                startActivity(intent);
             }
+
         });
 
         // 포스트를 저장
@@ -237,4 +255,5 @@ public class PostListFragment extends Fragment {
 
         listView.setAdapter(postListAdapter);
     }
+
 }

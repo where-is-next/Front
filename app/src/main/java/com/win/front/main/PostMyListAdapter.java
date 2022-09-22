@@ -3,33 +3,24 @@ package com.win.front.main;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.ImageDecoder;
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
-import android.os.Build;
-import android.provider.MediaStore;
 import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import com.win.front.R;
 
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.net.URI;
 import java.util.ArrayList;
 
-public class PostListAdapter extends BaseAdapter{
+public class PostMyListAdapter extends BaseAdapter{
     ArrayList<PostListItem> items = new ArrayList<>();
+    ImageView list_item_menu;
 
     @Override
     public int getCount() {
@@ -51,7 +42,7 @@ public class PostListAdapter extends BaseAdapter{
         Context context = viewGroup.getContext();
         if (converView == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            converView = inflater.inflate(R.layout.post_fragment_post_list_item, viewGroup, false);
+            converView = inflater.inflate(R.layout.post_fragment_post_my_list_item, viewGroup, false);
         }
 
         TextView tv_title = (TextView) converView.findViewById(R.id.post_view_title) ;
@@ -76,6 +67,15 @@ public class PostListAdapter extends BaseAdapter{
 
             tv_imageView.setLayoutParams(params);
         }
+
+        // ... 버튼
+        list_item_menu = converView.findViewById(R.id.list_item_menu);
+        list_item_menu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showPopup(view);
+            }
+        });
 
         return converView;
     }
@@ -102,5 +102,13 @@ public class PostListAdapter extends BaseAdapter{
         Bitmap bitmap = BitmapFactory.decodeStream(inStream);
 
         return bitmap;
+    }
+
+    // 팝업 보여주기
+    public void showPopup(View v) {
+        PopupMenu popup = new PopupMenu(v.getContext(), v);
+        MenuInflater inflater = popup.getMenuInflater();
+        inflater.inflate(R.menu.list_item_menu_drop_box, popup.getMenu());
+        popup.show();
     }
 }

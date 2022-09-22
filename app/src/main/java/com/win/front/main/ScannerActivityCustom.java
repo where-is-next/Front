@@ -22,9 +22,9 @@ public class ScannerActivityCustom extends CaptureActivity {
         title_view.setLayoutParams(new LinearLayout.LayoutParams(WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT));
         title_view.setBackgroundColor(Color.parseColor("#00FFFFFF"));
         title_view.setPadding(150, 100, 100, 100);
-        title_view.setTextColor(Color.parseColor("#FF7200"));
+        title_view.setTextColor(Color.parseColor("#ffffff"));
         title_view.setTextSize(30);
-        title_view.setText("바코드 / QR 코드 입력화면");
+        title_view.setText("QR 코드 입력화면");
 
         this.addContentView(title_view, layoutParams);
     }

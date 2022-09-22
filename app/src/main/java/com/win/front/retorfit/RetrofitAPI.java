@@ -2,11 +2,14 @@ package com.win.front.retorfit;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.win.front.domain.Comment;
 import com.win.front.domain.Location;
 import com.win.front.domain.SocialUser;
 import com.win.front.dto.AddStampDTO;
 import com.win.front.dto.AllPostDTO;
 import com.win.front.dto.ChangePwDTO;
+import com.win.front.dto.CommentDTO;
+import com.win.front.dto.CommentDeleteDTO;
 import com.win.front.dto.PostDTO;
 import com.win.front.dto.SignInDTO;
 import com.win.front.dto.SignUpDTO;
@@ -87,4 +90,16 @@ public interface RetrofitAPI {
     // 현재 로그인한 사용자의 포스트를 가져오는 API
     @GET("my_post/{id}")
     Call<JsonArray> getMyPostResponse(@Path("id") String id);
+
+    // 모든 댓글을 가져오는 API
+    @GET("all_comment/{selected_number}")
+    Call<List<Comment>> getAllCommentResponse(@Path("selected_number") String selected_number);
+
+    // 댓글을 등록하는 API
+    @POST("add_comment")
+    Call<Long> getAddCommentResponse(@Body CommentDTO commentDTO);
+
+    // 댓글을 삭제하는 API
+    @POST("delete_comment")
+    Call<Boolean> getDeleteCommentResponse(@Body CommentDeleteDTO commentDeleteDTO);
 }

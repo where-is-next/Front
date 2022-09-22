@@ -3,7 +3,7 @@ package com.win.front.dto;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class AllPostDTO implements Serializable {
+public class AllPostDTO {
     Long number;
     String id;
     String nickname;
