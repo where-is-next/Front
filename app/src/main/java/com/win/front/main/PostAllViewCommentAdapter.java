@@ -21,6 +21,7 @@ import com.win.front.retorfit.RetrofitAPI;
 import com.win.front.retorfit.RetrofitClient;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -127,9 +128,10 @@ public class PostAllViewCommentAdapter extends BaseAdapter {
                                     Toast myToast = Toast.makeText(v.getContext(),"삭제하였습니다.", Toast.LENGTH_SHORT);
                                     myToast.show();
 
-                                    for (PostAllViewCommentItem item : items) {
+                                    for (Iterator<PostAllViewCommentItem> iterator = items.iterator(); iterator.hasNext();) {
+                                        PostAllViewCommentItem item = iterator.next();
                                         if (item.getComment_number().equals(selected_comment_number)) {
-                                            items.remove(item);
+                                            iterator.remove();
                                         }
                                     }
                                     listener.commentDelete();

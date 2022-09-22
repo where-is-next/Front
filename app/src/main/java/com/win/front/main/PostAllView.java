@@ -80,7 +80,6 @@ public class PostAllView extends AppCompatActivity {
     PostAllViewCommentAdapter postAllViewCommentAdapter;
     ListView comment_listView;
 
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -110,7 +109,7 @@ public class PostAllView extends AppCompatActivity {
             @Override
             public boolean onEditorAction(TextView textView, int actionSearch, KeyEvent keyEvent) {
                 switch (actionSearch) {
-                    case EditorInfo.IME_ACTION_SEARCH:
+                    case EditorInfo.IME_ACTION_DONE:
 
                         String inputComment = post_commnet.getText().toString();
 

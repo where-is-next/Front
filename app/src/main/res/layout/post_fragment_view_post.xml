@@ -147,11 +147,10 @@
         <EditText
             android:id="@+id/post_commnet"
             android:inputType="text"
-            android:layout_width="300dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/search_text_round"
             android:hint="댓글"
-            android:imeOptions="actionSearch"
             android:paddingLeft="15dp"
             android:paddingTop="10dp"
             android:paddingRight="10dp"
