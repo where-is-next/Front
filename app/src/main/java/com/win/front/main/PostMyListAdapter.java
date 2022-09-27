@@ -16,7 +16,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.win.front.R;
-import com.win.front.dto.CommentDeleteDTO;
 import com.win.front.retorfit.RetrofitAPI;
 import com.win.front.retorfit.RetrofitClient;
 
@@ -31,7 +30,7 @@ import retrofit2.Response;
 public class PostMyListAdapter extends BaseAdapter{
     ArrayList<PostListItem> items = new ArrayList<>();
     ImageView list_item_menu;
-    private PostDeleteListener listener;
+    private PostAmendDeleteListener listener;
 
     private RetrofitClient retrofitClient;      // retrofit2 객체 참조 변수
     private RetrofitAPI retrofitAPI;            // retrofit2 api 객체 참조 변수
@@ -125,12 +124,10 @@ public class PostMyListAdapter extends BaseAdapter{
             public boolean onMenuItemClick(MenuItem menuItem) {
                 switch (menuItem.getItemId()) {
                     case R.id.list_item_menu_box_amend:
-                        System.out.println("수정합니다." + post_number);
+                        listener.amendPost(post_number);
                         return true;
 
                     case R.id.list_item_menu_box_delete:
-                        System.out.println("삭제합니다 : " + post_number);
-
                         retrofitClient = RetrofitClient.getInstance();
                         retrofitAPI = RetrofitClient.getRetrofitInterface();
 
@@ -167,7 +164,7 @@ public class PostMyListAdapter extends BaseAdapter{
         popup.show();
     }
 
-    public void setlistener(PostDeleteListener postDeleteListener) {
-        this.listener = postDeleteListener;
+    public void setlistener(PostAmendDeleteListener postAmendDeleteListener) {
+        this.listener = postAmendDeleteListener;
     }
 }

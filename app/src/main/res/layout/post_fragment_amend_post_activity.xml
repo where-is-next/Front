@@ -22,7 +22,7 @@
             >
 
             <ImageView
-                android:id="@+id/post_add_back_view"
+                android:id="@+id/post_amend_back_view"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@drawable/back_btn"
@@ -35,7 +35,7 @@
                 android:layout_height="24dp"
                 android:layout_marginLeft="103dp"
                 android:layout_gravity="center_vertical"
-                android:src="@drawable/post_add_bar_text" />
+                android:src="@drawable/post_amend_bar_text" />
 
         </LinearLayout>
     </LinearLayout>
@@ -51,7 +51,7 @@
         >
 
         <EditText
-            android:id="@+id/post_add_title"
+            android:id="@+id/post_amend_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="제목을 30자 내로 작성해주세요."
@@ -72,7 +72,7 @@
         >
 
         <EditText
-            android:id="@+id/post_add_contents"
+            android:id="@+id/post_amend_contents"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="top"
@@ -93,14 +93,14 @@
         >
 
         <LinearLayout
-            android:id="@+id/picture_layout"
+            android:id="@+id/amend_picture_layout"
             android:layout_width="wrap_content"
             android:layout_height="100dp"
             android:orientation="horizontal"
             >
 
             <Button
-                android:id="@+id/post_add_picture_btn"
+                android:id="@+id/post_amend_picture_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
@@ -121,7 +121,7 @@
         >
 
         <Button
-            android:id="@+id/post_add_cancle_btn"
+            android:id="@+id/post_amend_cancle_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"
@@ -129,12 +129,11 @@
             />
 
         <Button
-            android:id="@+id/post_add_complete_btn"
+            android:id="@+id/post_amend_complete_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:background="@drawable/post_add_completed_btn"
             />
     </LinearLayout>
-
 </LinearLayout>

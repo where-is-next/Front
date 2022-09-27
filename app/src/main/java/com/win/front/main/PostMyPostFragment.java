@@ -267,12 +267,20 @@ public class PostMyPostFragment extends Fragment {
     }
 
 
-    // 삭제햇을 때의 리스너
-    PostDeleteListener listener = new PostDeleteListener() {
+    // 삭제, 수정에 관한 리스너
+    PostAmendDeleteListener listener = new PostAmendDeleteListener() {
         @Override
         public void deletePost() {
             postMyListAdapter.notifyDataSetChanged();
             my_listView.setAdapter(postMyListAdapter);
+        }
+
+        @Override
+        public void amendPost(String post_number) {
+            Intent intent = new Intent(getActivity(), PostAmendView.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+            intent.putExtra("post_number", post_number);
+            startActivity(intent);
         }
     };
 }

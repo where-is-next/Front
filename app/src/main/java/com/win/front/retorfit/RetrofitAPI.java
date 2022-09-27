@@ -11,6 +11,7 @@ import com.win.front.dto.ChangePwDTO;
 import com.win.front.dto.CommentDTO;
 import com.win.front.dto.CommentDeleteDTO;
 import com.win.front.dto.PostDTO;
+import com.win.front.dto.PostUpdateDTO;
 import com.win.front.dto.SignInDTO;
 import com.win.front.dto.SignUpDTO;
 
@@ -106,4 +107,8 @@ public interface RetrofitAPI {
     // 포스트를 삭제하는 API
     @POST("delete_post")
     Call<Boolean> getDeletePostResponse(@Body String post_number);
+
+    // 포스트를 수정하는 API ( update )
+    @POST("amend_post")
+    Call<Boolean> amendPostMethod(@Body PostUpdateDTO postUpdateDTO);
 }
