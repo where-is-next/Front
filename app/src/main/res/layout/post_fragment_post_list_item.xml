@@ -55,7 +55,6 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-
             <ImageView
                 android:layout_marginTop="20dp"
                 android:id="@+id/post_view_image"

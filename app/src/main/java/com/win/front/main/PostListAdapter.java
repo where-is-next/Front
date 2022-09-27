@@ -49,15 +49,14 @@ public class PostListAdapter extends BaseAdapter{
     @Override
     public View getView(int i, View converView, ViewGroup viewGroup) {
         Context context = viewGroup.getContext();
-        if (converView == null) {
-            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            converView = inflater.inflate(R.layout.post_fragment_post_list_item, viewGroup, false);
-        }
 
-        TextView tv_title = (TextView) converView.findViewById(R.id.post_view_title) ;
-        TextView tv_nickname = (TextView) converView.findViewById(R.id.post_view_nickname) ;
-        TextView tv_date = (TextView) converView.findViewById(R.id.post_view_date) ;
-        TextView tv_contents = (TextView) converView.findViewById(R.id.post_view_contents) ;
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        converView = inflater.inflate(R.layout.post_fragment_post_list_item, viewGroup, false);
+
+        TextView tv_title = (TextView) converView.findViewById(R.id.post_view_title);
+        TextView tv_nickname = (TextView) converView.findViewById(R.id.post_view_nickname);
+        TextView tv_date = (TextView) converView.findViewById(R.id.post_view_date);
+        TextView tv_contents = (TextView) converView.findViewById(R.id.post_view_contents);
 
         PostListItem myItem = getItem(i);
 

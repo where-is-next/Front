@@ -81,7 +81,7 @@ public class PostMyPostFragment extends Fragment {
             }
         });
 
-        my_post_list_layout = rootView.findViewById(R.id.post_list_layout);
+        my_post_list_layout = rootView.findViewById(R.id.my_post_list_layout);
         my_listView = (ListView) rootView.findViewById(R.id.my_listView);
 
         // 리스트 아이템 클릭 시 뷰로 보여줌
@@ -119,31 +119,34 @@ public class PostMyPostFragment extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String s) {
-                postMyListAdapter = new PostMyListAdapter();
+                if (myAllPost != null) {
+                    postMyListAdapter = new PostMyListAdapter();
 
-                for (AllPostDTO temp_allPostItem : myAllPost) {
-                    if (temp_allPostItem.getTitle().contains(s) || temp_allPostItem.getContents().contains(s)) {
-                        PostListItem postListItem = new PostListItem();
+                    for (AllPostDTO temp_allPostItem : myAllPost) {
+                        if (temp_allPostItem.getTitle().contains(s) || temp_allPostItem.getContents().contains(s)) {
+                            PostListItem postListItem = new PostListItem();
 
-                        postListItem.setTitle(temp_allPostItem.getTitle());
-                        postListItem.setNickname(temp_allPostItem.getNickname());
-                        postListItem.setDate(temp_allPostItem.getDate());
-                        postListItem.setContents(temp_allPostItem.getContents());
-                        postListItem.setPost_number(Long.toString(temp_allPostItem.getNumber()));
+                            postListItem.setTitle(temp_allPostItem.getTitle());
+                            postListItem.setNickname(temp_allPostItem.getNickname());
+                            postListItem.setDate(temp_allPostItem.getDate());
+                            postListItem.setContents(temp_allPostItem.getContents());
+                            postListItem.setPost_number(Long.toString(temp_allPostItem.getNumber()));
 
-                        if (!temp_allPostItem.getAllImages().isEmpty()) {
-                            postListItem.setImageURI(temp_allPostItem.getAllImages().get(0));
+                            if (!temp_allPostItem.getAllImages().isEmpty()) {
+                                postListItem.setImageURI(temp_allPostItem.getAllImages().get(0));
+                            }
+                            else {
+                                postListItem.setImageURI(null);
+                            }
+
+                            postMyListAdapter.addItem(postListItem.getTitle(), postListItem.getNickname(), postListItem.getDate(),
+                                    postListItem.getContents(), postListItem.getImageURI(), postListItem.getPost_number());
                         }
-                        else {
-                            postListItem.setImageURI(null);
-                        }
-
-                        postMyListAdapter.addItem(postListItem.getTitle(), postListItem.getNickname(), postListItem.getDate(),
-                                postListItem.getContents(), postListItem.getImageURI(), postListItem.getPost_number());
                     }
+
+                    my_listView.setAdapter(postMyListAdapter);
                 }
 
-                my_listView.setAdapter(postMyListAdapter);
                 return false;
             }
         });
@@ -236,6 +239,7 @@ public class PostMyPostFragment extends Fragment {
     // 포스트를 리스트에 셋팅
     public void setAllPostList() {
         postMyListAdapter = new PostMyListAdapter();
+        postMyListAdapter.setlistener(listener);
 
         Collections.reverse(myAllPost);
 
@@ -261,4 +265,14 @@ public class PostMyPostFragment extends Fragment {
 
         my_listView.setAdapter(postMyListAdapter);
     }
+
+
+    // 삭제햇을 때의 리스너
+    PostDeleteListener listener = new PostDeleteListener() {
+        @Override
+        public void deletePost() {
+            postMyListAdapter.notifyDataSetChanged();
+            my_listView.setAdapter(postMyListAdapter);
+        }
+    };
 }

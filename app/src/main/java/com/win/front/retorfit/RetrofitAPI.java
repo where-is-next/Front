@@ -102,4 +102,8 @@ public interface RetrofitAPI {
     // 댓글을 삭제하는 API
     @POST("delete_comment")
     Call<Boolean> getDeleteCommentResponse(@Body CommentDeleteDTO commentDeleteDTO);
+
+    // 포스트를 삭제하는 API
+    @POST("delete_post")
+    Call<Boolean> getDeletePostResponse(@Body String post_number);
 }

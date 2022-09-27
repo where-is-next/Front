@@ -57,10 +57,10 @@ public class PostAllViewCommentAdapter extends BaseAdapter {
     @Override
     public View getView(int i, View converView, ViewGroup viewGroup) {
         Context context = viewGroup.getContext();
-        if (converView == null) {
+//        if (converView == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             converView = inflater.inflate(R.layout.post_fragment_view_post_comment_item, viewGroup, false);
-        }
+//        }
 
         sp = converView.getContext().getSharedPreferences("UserInfo", MODE_PRIVATE); // 로그인한 유저 ID를 담고 있는 변수
         userId = sp.getString("userId", "");
@@ -104,8 +104,8 @@ public class PostAllViewCommentAdapter extends BaseAdapter {
             public boolean onMenuItemClick(MenuItem menuItem) {
                 switch (menuItem.getItemId()) {
                     case R.id.comment_menu_drop_box_delete:
-                        System.out.println("로그인한 아이디 : " + userId);
-                        System.out.println("댓글 넘버 : " + selected_comment_number);
+//                        System.out.println("로그인한 아이디 : " + userId);
+//                        System.out.println("댓글 넘버 : " + selected_comment_number);
 
                         CommentDeleteDTO commentDeleteDTO = new CommentDeleteDTO();
                         commentDeleteDTO.setNumber(selected_comment_number);

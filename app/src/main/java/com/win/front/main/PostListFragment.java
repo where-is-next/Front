@@ -113,31 +113,33 @@ public class PostListFragment extends Fragment{
 
             @Override
             public boolean onQueryTextChange(String s) {
-                postListAdapter = new PostListAdapter();
+                if (allPost != null) {
+                    postListAdapter = new PostListAdapter();
 
-                for (AllPostDTO temp_allPostItem : allPost) {
-                    if (temp_allPostItem.getTitle().contains(s) || temp_allPostItem.getContents().contains(s)) {
-                        PostListItem postListItem = new PostListItem();
+                    for (AllPostDTO temp_allPostItem : allPost) {
+                        if (temp_allPostItem.getTitle().contains(s) || temp_allPostItem.getContents().contains(s)) {
+                            PostListItem postListItem = new PostListItem();
 
-                        postListItem.setTitle(temp_allPostItem.getTitle());
-                        postListItem.setNickname(temp_allPostItem.getNickname());
-                        postListItem.setDate(temp_allPostItem.getDate());
-                        postListItem.setContents(temp_allPostItem.getContents());
-                        postListItem.setPost_number(Long.toString(temp_allPostItem.getNumber()));
+                            postListItem.setTitle(temp_allPostItem.getTitle());
+                            postListItem.setNickname(temp_allPostItem.getNickname());
+                            postListItem.setDate(temp_allPostItem.getDate());
+                            postListItem.setContents(temp_allPostItem.getContents());
+                            postListItem.setPost_number(Long.toString(temp_allPostItem.getNumber()));
 
-                        if (!temp_allPostItem.getAllImages().isEmpty()) {
-                            postListItem.setImageURI(temp_allPostItem.getAllImages().get(0));
+                            if (!temp_allPostItem.getAllImages().isEmpty()) {
+                                postListItem.setImageURI(temp_allPostItem.getAllImages().get(0));
+                            }
+                            else {
+                                postListItem.setImageURI(null);
+                            }
+
+                            postListAdapter.addItem(postListItem.getTitle(), postListItem.getNickname(), postListItem.getDate(),
+                                    postListItem.getContents(), postListItem.getImageURI(), postListItem.getPost_number());
                         }
-                        else {
-                            postListItem.setImageURI(null);
-                        }
-
-                        postListAdapter.addItem(postListItem.getTitle(), postListItem.getNickname(), postListItem.getDate(),
-                                postListItem.getContents(), postListItem.getImageURI(), postListItem.getPost_number());
                     }
-                }
 
-                listView.setAdapter(postListAdapter);
+                    listView.setAdapter(postListAdapter);
+                }
                 return false;
             }
         });
