@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.front">
+    package="com.win.front">
 
     <!-- 네트워크 사용을 위한 퍼미션 -->
     <uses-permission android:name="android.permission.INTERNET" />
@@ -12,6 +12,18 @@
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
     <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+
+    <!-- 지도를 위한 위치 권한 -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+
+    <!-- 카메라 권한 -->
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-sdk tools:overrideLibrary="com.google.zxing.client.android" />
+
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <application
         android:allowBackup="true"
@@ -24,11 +36,14 @@
         android:theme="@style/Theme.Front"
         tools:targetApi="31"
         android:usesCleartextTraffic="true"
-        android:name=".application.KaKaoApplication">
+        android:hardwareAccelerated="true"
+        android:name="com.win.front.application.KaKaoApplication"
+        >
 
         <activity
-            android:name=".SignIn"
-            android:exported="true">
+            android:name="com.win.front.SignIn"
+            android:exported="true"
+            android:windowSoftInputMode="stateAlwaysHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -36,13 +51,33 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".SignUp">
+        <activity android:name="com.win.front.SignUp">
         </activity>
 
-        <activity android:name=".find_id_pw_pack.FindIdPw">
+        <activity android:name="com.win.front.find_id_pw_pack.FindIdPw">
         </activity>
 
-        <activity android:name=".main.MainPage">
+        <activity android:name="com.win.front.main.MainPage">
+        </activity>
+
+        <activity android:name="com.win.front.main.ScannerActivity"
+            android:theme="@style/translucent"/>   <!-- QR 스캔 후 액티비티 반투명화 -->
+
+        <activity android:name="com.journeyapps.barcodescanner.CaptureActivity"
+            android:screenOrientation="fullSensor"
+            tools:replace="screenOrientation"/>
+
+        <activity android:name="com.win.front.main.ScannerActivityCustom">
+        </activity>
+
+        <activity android:name="com.win.front.main.PostAllView">
+        </activity>
+
+        <activity android:name="com.win.front.main.PostAmendView">
+        </activity>
+
+        <activity android:name="com.win.front.main.PostAddActivity"
+            android:exported="true">
         </activity>
 
         <activity android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity"
@@ -62,6 +97,9 @@
 
         <!-- SMS 수신부분 정의 -->
         <meta-data android:name="com.google.android.gms.ads.APPLICATION_ID" android:value="ca-app-pub-3940256099942544~3347511713"/>
+
+        <!-- 카카오 지도 key -->
+        <meta-data android:name="com.kakao.sdk.AppKey" android:value="56b9c3f9c686b60e73604a4665ddff25"/>
     </application>
 
 </manifest>

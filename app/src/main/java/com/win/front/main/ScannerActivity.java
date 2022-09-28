@@ -3,11 +3,18 @@ package com.win.front.main;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.win.front.R;
 
 import android.content.Intent;
@@ -15,6 +22,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.win.front.dto.AddStampDTO;
@@ -82,7 +90,7 @@ public class ScannerActivity extends AppCompatActivity {
                                     public void onResponse(Call<Boolean> call, Response<Boolean> response) {
                                         if (response.isSuccessful() && response.body() != null) {
                                             if (response.body()) {
-                                                custom_dialog_icon("[" + qrRequest + "]" + " 스탬프가 적립되었습니다.");
+                                                custom_dialog_icon("[" + qrRequest + "]" + " 스탬프가 적립되었습니다.", qrRequest);
                                             }
 
                                             else {
@@ -145,10 +153,60 @@ public class ScannerActivity extends AppCompatActivity {
     }
 
     // 커스텀 다이얼로그 : icon
-    public void custom_dialog_icon(String message) {
+    public void custom_dialog_icon(String message, String location) {
+
         LayoutInflater inflater= getLayoutInflater();
         View view = inflater.inflate(R.layout.custom_alert_dialog_icon_text, null);
         ((TextView)view.findViewById(R.id.first_text)).setText(message);
+
+        String link = "scan/" + location + ".png";
+
+        String link3 = "scan/광화문광장.png";
+
+        String link4 = "scan/광화문광장.png";
+
+        System.out.println("1. " + link);
+        System.out.println("3. " + link3);
+        System.out.println("4. " + link4);
+
+//        FirebaseStorage storage = FirebaseStorage.getInstance();
+//        storage.getReference(link).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+//                    @Override
+//                    public void onSuccess(Uri uri) {
+//                        Glide.with(ScannerActivity.this)
+//                                .load(uri)
+//                                .into(((ImageView) view.findViewById(R.id.icon)));
+//                    }
+//                })
+//                .addOnFailureListener(new OnFailureListener() {
+//                    @Override
+//                    public void onFailure(@NonNull @NotNull Exception e) {
+//                        e.printStackTrace();
+//                    }
+//                });
+
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageReference = storage.getReference();
+        StorageReference pathReference = storageReference.child("scan");
+        if (pathReference == null) {
+            System.out.println("문제");
+        } else {
+            StorageReference submitProfile = storageReference.child(link3);
+            submitProfile.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                @Override
+                public void onSuccess(Uri uri) {
+                    Glide.with(ScannerActivity.this)
+                            .load(uri)
+                            .into(((ImageView) view.findViewById(R.id.icon)));
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+
+                }
+            });
+        }
+
 
         AlertDialog alert = new AlertDialog.Builder(this)
                 .setView(view)
