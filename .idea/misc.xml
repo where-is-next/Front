@@ -30,13 +30,16 @@
         <entry key="app/src/main/res/drawable/find_pw_btn.xml" value="0.4955" />
         <entry key="app/src/main/res/drawable/google_login.xml" value="0.1985" />
         <entry key="app/src/main/res/drawable/home_icon.xml" value="0.2395" />
+        <entry key="app/src/main/res/drawable/home_text.xml" value="0.3385" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.2995" />
         <entry key="app/src/main/res/drawable/ic_main_icon.xml" value="0.2935" />
         <entry key="app/src/main/res/drawable/ic_sign_up.xml" value="0.3375" />
+        <entry key="app/src/main/res/drawable/ic_today_lo_text.xml" value="0.3385" />
         <entry key="app/src/main/res/drawable/id_text.xml" value="0.2395" />
         <entry key="app/src/main/res/drawable/input.xml" value="0.2395" />
         <entry key="app/src/main/res/drawable/kakao_login.xml" value="0.2085" />
         <entry key="app/src/main/res/drawable/logo_login.xml" value="0.329" />
+        <entry key="app/src/main/res/drawable/main_item_s.xml" value="0.3385" />
         <entry key="app/src/main/res/drawable/map_icon.xml" value="0.1325" />
         <entry key="app/src/main/res/drawable/myinfo_icon.xml" value="0.2395" />
         <entry key="app/src/main/res/drawable/navigation_shape.xml" value="0.1455" />
@@ -51,6 +54,7 @@
         <entry key="app/src/main/res/drawable/pw_confirm_text.xml" value="0.2395" />
         <entry key="app/src/main/res/drawable/pw_text.xml" value="0.31" />
         <entry key="app/src/main/res/drawable/qr_icon.xml" value="0.2395" />
+        <entry key="app/src/main/res/drawable/recommend_lo_text.xml" value="0.3385" />
         <entry key="app/src/main/res/drawable/search_icon.xml" value="0.2395" />
         <entry key="app/src/main/res/drawable/search_id.xml" value="0.2995" />
         <entry key="app/src/main/res/drawable/search_pw.xml" value="0.2395" />
@@ -74,7 +78,8 @@
         <entry key="app/src/main/res/layout/find_id_fragment.xml" value="0.42938931297709926" />
         <entry key="app/src/main/res/layout/find_id_pw.xml" value="0.47962962962962963" />
         <entry key="app/src/main/res/layout/find_pw_fragment.xml" value="0.33" />
-        <entry key="app/src/main/res/layout/home_fragment.xml" value="0.2151268115942029" />
+        <entry key="app/src/main/res/layout/home_fragment.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/home_fragment_today_location_list_item.xml" value="0.33" />
         <entry key="app/src/main/res/layout/hone_fragment.xml" value="0.2151268115942029" />
         <entry key="app/src/main/res/layout/itemasdasd.xml" value="0.3183876811594203" />
         <entry key="app/src/main/res/layout/login_false_dialog.xml" value="0.2735562310030395" />

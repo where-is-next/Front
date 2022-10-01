@@ -1,6 +1,7 @@
 package com.win.front.main;
 import static android.content.Context.MODE_PRIVATE;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -8,11 +9,13 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -20,6 +23,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.win.front.R;
 import com.win.front.SignIn;
 import com.win.front.domain.Location;
@@ -32,7 +36,12 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.kakao.sdk.user.UserApiClient;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
+import java.util.Set;
 
 import kotlin.Unit;
 import kotlin.jvm.functions.Function1;
@@ -42,17 +51,14 @@ import retrofit2.Response;
 
 public class HomeFragment extends Fragment{
 
-    GoogleSignInOptions gso;
-    GoogleSignInClient gsc;
-
-    Button signOut;
-    Button kakao_sign_out;
-
     private SharedPreferences sp;
     private List<Location> locationList;
 
     private RetrofitClient retrofitClient;      // retrofit2 객체 참조 변수
     private RetrofitAPI retrofitAPI;            // retrofit2 api 객체 참조 변수
+
+    private ListView today_location_list;
+    private HomeLocationListAdapter homeLocationListAdapter;
 
     @Nullable
     @Override
@@ -65,48 +71,10 @@ public class HomeFragment extends Fragment{
         // sharedPreference
         sp = getActivity().getSharedPreferences("UserInfo", MODE_PRIVATE); // 로그인한 유저 ID를 담고 있는 변수
 
-        // 로그아웃 버튼
-        signOut = v.findViewById(R.id.sign_out);
-
-        // 구글
-        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
-        gsc = GoogleSignIn.getClient(getActivity(), gso);
-        signOut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                sign_out();
-            }
-        });
-
-        // 카카오
-        kakao_sign_out = v.findViewById(R.id.kakao_sign_out);
-        kakao_sign_out.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                kakao_out();
-            }
-        });
+        // 오늘의 여행지 리스트 뷰
+        today_location_list = v.findViewById(R.id.today_location_list);
 
         return v;
-    }
-
-    private void sign_out() {
-        gsc.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                logout_alertDialog();
-            }
-        });
-    }
-
-    private void kakao_out() {
-        UserApiClient.getInstance().logout(new Function1<Throwable, Unit>() {
-            @Override
-            public Unit invoke(Throwable throwable) {
-                logout_alertDialog();
-                return null;
-            }
-        });
     }
 
     // 관광지 리스트 추가 함수 , 수정 필요
@@ -121,6 +89,9 @@ public class HomeFragment extends Fragment{
             public void onResponse(Call<List<Location>> call, Response<List<Location>> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     locationList = response.body();
+
+                    // 오늘의 여행지 리스트뷰 셋팅
+                    setTodayLocationListView();
                 }
             }
 
@@ -131,21 +102,43 @@ public class HomeFragment extends Fragment{
         });
     }
 
-    // 로그아웃시 띄우는 다이얼로그
-    public void logout_alertDialog() {
-        AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
-        alert.setCancelable(false);
-        alert.setTitle("알림");
-        alert.setMessage("로그아웃되었습니다.");
-        alert.setPositiveButton("확인", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                getActivity().finish();
-                Intent intent = new Intent(getActivity(), SignIn.class);
-                startActivity(intent);
+    // 오늘의 여행지 리스트뷰 셋팅 함수
+    private void setTodayLocationListView() {
+        homeLocationListAdapter = new HomeLocationListAdapter();
+
+        // 서비스중인 여행지 중에서 5개를 랜덤으로 선택
+        Random rand = new Random();
+
+        Set<Location> set = new HashSet<>();
+        while (true) {
+            set.add(locationList.get(rand.nextInt(locationList.size())));
+
+            if (set.size() == 5) {
+                break;
             }
-        });
-        alert.show();
+        }
+
+        Iterator<Location> iter = set.iterator();
+        while (iter.hasNext()) {
+            Location next = iter.next();
+
+            homeLocationListAdapter.addItem(next.getName(), next.getLatitude(),
+                    next.getLongitude(), next.getAddress(), next.getUrl());
+        }
+
+        // 아이템의 개수에 맞게 리스트뷰 높이 설정
+        int hight = 0;
+        for (int i = 0; i < homeLocationListAdapter.getCount(); i++) {
+            View listItem = homeLocationListAdapter.getView(i, null, today_location_list);
+            listItem.measure(0,0);
+            hight += listItem.getMeasuredHeight();
+        }
+
+        ViewGroup.LayoutParams params = today_location_list.getLayoutParams();
+        params.height = hight + (today_location_list.getDividerHeight() * (homeLocationListAdapter.getCount() - 1));
+        today_location_list.setLayoutParams(params);
+
+        today_location_list.setAdapter(homeLocationListAdapter);
     }
 
     // 커스텀 다이얼로그 : two_text
@@ -176,4 +169,6 @@ public class HomeFragment extends Fragment{
         params.width = 900;
         alert.getWindow().setAttributes(params);
     }
+
+//
 }

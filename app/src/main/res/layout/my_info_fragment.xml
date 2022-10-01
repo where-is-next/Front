@@ -5,9 +5,15 @@
     android:orientation="vertical"
     >
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="my_info_fragment" />
+    <Button
+        android:layout_width="70dp"
+        android:layout_height="50dp"
+        android:text="Sign out"
+        android:id="@+id/sign_out"/>
+
+    <Button
+        android:layout_width="70dp"
+        android:layout_height="50dp"
+        android:text="KaKao Sign out"
+        android:id="@+id/kakao_sign_out"/>
 </LinearLayout>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="30dp">
+
+    <ImageView
+        android:id="@+id/today_location_list_ordinal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/main_item_a"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="20dp"
+        />
+
+    <LinearLayout
+        android:id="@+id/today_location_list_texts"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_toRightOf="@+id/today_location_list_ordinal"
+        android:layout_centerVertical="true"
+        >
+
+        <TextView
+            android:id="@+id/today_location_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/notosans_kr_bold"
+            android:text="국립중앙박물관"
+            android:textSize="15dp"
+            />
+
+        <TextView
+            android:id="@+id/today_location_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/today_location_name"
+            android:fontFamily="@font/notosans_kr_regular"
+            android:text="서울특별시 용산구 서빙고로 137"
+            android:textSize="10dp" />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/today_location_list_icon"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="30dp"
+        />
+
+</RelativeLayout>

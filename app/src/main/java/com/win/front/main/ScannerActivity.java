@@ -1,5 +1,6 @@
 package com.win.front.main;
 
+import android.app.ProgressDialog;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -15,6 +16,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.win.front.HangleToEnglish;
 import com.win.front.R;
 
 import android.content.Intent;
@@ -44,10 +46,14 @@ public class ScannerActivity extends AppCompatActivity {
     private SharedPreferences sp;
     private String userId;
 
+    ProgressDialog dialog;  // 프로그레스 다이얼로그
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.qr_activity);
+
+        dialog = new ProgressDialog(this);
 
         sp = getSharedPreferences("UserInfo", MODE_PRIVATE);
         userId = sp.getString("userId", "");
@@ -155,35 +161,19 @@ public class ScannerActivity extends AppCompatActivity {
     // 커스텀 다이얼로그 : icon
     public void custom_dialog_icon(String message, String location) {
 
+        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);  // 다이얼로그 스타일 설정
+        dialog.setCancelable(false);    // 화면 밖 터치해도 종료되지 않게
+        dialog.setMessage("Loading ...");   // 메세지
+        dialog.show();  // 다이얼로그 시작
+
         LayoutInflater inflater= getLayoutInflater();
         View view = inflater.inflate(R.layout.custom_alert_dialog_icon_text, null);
         ((TextView)view.findViewById(R.id.first_text)).setText(message);
 
         String link = "scan/" + location + ".png";
 
-        String link3 = "scan/광화문광장.png";
-
-        String link4 = "scan/광화문광장.png";
-
-        System.out.println("1. " + link);
-        System.out.println("3. " + link3);
-        System.out.println("4. " + link4);
-
-//        FirebaseStorage storage = FirebaseStorage.getInstance();
-//        storage.getReference(link).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-//                    @Override
-//                    public void onSuccess(Uri uri) {
-//                        Glide.with(ScannerActivity.this)
-//                                .load(uri)
-//                                .into(((ImageView) view.findViewById(R.id.icon)));
-//                    }
-//                })
-//                .addOnFailureListener(new OnFailureListener() {
-//                    @Override
-//                    public void onFailure(@NonNull @NotNull Exception e) {
-//                        e.printStackTrace();
-//                    }
-//                });
+        HangleToEnglish hangleToEnglish = new HangleToEnglish();
+        String convert = hangleToEnglish.convert(link);
 
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageReference = storage.getReference();
@@ -191,13 +181,37 @@ public class ScannerActivity extends AppCompatActivity {
         if (pathReference == null) {
             System.out.println("문제");
         } else {
-            StorageReference submitProfile = storageReference.child(link3);
+            StorageReference submitProfile = storageReference.child(convert);
             submitProfile.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                 @Override
                 public void onSuccess(Uri uri) {
                     Glide.with(ScannerActivity.this)
                             .load(uri)
                             .into(((ImageView) view.findViewById(R.id.icon)));
+
+                    dialog.dismiss();
+
+                    AlertDialog alert = new AlertDialog.Builder(ScannerActivity.this)
+                            .setView(view)
+                            .setCancelable(false)
+                            .create();
+
+                    alert.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                    alert.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+                    view.findViewById(R.id.alert_btn).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            alert.dismiss();
+                            finish();
+                        }
+                    });
+
+                    alert.show();
+
+                    WindowManager.LayoutParams params = alert.getWindow().getAttributes();
+                    params.width = 900;
+                    alert.getWindow().setAttributes(params);
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
@@ -206,29 +220,6 @@ public class ScannerActivity extends AppCompatActivity {
                 }
             });
         }
-
-
-        AlertDialog alert = new AlertDialog.Builder(this)
-                .setView(view)
-                .setCancelable(false)
-                .create();
-
-        alert.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        alert.requestWindowFeature(Window.FEATURE_NO_TITLE);
-
-        view.findViewById(R.id.alert_btn).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                alert.dismiss();
-                finish();
-            }
-        });
-
-        alert.show();
-
-        WindowManager.LayoutParams params = alert.getWindow().getAttributes();
-        params.width = 900;
-        alert.getWindow().setAttributes(params);
     }
 
     // 커스텀 다이얼로그 : two_text

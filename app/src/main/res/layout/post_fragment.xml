@@ -22,7 +22,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/community_text"
             android:layout_marginTop="20dp"
-            android:layout_marginLeft="93dp"
+            android:layout_marginLeft="90dp"
             />
     </LinearLayout>
 

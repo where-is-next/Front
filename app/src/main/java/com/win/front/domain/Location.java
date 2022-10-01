@@ -45,4 +45,24 @@ public class Location {
     public String getUrl() {
         return url;
     }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
+    }
+
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
 }
