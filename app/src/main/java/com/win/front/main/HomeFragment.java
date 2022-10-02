@@ -2,31 +2,48 @@ package com.win.front.main;
 import static android.content.Context.MODE_PRIVATE;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.Base64;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.GridLayout;
+import android.widget.GridView;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.win.front.R;
 import com.win.front.SignIn;
 import com.win.front.domain.Location;
+import com.win.front.dto.AllPostDTO;
 import com.win.front.retorfit.RetrofitAPI;
 import com.win.front.retorfit.RetrofitClient;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -36,7 +53,12 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.kakao.sdk.user.UserApiClient;
 
+import org.w3c.dom.Text;
+
+import java.io.ByteArrayInputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -60,10 +82,18 @@ public class HomeFragment extends Fragment{
     private ListView today_location_list;
     private HomeLocationListAdapter homeLocationListAdapter;
 
+    private GridView gridView = null;
+    List<AllPostDTO> allPost;
+    private HomeGridViewAdapter homeGridViewAdapter;
+
+    String selected_number;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.home_fragment, container, false);
+
+        gridView = v.findViewById(R.id.home_grid_view);
 
         // 관광지 정보 불러오기
         settingList();
@@ -74,10 +104,125 @@ public class HomeFragment extends Fragment{
         // 오늘의 여행지 리스트 뷰
         today_location_list = v.findViewById(R.id.today_location_list);
 
+        // 포스트 셋팅
+        today_post();
+
+        // 그리드뷰 아이템 클릭 시 뷰로 보여줌
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                PostListItem selectedItem = (PostListItem) adapterView.getAdapter().getItem(i);
+
+                // 포스트 넘버가 같은 allPostDTO를 가져옴
+                for (AllPostDTO selected : allPost) {
+                    if (selected.getNumber() == Long.parseLong(selectedItem.getPost_number())) {
+                        Long number = selected.getNumber();
+                        selected_number = Long.toString(number);
+                        break;
+                    }
+                }
+
+                Intent intent = new Intent(getActivity(), PostAllView.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                intent.putExtra("selected_number", selected_number);
+                startActivity(intent);
+            }
+
+        });
+
         return v;
     }
 
-    // 관광지 리스트 추가 함수 , 수정 필요
+    // 1. 모든 포스트 셋팅
+    private void today_post() {
+        retrofitClient = RetrofitClient.getInstance();
+        retrofitAPI = RetrofitClient.getRetrofitInterface();
+
+        retrofitAPI.getAllPostResponse().enqueue(new Callback<JsonArray>() {
+            @Override
+            public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
+                JsonArray jsonArray = response.body();
+
+                allPost = new ArrayList<>();
+
+                for (int i = 0; i < jsonArray.size(); i++) {
+                    AllPostDTO input = new AllPostDTO();
+                    JsonObject object = (JsonObject) jsonArray.get(i);
+
+                    Long number = Long.parseLong(object.get("number").getAsString());
+                    String id = object.get("id").getAsString();
+                    String nickname = object.get("nickname").getAsString();
+                    String date = object.get("date").getAsString();
+                    String title = object.get("title").getAsString();
+                    String contents = object.get("contents").getAsString();
+
+                    ArrayList<byte[]> allImages = new ArrayList<>();
+                    JsonArray tempImageArr = (JsonArray) object.get("allImages");
+                    for (int j = 0; j < tempImageArr.size(); j++) {
+                        JsonElement jsonElement = tempImageArr.get(j);
+                        byte[] bytes = new Gson().toJson(jsonElement).getBytes(StandardCharsets.UTF_8);
+
+                        allImages.add(bytes);
+                    }
+
+                    input.setNumber(number);
+                    input.setId(id);
+                    input.setNickname(nickname);
+                    input.setDate(date);
+                    input.setTitle(title);
+                    input.setContents(contents);
+                    input.setAllImages(allImages);
+
+                    allPost.add(input);
+                }
+
+                setGridLayoutCardView();
+            }
+            @Override
+            public void onFailure(Call<JsonArray> call, Throwable t) {
+                System.out.println("에러 : " + t.getMessage());
+            }
+        });
+    }
+
+    // 카드뷰에 데이터 셋팅
+    private void setGridLayoutCardView() {
+        homeGridViewAdapter = new HomeGridViewAdapter();
+
+        for (AllPostDTO allPostDTO : allPost) {
+            PostListItem postListItem = new PostListItem();
+
+            postListItem.setTitle(allPostDTO.getTitle());
+            postListItem.setNickname(allPostDTO.getNickname());
+            postListItem.setDate(allPostDTO.getDate());
+            postListItem.setContents(allPostDTO.getContents());
+            postListItem.setPost_number(Long.toString(allPostDTO.getNumber()));
+
+            if (!allPostDTO.getAllImages().isEmpty()) {
+                postListItem.setImageURI(allPostDTO.getAllImages().get(0));
+            }
+            else {
+                postListItem.setImageURI(null);
+            }
+            homeGridViewAdapter.addItem(postListItem.getTitle(), postListItem.getNickname(), postListItem.getDate(),
+                    postListItem.getContents(), postListItem.getImageURI(), postListItem.getPost_number());
+        }
+
+        int hight = 0;
+        for (int i = 0; i < homeGridViewAdapter.getCount(); i++) {
+            View listItem = homeGridViewAdapter.getView(i, null, gridView);
+            listItem.measure(0,0);
+            hight += listItem.getMeasuredHeight();
+        }
+
+        ViewGroup.LayoutParams params = gridView.getLayoutParams();
+        params.height = hight + (gridView.getHeight() * (homeGridViewAdapter.getCount() - 1));
+        gridView.setLayoutParams(params);
+
+        gridView.setAdapter(homeGridViewAdapter);
+    }
+
+    // 관광지 리스트 추가 함수
     private void settingList() {
         //retrofit 생성
         retrofitClient = RetrofitClient.getInstance();
@@ -169,6 +314,4 @@ public class HomeFragment extends Fragment{
         params.width = 900;
         alert.getWindow().setAttributes(params);
     }
-
-//
 }
