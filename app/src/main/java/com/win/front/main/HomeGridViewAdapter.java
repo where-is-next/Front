@@ -72,7 +72,7 @@ public class HomeGridViewAdapter extends BaseAdapter{
         }
 
         if (myItem.getContents().length() > 14) {
-            textView.setText(myItem.getContents().substring(0, 14) + "...");
+            textView.setText(myItem.getContents().substring(0, 14) + " ...");
         } else {
             textView.setText(myItem.getContents());
         }

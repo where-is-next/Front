@@ -1,19 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     >
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        tools:ignore="MissingConstraints">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/post_main_logo"
+            android:layout_margin="15dp"
+            />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/my_info_text"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="95dp"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@drawable/my_info_background"
+        >
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="11111111111"
+                android:textSize="25dp"
+                tools:layout_editor_absoluteX="33dp"
+                tools:layout_editor_absoluteY="51dp"
+                tools:ignore="MissingConstraints" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+        </LinearLayout>
+
+    </LinearLayout>
+
+
     <Button
+        android:id="@+id/sign_out"
         android:layout_width="70dp"
         android:layout_height="50dp"
         android:text="Sign out"
-        android:id="@+id/sign_out"/>
+        tools:layout_editor_absoluteX="291dp"
+        tools:layout_editor_absoluteY="250dp"
+        tools:ignore="MissingConstraints" />
 
     <Button
+        android:id="@+id/kakao_sign_out"
         android:layout_width="70dp"
         android:layout_height="50dp"
         android:text="KaKao Sign out"
-        android:id="@+id/kakao_sign_out"/>
+        tools:layout_editor_absoluteX="291dp"
+        tools:layout_editor_absoluteY="157dp"
+        tools:ignore="MissingConstraints" />
+
+
 </LinearLayout>

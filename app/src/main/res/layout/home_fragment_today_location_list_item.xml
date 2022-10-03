@@ -40,7 +40,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/today_location_name"
-            android:fontFamily="@font/notosans_kr_regular"
             android:text="서울특별시 용산구 서빙고로 137"
             android:textSize="10dp" />
     </LinearLayout>
