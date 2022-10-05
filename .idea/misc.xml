@@ -9,6 +9,7 @@
         <entry key="app/src/main/res/drawable-v24/email_size.xml" value="0.5" />
         <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.2395" />
         <entry key="app/src/main/res/drawable-v24/lock_size.xml" value="0.411" />
+        <entry key="app/src/main/res/drawable/app_icon_background.xml" value="0.3385" />
         <entry key="app/src/main/res/drawable/asdqwd.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/auth_confirm_btn.xml" value="0.4955" />
         <entry key="app/src/main/res/drawable/auth_send_btn.xml" value="0.1" />
@@ -20,6 +21,7 @@
         <entry key="app/src/main/res/drawable/bar.xml" value="0.2995" />
         <entry key="app/src/main/res/drawable/btn_login.xml" value="0.2085" />
         <entry key="app/src/main/res/drawable/change_pw_text.xml" value="0.3445" />
+        <entry key="app/src/main/res/drawable/comment_icon.xml" value="0.3385" />
         <entry key="app/src/main/res/drawable/community_text.xml" value="0.2145" />
         <entry key="app/src/main/res/drawable/confirm_btn.xml" value="0.3025" />
         <entry key="app/src/main/res/drawable/custom_alert_dialog_background.xml" value="0.2005" />
@@ -32,16 +34,26 @@
         <entry key="app/src/main/res/drawable/home_fragment_grid_view_image_background.xml" value="0.3385" />
         <entry key="app/src/main/res/drawable/home_icon.xml" value="0.2395" />
         <entry key="app/src/main/res/drawable/home_text.xml" value="0.3385" />
+        <entry key="app/src/main/res/drawable/ic_black_line.xml" value="0.3385" />
+        <entry key="app/src/main/res/drawable/ic_google_user_icon.xml" value="0.3385" />
+        <entry key="app/src/main/res/drawable/ic_kakao_user_icon.xml" value="0.3385" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.2995" />
+        <entry key="app/src/main/res/drawable/ic_login_user_icon.xml" value="0.3385" />
         <entry key="app/src/main/res/drawable/ic_main_icon.xml" value="0.2935" />
+        <entry key="app/src/main/res/drawable/ic_now_stamp_text.xml" value="0.3385" />
         <entry key="app/src/main/res/drawable/ic_sign_up.xml" value="0.3375" />
         <entry key="app/src/main/res/drawable/ic_today_lo_text.xml" value="0.3385" />
         <entry key="app/src/main/res/drawable/id_text.xml" value="0.2395" />
         <entry key="app/src/main/res/drawable/input.xml" value="0.2395" />
         <entry key="app/src/main/res/drawable/kakao_login.xml" value="0.2085" />
         <entry key="app/src/main/res/drawable/logo_login.xml" value="0.329" />
+        <entry key="app/src/main/res/drawable/main_item_m.xml" value="0.3385" />
         <entry key="app/src/main/res/drawable/main_item_s.xml" value="0.3385" />
         <entry key="app/src/main/res/drawable/map_icon.xml" value="0.1325" />
+        <entry key="app/src/main/res/drawable/my_info_background.xml" value="0.3385" />
+        <entry key="app/src/main/res/drawable/my_info_kakao_user_icon.xml" value="0.3385" />
+        <entry key="app/src/main/res/drawable/my_info_layout_border.xml" value="0.3385" />
+        <entry key="app/src/main/res/drawable/my_info_login_user_icon.xml" value="0.3385" />
         <entry key="app/src/main/res/drawable/myinfo_icon.xml" value="0.2395" />
         <entry key="app/src/main/res/drawable/navigation_shape.xml" value="0.1455" />
         <entry key="app/src/main/res/drawable/new_pw_text.xml" value="0.2395" />
@@ -65,8 +77,11 @@
         <entry key="app/src/main/res/drawable/sign_up_input_large.xml" value="0.2395" />
         <entry key="app/src/main/res/drawable/sign_up_input_short.xml" value="0.2395" />
         <entry key="app/src/main/res/drawable/sign_up_main.xml" value="0.3375" />
+        <entry key="app/src/main/res/drawable/stamp_status_text.xml" value="0.3385" />
         <entry key="app/src/main/res/drawable/testicon.xml" value="0.196" />
         <entry key="app/src/main/res/drawable/testqwer.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/title_image_one.xml" value="0.165" />
+        <entry key="app/src/main/res/drawable/title_image_three.xml" value="0.3385" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.5" />
         <entry key="app/src/main/res/layout/balloon_layout.xml" value="0.33" />
         <entry key="app/src/main/res/layout/change_pw.xml" value="0.5625" />
@@ -79,7 +94,7 @@
         <entry key="app/src/main/res/layout/find_id_fragment.xml" value="0.42938931297709926" />
         <entry key="app/src/main/res/layout/find_id_pw.xml" value="0.47962962962962963" />
         <entry key="app/src/main/res/layout/find_pw_fragment.xml" value="0.33" />
-        <entry key="app/src/main/res/layout/home_fragment.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/home_fragment.xml" value="0.5" />
         <entry key="app/src/main/res/layout/home_fragment_grid_view_item.xml" value="0.5" />
         <entry key="app/src/main/res/layout/home_fragment_today_location_list_item.xml" value="0.67" />
         <entry key="app/src/main/res/layout/hone_fragment.xml" value="0.2151268115942029" />
@@ -88,7 +103,9 @@
         <entry key="app/src/main/res/layout/main_navigation_items.xml" value="0.2151268115942029" />
         <entry key="app/src/main/res/layout/main_page.xml" value="0.33" />
         <entry key="app/src/main/res/layout/map_fragment.xml" value="0.33" />
-        <entry key="app/src/main/res/layout/my_info_fragment.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/my_info_fragment.xml" value="0.5" />
+        <entry key="app/src/main/res/layout/my_info_fragment_grid_view_item.xml" value="1.25" />
+        <entry key="app/src/main/res/layout/my_info_fragment_profile_change.xml" value="0.3453125" />
         <entry key="app/src/main/res/layout/post_fragment.xml" value="0.33" />
         <entry key="app/src/main/res/layout/post_fragment_add_post.xml" value="0.48233695652173914" />
         <entry key="app/src/main/res/layout/post_fragment_add_post_activity.xml" value="0.33" />
@@ -110,9 +127,11 @@
         <entry key="app/src/main/res/layout/sign_in.xml" value="0.33" />
         <entry key="app/src/main/res/layout/sign_up.xml" value="0.25" />
         <entry key="app/src/main/res/layout/test.xml" value="0.3677536231884058" />
+        <entry key="app/src/main/res/layout/title_activity.xml" value="0.22" />
         <entry key="app/src/main/res/menu/comment_menu_drop_box.xml" value="0.5010416666666667" />
         <entry key="app/src/main/res/menu/list_item_menu_drop_box.xml" value="0.5020833333333333" />
         <entry key="app/src/main/res/menu/main_navigation_items.xml" value="0.3567708333333333" />
+        <entry key="app/src/main/res/mipmap-anydpi-v26/app_icon_round.xml" value="0.3385" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.411" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.411" />
       </map>

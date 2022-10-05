@@ -1,25 +1,16 @@
 package com.win.front.main;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
-import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -29,22 +20,24 @@ import com.google.firebase.storage.StorageReference;
 import com.win.front.HangleToEnglish;
 import com.win.front.R;
 import com.win.front.domain.Location;
+import com.win.front.domain.Stamp;
 
-import java.io.ByteArrayInputStream;
+import java.net.StandardProtocolFamily;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeLocationListAdapter extends BaseAdapter{
-    ArrayList<Location> todayLocationList = new ArrayList<>();
+public class MyInfoStampGridViewAdapter extends BaseAdapter {
+    List<Location> items = new ArrayList<>();
+    List<Stamp> myStamp = new ArrayList<>();
 
     @Override
     public int getCount() {
-        return todayLocationList.size();
+        return items.size();
     }
 
     @Override
     public Location getItem(int i) {
-        return todayLocationList.get(i);
+        return items.get(i);
     }
 
     @Override
@@ -55,36 +48,31 @@ public class HomeLocationListAdapter extends BaseAdapter{
     @Override
     public View getView(int i, View converView, ViewGroup viewGroup) {
         Context context = viewGroup.getContext();
-
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        converView = inflater.inflate(R.layout.home_fragment_today_location_list_item, viewGroup, false);
+        converView = inflater.inflate(R.layout.my_info_fragment_grid_view_item, viewGroup, false);
 
-        ImageView iv_ordinal = (ImageView) converView.findViewById(R.id.today_location_list_ordinal);
-        ImageView iv_icon = (ImageView) converView.findViewById(R.id.today_location_list_icon);
-
-        TextView tv_name = (TextView) converView.findViewById(R.id.today_location_name);
-        TextView tv_address = (TextView) converView.findViewById(R.id.today_location_address);
+        ImageView icon = converView.findViewById(R.id.my_info_grid_view_item_icon);
+        TextView icon_text = converView.findViewById(R.id.my_info_grid_view_item_text);
 
         Location myItem = getItem(i);
+        String link = null;
 
-        if (i == 0) {
-            iv_ordinal.setImageResource(R.drawable.main_item_s);
-        } else if (i == 1) {
-            iv_ordinal.setImageResource(R.drawable.main_item_t);
-        } else if (i == 2) {
-            iv_ordinal.setImageResource(R.drawable.main_item_a);
-        } else if (i == 3) {
-            iv_ordinal.setImageResource(R.drawable.main_item_m);
-        } else if (i == 4) {
-            iv_ordinal.setImageResource(R.drawable.main_item_p);
+        if (myStamp.size() == 0) {
+            link = "myinfo/" + myItem.getName() + "_no" + ".png";  // 무색 아이콘
+        }
+        else {
+            for (Stamp stamp : myStamp) {
+                if (stamp.getStampLocation().equals(myItem.getName())) {
+                    link = "myinfo/" + myItem.getName() + ".png";   // 유색아이콘
+                    break;
+                }
+                else {
+                    link = "myinfo/" + myItem.getName() + "_no" + ".png";  // 무색 아이콘
+                }
+            }
         }
 
-        tv_name.setText(myItem.getName());
-        tv_address.setText(myItem.getAddress());
-
         // 파이어베이스에서 아이콘을 가져와서 셋팅
-        String link = "main/" + myItem.getName() + ".png";
-
         HangleToEnglish hangleToEnglish = new HangleToEnglish();
         String convert = hangleToEnglish.convert(link);
 
@@ -106,7 +94,7 @@ public class HomeLocationListAdapter extends BaseAdapter{
 
                     Glide.with(context)
                             .load(uri)
-                            .into(iv_icon);
+                            .into(icon);
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
@@ -116,11 +104,13 @@ public class HomeLocationListAdapter extends BaseAdapter{
             });
         }
 
+        icon_text.setText(myItem.getName());
+
         return converView;
     }
 
-    public void addItem(String name, String address, String latitude, String longitude, String url) {
-        Location mItem = new Location(name, address, latitude, longitude, url);
-        todayLocationList.add(mItem);
+    public void addItem(List<Stamp> user_stamp_list, List<Location> locationList) {
+        items = locationList;
+        myStamp = user_stamp_list;
     }
 }

@@ -5,6 +5,8 @@ import com.google.gson.JsonObject;
 import com.win.front.domain.Comment;
 import com.win.front.domain.Location;
 import com.win.front.domain.SocialUser;
+import com.win.front.domain.Stamp;
+import com.win.front.domain.User;
 import com.win.front.dto.AddStampDTO;
 import com.win.front.dto.AllPostDTO;
 import com.win.front.dto.ChangePwDTO;
@@ -47,6 +49,10 @@ public interface RetrofitAPI {
     @POST("user_sign_up")
     Call<Boolean> getSignUpResponse(@Body SignUpDTO signUpDTO);
 
+    // 유저의 Enum 값(로그인 종류) 찾는 API
+    @GET("user_enum/{id}")
+    Call<String> getUserEnumResponse(@Path("id") String id);
+
     // 아이디 찾기 API
     @GET("user_search_id/{phoneNum}")
     Call<String> getIDResponse(@Path("phoneNum") String phoneNum);
@@ -71,6 +77,10 @@ public interface RetrofitAPI {
     // QR 코드 스캔 성공 시 스탬프를 추가하는 API
     @POST("add_stamp")
     Call<Boolean> getAddStampResponse(@Body AddStampDTO addStampDTO);
+
+    // 획득한 스탬프를 반환하는 API
+    @GET("user_stamp_list/{id}")
+    Call<List<Stamp>> getStampListResponse(@Path("id") String id);
 
     // 닉네임을 반환하는 API
     @GET("response_nickname/{id}")
@@ -111,4 +121,16 @@ public interface RetrofitAPI {
     // 포스트를 수정하는 API ( update )
     @POST("amend_post")
     Call<Boolean> amendPostMethod(@Body PostUpdateDTO postUpdateDTO);
+
+    // 프로필 수정 : 유저 객체를 가져오는 API
+    @GET("profile_user/{id}")
+    Call<User> getProfileUserResponse(@Path("id") String id);
+
+    // 프로필 수정 : 닉네임 중복확인 API
+    @GET("profile_nickname_confirm/{nickname}")
+    Call<Boolean> getProfileNickNameConfirmResponse(@Path("nickname") String nickname);
+
+    // 프로필 수정 : 유저 정보 업데이트
+    @POST("profile_user_update")
+    Call<Boolean> getUpdateUserProfileResponse(@Body User changeUser);
 }
