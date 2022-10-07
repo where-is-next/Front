@@ -61,13 +61,20 @@ public class PostMyListAdapter extends BaseAdapter{
         TextView tv_nickname = (TextView) converView.findViewById(R.id.my_post_view_nickname) ;
         TextView tv_date = (TextView) converView.findViewById(R.id.my_post_view_date) ;
         TextView tv_contents = (TextView) converView.findViewById(R.id.my_post_view_contents) ;
+        TextView tv_contents_cnt = (TextView) converView.findViewById(R.id.my_post_view_contents_cnt) ;
 
         PostListItem myItem = getItem(i);
 
         tv_title.setText(myItem.getTitle());
         tv_nickname.setText(myItem.getNickname());
         tv_date.setText(myItem.getDate());
-        tv_contents.setText(myItem.getContents());
+
+        if (myItem.getContents().length() >= 60) {
+            tv_contents.setText(myItem.getContents().substring(0, 58) + " ...");
+        }
+        else {
+            tv_contents.setText(myItem.getContents());
+        }
 
         if (myItem.getImageURI() != null) {
             ImageView tv_imageView = (ImageView) converView.findViewById(R.id.my_post_view_image);
@@ -79,6 +86,21 @@ public class PostMyListAdapter extends BaseAdapter{
 
             tv_imageView.setLayoutParams(params);
         }
+
+        // 댓글 수 셋팅
+        retrofitClient = RetrofitClient.getInstance();
+        retrofitAPI = RetrofitClient.getRetrofitInterface();
+
+        retrofitAPI.getPostCommentCntResponse(myItem.getPost_number()).enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                tv_contents_cnt.setText(response.body().replaceAll("\"", ""));
+            }
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                System.out.println("에러 : " + t.getMessage());
+            }
+        });
 
         // ... 버튼
         list_item_menu = converView.findViewById(R.id.my_list_item_menu);

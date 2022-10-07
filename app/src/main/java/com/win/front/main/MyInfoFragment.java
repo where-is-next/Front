@@ -236,6 +236,7 @@ public class MyInfoFragment extends Fragment {
 
         SharedPreferences.Editor editor = sp.edit();
         editor.putString("userId", "");
+        editor.putString("autoLogin", "");
         editor.commit();
     }
 

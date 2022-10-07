@@ -98,6 +98,10 @@ public interface RetrofitAPI {
     @GET("all_post")
     Call<JsonArray> getAllPostResponse();
 
+    // 해당 포스트의 댓글 수를 가져오는 API
+    @GET("post_comment_cnt/{post_number}")
+    Call<String> getPostCommentCntResponse(@Path("post_number") String post_number);
+
     // 현재 로그인한 사용자의 포스트를 가져오는 API
     @GET("my_post/{id}")
     Call<JsonArray> getMyPostResponse(@Path("id") String id);

@@ -79,6 +79,14 @@ public class SignIn extends AppCompatActivity {
 
         sp = getSharedPreferences("UserInfo", MODE_PRIVATE);
 
+        String autoLogin = sp.getString("autoLogin", "");
+        System.out.println("자동 로그인 판별 : " + autoLogin);
+        if (autoLogin.equals("true")) {
+            finish();
+            Intent intent = new Intent(SignIn.this, MainPage.class);
+            startActivity(intent);
+        }
+
         // 아이디 입력
         id = (IdEditTextXBtn) findViewById(R.id.input_id);
         id.setOnKeyListener(new View.OnKeyListener() {
@@ -446,6 +454,12 @@ public class SignIn extends AppCompatActivity {
     public void sharedPreferenceMethod(String id) {
         SharedPreferences.Editor editor = sp.edit();
         editor.putString("userId", id);
+
+        if (auto_login_flag) {
+            editor.putString("autoLogin", "true");
+        } else {
+            editor.putString("autoLogin", "false");
+        }
         editor.commit();
     }
 

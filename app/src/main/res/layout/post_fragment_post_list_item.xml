@@ -69,6 +69,27 @@
                 android:layout_marginTop="20dp"
                 android:text="ㅇㅁㄴㅇㅁㄴㅇ" />
 
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="20dp">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/comment_img"
+                    />
+
+                <TextView
+                    android:id="@+id/post_view_contents_cnt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    />
+
+            </LinearLayout>
+
         </LinearLayout>
 
     </LinearLayout>

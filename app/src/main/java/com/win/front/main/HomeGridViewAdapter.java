@@ -26,13 +26,22 @@ import com.google.firebase.storage.StorageReference;
 import com.win.front.HangleToEnglish;
 import com.win.front.R;
 import com.win.front.domain.Location;
+import com.win.front.retorfit.RetrofitAPI;
+import com.win.front.retorfit.RetrofitClient;
 
 import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
 import java.util.Random;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class HomeGridViewAdapter extends BaseAdapter{
     ArrayList<PostListItem> items = new ArrayList<>();
+
+    private RetrofitClient retrofitClient;      // retrofit2 객체 참조 변수
+    private RetrofitAPI retrofitAPI;            // retrofit2 api 객체 참조 변수
 
     @Override
     public int getCount() {
@@ -63,6 +72,7 @@ public class HomeGridViewAdapter extends BaseAdapter{
 
         ImageView imageView = converView.findViewById(R.id.home_grid_view_image);
         TextView textView = converView.findViewById(R.id.home_grid_view_contents);
+        TextView tv_commnt_cnt = converView.findViewById(R.id.home_grid_view_comment_cnt);
 
         PostListItem myItem = getItem(i);
 
@@ -76,6 +86,21 @@ public class HomeGridViewAdapter extends BaseAdapter{
         } else {
             textView.setText(myItem.getContents());
         }
+
+        // 댓글 수 셋팅
+        retrofitClient = RetrofitClient.getInstance();
+        retrofitAPI = RetrofitClient.getRetrofitInterface();
+
+        retrofitAPI.getPostCommentCntResponse(myItem.getPost_number()).enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                tv_commnt_cnt.setText(" "+ response.body().replaceAll("\"", ""));
+            }
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                System.out.println("에러 : " + t.getMessage());
+            }
+        });
 
         return converView;
     }

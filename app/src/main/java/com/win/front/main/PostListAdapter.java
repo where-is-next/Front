@@ -20,16 +20,27 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.win.front.R;
+import com.win.front.retorfit.RetrofitAPI;
+import com.win.front.retorfit.RetrofitClient;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Iterator;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class PostListAdapter extends BaseAdapter{
     ArrayList<PostListItem> items = new ArrayList<>();
+
+    private RetrofitClient retrofitClient;      // retrofit2 객체 참조 변수
+    private RetrofitAPI retrofitAPI;            // retrofit2 api 객체 참조 변수
 
     @Override
     public int getCount() {
@@ -57,13 +68,20 @@ public class PostListAdapter extends BaseAdapter{
         TextView tv_nickname = (TextView) converView.findViewById(R.id.post_view_nickname);
         TextView tv_date = (TextView) converView.findViewById(R.id.post_view_date);
         TextView tv_contents = (TextView) converView.findViewById(R.id.post_view_contents);
+        TextView tv_contents_cnt = (TextView) converView.findViewById(R.id.post_view_contents_cnt);
 
         PostListItem myItem = getItem(i);
 
         tv_title.setText(myItem.getTitle());
         tv_nickname.setText(myItem.getNickname());
         tv_date.setText(myItem.getDate());
-        tv_contents.setText(myItem.getContents());
+
+        if (myItem.getContents().length() >= 60) {
+            tv_contents.setText(myItem.getContents().substring(0, 58) + " ...");
+        }
+        else {
+            tv_contents.setText(myItem.getContents());
+        }
 
         if (myItem.getImageURI() != null) {
             ImageView tv_imageView = (ImageView) converView.findViewById(R.id.post_view_image);
@@ -75,6 +93,21 @@ public class PostListAdapter extends BaseAdapter{
 
             tv_imageView.setLayoutParams(params);
         }
+
+        // 댓글 수 셋팅
+        retrofitClient = RetrofitClient.getInstance();
+        retrofitAPI = RetrofitClient.getRetrofitInterface();
+
+        retrofitAPI.getPostCommentCntResponse(myItem.getPost_number()).enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                tv_contents_cnt.setText(response.body().replaceAll("\"", ""));
+            }
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                System.out.println("에러 : " + t.getMessage());
+            }
+        });
 
         return converView;
     }

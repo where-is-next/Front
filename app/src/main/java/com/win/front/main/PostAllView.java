@@ -63,6 +63,7 @@ public class PostAllView extends AppCompatActivity {
     TextView post_all_view_title;
     TextView post_all_view_nickname;
     TextView post_all_view_date;
+    TextView comment_text;
 
     LinearLayout post_all_view_input_images;
 
@@ -94,6 +95,7 @@ public class PostAllView extends AppCompatActivity {
         post_all_view_title = findViewById(R.id.post_all_view_title);
         post_all_view_nickname = findViewById(R.id.post_all_view_nickname);
         post_all_view_date = findViewById(R.id.post_all_view_date);
+        comment_text = findViewById(R.id.comment_text);
 
         post_all_view_input_images = findViewById(R.id.post_all_view_input_images);
 
@@ -244,6 +246,21 @@ public class PostAllView extends AppCompatActivity {
             }
         }
 
+        // 댓글 수 셋팅
+        retrofitClient = RetrofitClient.getInstance();
+        retrofitAPI = RetrofitClient.getRetrofitInterface();
+
+        retrofitAPI.getPostCommentCntResponse(Long.toString(selected_info.getNumber())).enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                comment_text.setText("댓글 " + response.body().replaceAll("\"", ""));
+            }
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                System.out.println("에러 : " + t.getMessage());
+            }
+        });
+
         setAllVIewImages();
     }
 
@@ -314,7 +331,6 @@ public class PostAllView extends AppCompatActivity {
 
                     comment_listView.setAdapter(postAllViewCommentAdapter);
                     setListViewHeightBasedOnChildren(comment_listView);
-
                 }
             }
             @Override
