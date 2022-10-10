@@ -103,9 +103,13 @@
         <entry key="app/src/main/res/layout/main_navigation_items.xml" value="0.2151268115942029" />
         <entry key="app/src/main/res/layout/main_page.xml" value="0.33" />
         <entry key="app/src/main/res/layout/map_fragment.xml" value="0.33" />
-        <entry key="app/src/main/res/layout/my_info_fragment.xml" value="0.5" />
+        <entry key="app/src/main/res/layout/my_info_fragment.xml" value="0.33" />
         <entry key="app/src/main/res/layout/my_info_fragment_grid_view_item.xml" value="1.25" />
         <entry key="app/src/main/res/layout/my_info_fragment_profile_change.xml" value="0.3453125" />
+        <entry key="app/src/main/res/layout/point_mall_activity.xml" value="0.5" />
+        <entry key="app/src/main/res/layout/point_mall_activity_list_view_item.xml" value="0.5" />
+        <entry key="app/src/main/res/layout/point_mall_activity_list_view_item_two.xml" value="0.30364583333333334" />
+        <entry key="app/src/main/res/layout/point_mall_my_page_activity.xml" value="0.39311594202898553" />
         <entry key="app/src/main/res/layout/post_fragment.xml" value="0.33" />
         <entry key="app/src/main/res/layout/post_fragment_add_post.xml" value="0.48233695652173914" />
         <entry key="app/src/main/res/layout/post_fragment_add_post_activity.xml" value="0.33" />

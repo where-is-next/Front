@@ -3,6 +3,7 @@ package com.win.front.retorfit;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.win.front.domain.Comment;
+import com.win.front.domain.Goods;
 import com.win.front.domain.Location;
 import com.win.front.domain.SocialUser;
 import com.win.front.domain.Stamp;
@@ -137,4 +138,12 @@ public interface RetrofitAPI {
     // 프로필 수정 : 유저 정보 업데이트
     @POST("profile_user_update")
     Call<Boolean> getUpdateUserProfileResponse(@Body User changeUser);
+
+    // 포인트몰 : 상품 리스트 가져오기
+    @GET("all_goods")
+    Call<List<Goods>> getAllGoodsResponse();
+
+    // 내 포인트 가져오기
+    @GET("my_point/{id}")
+    Call<String> getMyPointResponse(@Path("id") String id);
 }

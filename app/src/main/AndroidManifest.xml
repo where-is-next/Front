@@ -82,6 +82,12 @@
         <activity android:name="com.win.front.main.MyInfoProfileChange">
         </activity>
 
+        <activity android:name="com.win.front.main.point_mall.PointMallActivity">
+        </activity>
+
+        <activity android:name="com.win.front.main.point_mall.PointMallMyPageActivity">
+        </activity>
+
         <activity android:name="com.win.front.main.PostAddActivity"
             android:exported="true">
         </activity>

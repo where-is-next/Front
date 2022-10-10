@@ -35,6 +35,7 @@ import com.win.front.domain.Location;
 import com.win.front.domain.Stamp;
 import com.win.front.dto.AllPostDTO;
 import com.win.front.dto.PostDTO;
+import com.win.front.main.point_mall.PointMallActivity;
 import com.win.front.retorfit.RetrofitAPI;
 import com.win.front.retorfit.RetrofitClient;
 
@@ -104,7 +105,8 @@ public class MyInfoFragment extends Fragment {
         my_info_shop_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Intent intent = new Intent(getActivity(), PointMallActivity.class);
+                startActivity(intent);
             }
         });
 
