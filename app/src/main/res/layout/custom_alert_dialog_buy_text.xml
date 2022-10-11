@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/custom_alert_dialog_background"
+    android:id="@+id/layoutDialog"
+    >
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:fontFamily="@font/notosans_kr_bold"
+        android:background="@drawable/custom_alert_dialog_title"
+        android:textColor="@color/white"
+        android:textSize="15dp"
+        android:paddingLeft="20dp"
+        android:text="알림"/>
+
+
+    <ImageView
+        android:layout_width="113dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/goods_img"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        />
+
+    <TextView
+        android:id="@+id/goods_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:fontFamily="@font/notosans_kr_bold"
+        android:layout_marginTop="30dp"
+        android:textColor="@color/black"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:fontFamily="@font/notosans_kr_bold"
+        android:layout_marginTop="30dp"
+        android:text="구매하시면 되돌릴 수 없습니다."
+        android:textColor="@color/red"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="20dp"
+        >
+
+        <Button
+            android:id="@+id/point_mall_buy_cancle_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/post_add_cancle_btn"
+            />
+
+        <Button
+            android:id="@+id/point_mall_buy_complete_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/point_mall_buy_complete_btn"
+            />
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,19 +1,37 @@
 package com.win.front.main.point_mall;
 
+import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.win.front.HangleToEnglish;
 import com.win.front.R;
 import com.win.front.domain.Goods;
+import com.win.front.dto.BuyGoodsDTO;
 import com.win.front.retorfit.RetrofitAPI;
 import com.win.front.retorfit.RetrofitClient;
 
@@ -28,6 +46,7 @@ public class PointMallActivity extends AppCompatActivity {
 
     ImageView point_mall_back_view;  // 뒤로 돌아가기
     ImageView point_mall_my_page;   // 포인트몰 마이페이지 이동
+    ImageView point_mall_refresh_btn; // 포인트 새로고침
 
     ListView point_mall_list_view_eat;   // 외식 리스트 뷰
     ListView point_mall_list_view_beauty;   // 뷰티 리스트 뷰
@@ -47,6 +66,8 @@ public class PointMallActivity extends AppCompatActivity {
 
     TextView point_mall_my_point;
 
+    ProgressDialog dialog;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,6 +75,7 @@ public class PointMallActivity extends AppCompatActivity {
 
         sp = this.getSharedPreferences("UserInfo", MODE_PRIVATE);
         userId = sp.getString("userId", "");
+        dialog = new ProgressDialog(this);
 
         // 뒤로 돌아가기 버튼
         point_mall_back_view = findViewById(R.id.point_mall_back_view);
@@ -83,6 +105,43 @@ public class PointMallActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(PointMallActivity.this, PointMallMyPageActivity.class);
                 startActivity(intent);
+            }
+        });
+
+        // 아이템 구매하기
+        // 외식
+        point_mall_list_view_eat.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Goods selected_goods = (Goods) adapterView.getAdapter().getItem(i);
+                custom_dialog_buy_text(selected_goods.getName(), selected_goods.getPrice(), selected_goods.getBrand());
+            }
+        });
+
+        // 뷰티/생활
+        point_mall_list_view_beauty.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Goods selected_goods = (Goods) adapterView.getAdapter().getItem(i);
+                custom_dialog_buy_text(selected_goods.getName(), selected_goods.getPrice(), selected_goods.getBrand());
+            }
+        });
+
+        // 카페
+        point_mall_list_view_cafe.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Goods selected_goods = (Goods) adapterView.getAdapter().getItem(i);
+                custom_dialog_buy_text(selected_goods.getName(), selected_goods.getPrice(), selected_goods.getBrand());
+            }
+        });
+
+        // 포인트 새로고침
+        point_mall_refresh_btn = findViewById(R.id.point_mall_refresh_btn);
+        point_mall_refresh_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setMyPoint();
             }
         });
     }
@@ -193,4 +252,146 @@ public class PointMallActivity extends AppCompatActivity {
         });
     }
 
+    // buy_text 커스텀 다이얼로그
+    public void custom_dialog_buy_text(String name, String price, String brand) {
+        LayoutInflater inflater= getLayoutInflater();
+        View view = inflater.inflate(R.layout.custom_alert_dialog_buy_text, null);
+
+        // 이미지 셋팅
+        ImageView goods_img = (ImageView) view.findViewById(R.id.goods_img);
+        String link = "pointmall/" + name + ".png";
+
+        HangleToEnglish hangleToEnglish = new HangleToEnglish();
+        String convert = hangleToEnglish.convert(link);
+
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageReference = storage.getReference();
+        StorageReference pathReference = storageReference.child("pointmall");
+        if (pathReference == null) {
+            System.out.println("문제");
+        } else {
+            StorageReference submitProfile = storageReference.child(convert);
+            submitProfile.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                @Override
+                public void onSuccess(Uri uri) {
+//                    Activity activity = (Activity) view.getContext();
+//                    if (activity.isFinishing()) {
+//                        return;
+//                    }
+
+                    Glide.with(view.getContext())
+                            .load(uri)
+                            .into(goods_img);
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+
+                }
+            });
+        }
+
+        // 텍스트 셋팅
+        ((TextView)view.findViewById(R.id.goods_text)).setText("[" + name + "]");
+
+        AlertDialog alert = new AlertDialog.Builder(this)
+                .setView(view)
+                .setCancelable(false)
+                .create();
+
+        alert.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        alert.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+        // 구매 버튼
+        view.findViewById(R.id.point_mall_buy_complete_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);  // 다이얼로그 스타일 설정
+                dialog.setCancelable(false);    // 화면 밖 터치해도 종료되지 않게
+                dialog.setMessage("Loading ...");   // 메세지
+                dialog.show();  // 다이얼로그 시작
+
+                // 구매하는 함수
+                buyGoods(name, price, brand);
+
+                alert.dismiss();
+            }
+        });
+
+        // 취소 버튼
+        view.findViewById(R.id.point_mall_buy_cancle_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                alert.dismiss();
+            }
+        });
+
+        alert.show();
+
+        WindowManager.LayoutParams params = alert.getWindow().getAttributes();
+        params.width = 900;
+        alert.getWindow().setAttributes(params);
+    }
+
+    // 구매하는 로직
+    private void buyGoods(String name, String price, String brand) {
+        retrofitClient = RetrofitClient.getInstance();
+        retrofitAPI = RetrofitClient.getRetrofitInterface();
+
+        BuyGoodsDTO buyGoodsDTO = new BuyGoodsDTO();
+        buyGoodsDTO.setId(userId);
+        buyGoodsDTO.setGoods_name(name);
+        buyGoodsDTO.setPrice(price);
+        buyGoodsDTO.setBrand(brand);
+        buyGoodsDTO.setStatus("구매 완료");
+
+        retrofitAPI.getBuyGoodsResponse(buyGoodsDTO).enqueue(new Callback<Boolean>() {
+            @Override
+            public void onResponse(Call<Boolean> call, Response<Boolean> response) {
+                dialog.dismiss();
+
+                // 구매 성공
+                if (response.body()) {
+                    custom_dialog_one_text("구매 완료하였습니다.");
+                }
+
+                // 구매 실패 : 금액 부족
+                else {
+                    custom_dialog_one_text("보유한 포인트가 부족합니다.");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Boolean> call, Throwable t) {
+            }
+        });
+    }
+
+    // 커스텀 다이얼로그 : one_text
+    public void custom_dialog_one_text(String message) {
+        LayoutInflater inflater= getLayoutInflater();
+        View view = inflater.inflate(R.layout.custom_alert_dialog_one_text, null);
+        ((TextView)view.findViewById(R.id.first_text)).setText(message);
+
+        AlertDialog alert = new AlertDialog.Builder(this)
+                .setView(view)
+                .setCancelable(false)
+                .create();
+
+        alert.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        alert.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+        view.findViewById(R.id.alert_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                alert.dismiss();
+            }
+        });
+
+        alert.show();
+
+        WindowManager.LayoutParams params = alert.getWindow().getAttributes();
+        params.width = 900;
+        alert.getWindow().setAttributes(params);
+    }
 }

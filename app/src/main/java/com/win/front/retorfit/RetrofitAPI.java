@@ -5,11 +5,13 @@ import com.google.gson.JsonObject;
 import com.win.front.domain.Comment;
 import com.win.front.domain.Goods;
 import com.win.front.domain.Location;
+import com.win.front.domain.MyGoods;
 import com.win.front.domain.SocialUser;
 import com.win.front.domain.Stamp;
 import com.win.front.domain.User;
 import com.win.front.dto.AddStampDTO;
 import com.win.front.dto.AllPostDTO;
+import com.win.front.dto.BuyGoodsDTO;
 import com.win.front.dto.ChangePwDTO;
 import com.win.front.dto.CommentDTO;
 import com.win.front.dto.CommentDeleteDTO;
@@ -146,4 +148,16 @@ public interface RetrofitAPI {
     // 내 포인트 가져오기
     @GET("my_point/{id}")
     Call<String> getMyPointResponse(@Path("id") String id);
+
+    // 상품 구매하기
+    @POST("buy_goods")
+    Call<Boolean> getBuyGoodsResponse(@Body BuyGoodsDTO buyGoodsDTO);
+
+    // 구매한 상품이 있는지 체크
+    @GET("my_goods_check")
+    Call<Boolean> isMyGoodsResponse();
+
+    // 구매한 상품 객체리스트 반환
+    @GET("my_goods_list/{id}")
+    Call<List<MyGoods>> getMyGoodsListResponse(@Path("id") String id);
 }
