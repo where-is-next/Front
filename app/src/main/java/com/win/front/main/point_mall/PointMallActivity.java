@@ -352,7 +352,7 @@ public class PointMallActivity extends AppCompatActivity {
 
                 // 구매 성공
                 if (response.body()) {
-                    custom_dialog_one_text("구매 완료하였습니다.");
+                    custom_dialog_buy_complete_text("구매 완료하였습니다.");
                 }
 
                 // 구매 실패 : 금액 부족
@@ -385,6 +385,46 @@ public class PointMallActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 alert.dismiss();
+            }
+        });
+
+        alert.show();
+
+        WindowManager.LayoutParams params = alert.getWindow().getAttributes();
+        params.width = 900;
+        alert.getWindow().setAttributes(params);
+    }
+
+    // 커스텀 다이얼로그 : 구매 완료 시
+    public void custom_dialog_buy_complete_text(String message) {
+        LayoutInflater inflater= getLayoutInflater();
+        View view = inflater.inflate(R.layout.custom_alert_dialog_buy_complete_text, null);
+        ((TextView)view.findViewById(R.id.first_text)).setText(message);
+
+        AlertDialog alert = new AlertDialog.Builder(this)
+                .setView(view)
+                .setCancelable(false)
+                .create();
+
+        alert.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        alert.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+        // 완료
+        view.findViewById(R.id.dialog_complete).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                alert.dismiss();
+            }
+        });
+
+        // 쿠폰함 이동
+        view.findViewById(R.id.point_mall_my_page_go).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                alert.dismiss();
+
+                Intent intent = new Intent(PointMallActivity.this, PointMallMyPageActivity.class);
+                startActivity(intent);
             }
         });
 

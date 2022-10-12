@@ -23,10 +23,28 @@
         >
 
         <ImageView
+            android:id="@+id/home_grid_view_heart_img"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:background="@drawable/good_heart_yes"
+            />
+
+        <TextView
+            android:id="@+id/home_grid_view_heart_cnt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/home_grid_view_heart_img"
+            android:textColor="@color/white"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            />
+
+        <ImageView
             android:id="@+id/home_grid_view_comment_img"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/comment_img_home_fragment"
+            android:layout_toRightOf="@+id/home_grid_view_heart_cnt"
             />
 
         <TextView

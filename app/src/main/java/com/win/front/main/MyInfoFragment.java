@@ -55,6 +55,7 @@ public class MyInfoFragment extends Fragment {
     ImageView my_info_user_type_image;
     TextView my_info_nickname;
     TextView my_info_stamp_status;
+    TextView my_info_my_point;
 
     Button my_info_logout_btn;
     Button my_info_profile_btn;
@@ -126,7 +127,28 @@ public class MyInfoFragment extends Fragment {
         // 닉네임과 스탬프 셋팅
         SetMyInfoContents();
 
+        // 내 포인트
+        my_info_my_point = v.findViewById(R.id.my_info_my_point);
+        SetMyPoint();
+
         return v;
+    }
+
+    // 내 포인트 셋팅
+    private void SetMyPoint() {
+        retrofitClient = RetrofitClient.getInstance();
+        retrofitAPI = RetrofitClient.getRetrofitInterface();
+
+        retrofitAPI.getMyPointResponse(userId).enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                my_info_my_point.setText(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+            }
+        });
     }
 
     // 프로필 관리 액티비티 실행

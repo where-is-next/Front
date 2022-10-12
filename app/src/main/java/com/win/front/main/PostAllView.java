@@ -39,6 +39,7 @@ import com.win.front.domain.Comment;
 import com.win.front.domain.Location;
 import com.win.front.dto.AllPostDTO;
 import com.win.front.dto.CommentDTO;
+import com.win.front.dto.HeartCheckDTO;
 import com.win.front.dto.PostDTO;
 import com.win.front.retorfit.RetrofitAPI;
 import com.win.front.retorfit.RetrofitClient;
@@ -80,6 +81,11 @@ public class PostAllView extends AppCompatActivity {
 
     PostAllViewCommentAdapter postAllViewCommentAdapter;
     ListView comment_listView;
+
+    ImageView post_all_view_heart;  // 좋아요 버튼
+    TextView post_all_view_heart_cnt; // 좋아요 수
+
+    boolean isHeart = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -146,6 +152,18 @@ public class PostAllView extends AppCompatActivity {
 
                                             comment_listView.setAdapter(postAllViewCommentAdapter);
                                             setListViewHeightBasedOnChildren(comment_listView);
+
+                                            // 댓글 수 새로고침
+                                            retrofitAPI.getPostCommentCntResponse(Long.toString(selected_info.getNumber())).enqueue(new Callback<String>() {
+                                                @Override
+                                                public void onResponse(Call<String> call, Response<String> response) {
+                                                    comment_text.setText(response.body().replaceAll("\"", ""));
+                                                }
+                                                @Override
+                                                public void onFailure(Call<String> call, Throwable t) {
+                                                    System.out.println("에러 : " + t.getMessage());
+                                                }
+                                            });
                                         }
                                         @Override
                                         public void onFailure(Call<Long> call, Throwable t) {
@@ -181,6 +199,106 @@ public class PostAllView extends AppCompatActivity {
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 comment_listView.requestDisallowInterceptTouchEvent(true);
                 return false;
+            }
+        });
+
+        // 좋아요 버튼
+        post_all_view_heart = findViewById(R.id.post_all_view_heart);
+        checkPostHeart();
+
+        post_all_view_heart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setPostHeart();
+            }
+        });
+
+        // 좋아요 수 셋팅
+        post_all_view_heart_cnt = findViewById(R.id.post_all_view_heart_cnt);
+        setHeartCount();
+    }
+
+    // 좋아요 수 셋팅 함수
+    private void setHeartCount() {
+        retrofitAPI.getPostHeartCntResponse(selected_number).enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                post_all_view_heart_cnt.setText(response.body().replaceAll("\"", ""));
+            }
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                System.out.println("에러 : " + t.getMessage());
+            }
+        });
+
+    }
+
+    // 좋아요 버튼을 눌렀을 때
+    private void setPostHeart() {
+        retrofitClient = RetrofitClient.getInstance();
+        retrofitAPI = RetrofitClient.getRetrofitInterface();
+
+        HeartCheckDTO heartCheckDTO = new HeartCheckDTO();
+        heartCheckDTO.setPost_number(selected_number);
+        heartCheckDTO.setId(userId);
+
+        // 해당 게시물에 좋아요를 누르지 않았다면 좋아요 등록
+        if (!isHeart) {
+            retrofitAPI.getHeartPlusResponse(heartCheckDTO).enqueue(new Callback<Boolean>() {
+                @Override
+                public void onResponse(Call<Boolean> call, Response<Boolean> response) {
+                    post_all_view_heart.setBackgroundResource(R.drawable.good_heart_yes);
+                    isHeart = true;
+                    setHeartCount();
+                }
+                @Override
+                public void onFailure(Call<Boolean> call, Throwable t) {
+                    System.out.println("에러 : " + t.getMessage());
+                }
+            });
+        }
+
+        // 좋아요를 눌렀다면 좋아요 삭제
+        else {
+            retrofitAPI.getHeartMinResponse(heartCheckDTO).enqueue(new Callback<Boolean>() {
+                @Override
+                public void onResponse(Call<Boolean> call, Response<Boolean> response) {
+                    post_all_view_heart.setBackgroundResource(R.drawable.good_heart_no);
+                    isHeart = false;
+                    setHeartCount();
+                }
+                @Override
+                public void onFailure(Call<Boolean> call, Throwable t) {
+                    System.out.println("에러 : " + t.getMessage());
+                }
+            });
+        }
+    }
+
+    // 현재 로그인한 사용자가 이 게시물에 좋아요를 눌렀는지 판별하는 함수
+    private void checkPostHeart() {
+        retrofitClient = RetrofitClient.getInstance();
+        retrofitAPI = RetrofitClient.getRetrofitInterface();
+
+        HeartCheckDTO heartCheckDTO = new HeartCheckDTO();
+        heartCheckDTO.setPost_number(selected_number);
+        heartCheckDTO.setId(userId);
+
+        retrofitAPI.getIsHeartCheckResponse(heartCheckDTO).enqueue(new Callback<Boolean>() {
+            @Override
+            public void onResponse(Call<Boolean> call, Response<Boolean> response) {
+                if (response.body()) {
+                    post_all_view_heart.setBackgroundResource(R.drawable.good_heart_yes);
+                    isHeart = true;
+                }
+                else {
+                    post_all_view_heart.setBackgroundResource(R.drawable.good_heart_no);
+                    isHeart = false;
+                }
+            }
+            @Override
+            public void onFailure(Call<Boolean> call, Throwable t) {
+                System.out.println("에러 : " + t.getMessage());
             }
         });
     }
@@ -253,7 +371,7 @@ public class PostAllView extends AppCompatActivity {
         retrofitAPI.getPostCommentCntResponse(Long.toString(selected_info.getNumber())).enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
-                comment_text.setText("댓글 " + response.body().replaceAll("\"", ""));
+                comment_text.setText(response.body().replaceAll("\"", ""));
             }
             @Override
             public void onFailure(Call<String> call, Throwable t) {

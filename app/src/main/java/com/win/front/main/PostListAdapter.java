@@ -69,6 +69,7 @@ public class PostListAdapter extends BaseAdapter{
         TextView tv_date = (TextView) converView.findViewById(R.id.post_view_date);
         TextView tv_contents = (TextView) converView.findViewById(R.id.post_view_contents);
         TextView tv_contents_cnt = (TextView) converView.findViewById(R.id.post_view_contents_cnt);
+        TextView post_view_heart_cnt = (TextView) converView.findViewById(R.id.post_view_heart_cnt);
 
         PostListItem myItem = getItem(i);
 
@@ -102,6 +103,18 @@ public class PostListAdapter extends BaseAdapter{
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
                 tv_contents_cnt.setText(response.body().replaceAll("\"", ""));
+            }
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                System.out.println("에러 : " + t.getMessage());
+            }
+        });
+
+        // 좋아요 수 셋팅
+        retrofitAPI.getPostHeartCntResponse(myItem.getPost_number()).enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                post_view_heart_cnt.setText(response.body().replaceAll("\"", ""));
             }
             @Override
             public void onFailure(Call<String> call, Throwable t) {

@@ -189,6 +189,7 @@ public class HomeFragment extends Fragment{
     private void setGridLayoutCardView() {
         homeGridViewAdapter = new HomeGridViewAdapter();
 
+        ArrayList<PostListItem> randomPostList = new ArrayList<>();
         for (AllPostDTO allPostDTO : allPost) {
             PostListItem postListItem = new PostListItem();
 
@@ -204,19 +205,32 @@ public class HomeFragment extends Fragment{
             else {
                 postListItem.setImageURI(null);
             }
-            homeGridViewAdapter.addItem(postListItem.getTitle(), postListItem.getNickname(), postListItem.getDate(),
-                    postListItem.getContents(), postListItem.getImageURI(), postListItem.getPost_number());
+
+            randomPostList.add(postListItem);
         }
 
-        int hight = 0;
-        for (int i = 0; i < homeGridViewAdapter.getCount(); i++) {
-            View listItem = homeGridViewAdapter.getView(i, null, gridView);
-            listItem.measure(0,0);
-            hight += listItem.getMeasuredHeight();
+        // 포스트 랜덤 셋팅
+        Random random = new Random();
+        Set<PostListItem> set = new HashSet<>();
+        while (true) {
+            set.add(randomPostList.get(random.nextInt(randomPostList.size())));
+
+            if (set.size() == 4) {
+                break;
+            }
+        }
+
+        Iterator<PostListItem> iter = set.iterator();
+        while (iter.hasNext()) {
+            PostListItem next = iter.next();
+            homeGridViewAdapter.addItem(next.getTitle(), next.getNickname(),
+                    next.getDate(), next.getContents(), next.getImageURI(),next.getPost_number());
+
+            System.out.println("포스트 넘버 : " + next.getPost_number());
         }
 
         ViewGroup.LayoutParams params = gridView.getLayoutParams();
-        params.height = hight + (gridView.getHeight() * (homeGridViewAdapter.getCount() - 1));
+        params.height = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 400, getResources().getDisplayMetrics());
         gridView.setLayoutParams(params);
 
         gridView.setAdapter(homeGridViewAdapter);

@@ -45,12 +45,7 @@ public class HomeGridViewAdapter extends BaseAdapter{
 
     @Override
     public int getCount() {
-        if (items.size() >= 4) {
-            return 4;
-        }
-        else {
-            return items.size();
-        }
+        return items.size();
     }
 
     @Override
@@ -73,6 +68,7 @@ public class HomeGridViewAdapter extends BaseAdapter{
         ImageView imageView = converView.findViewById(R.id.home_grid_view_image);
         TextView textView = converView.findViewById(R.id.home_grid_view_contents);
         TextView tv_commnt_cnt = converView.findViewById(R.id.home_grid_view_comment_cnt);
+        TextView tv_heart_cnt = converView.findViewById(R.id.home_grid_view_heart_cnt);
 
         PostListItem myItem = getItem(i);
 
@@ -95,6 +91,18 @@ public class HomeGridViewAdapter extends BaseAdapter{
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
                 tv_commnt_cnt.setText(" "+ response.body().replaceAll("\"", ""));
+            }
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                System.out.println("에러 : " + t.getMessage());
+            }
+        });
+
+        // 좋아요 수 셋팅
+        retrofitAPI.getPostHeartCntResponse(myItem.getPost_number()).enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                tv_heart_cnt.setText(response.body().replaceAll("\"", ""));
             }
             @Override
             public void onFailure(Call<String> call, Throwable t) {

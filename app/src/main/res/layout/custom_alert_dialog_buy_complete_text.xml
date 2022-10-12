@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/custom_alert_dialog_background"
+    android:id="@+id/layoutDialog"
+    >
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:fontFamily="@font/notosans_kr_bold"
+        android:background="@drawable/custom_alert_dialog_title"
+        android:textColor="@color/white"
+        android:textSize="15dp"
+        android:paddingLeft="20dp"
+        android:text="알림"/>
+
+    <TextView
+        android:id="@+id/first_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:fontFamily="@font/notosans_kr_bold"
+        android:layout_marginTop="30dp"
+        android:textColor="@color/black"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:id="@+id/point_mall_my_page_go"
+        android:background="@drawable/post_mall_my_page_go_btn"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="10dp"
+        />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:id="@+id/dialog_complete"
+        android:background="@drawable/dialog_btn"
+        android:layout_gravity="center"
+        android:layout_marginBottom="20dp"
+        />
+
+</LinearLayout>

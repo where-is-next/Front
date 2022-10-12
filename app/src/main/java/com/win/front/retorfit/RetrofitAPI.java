@@ -15,6 +15,7 @@ import com.win.front.dto.BuyGoodsDTO;
 import com.win.front.dto.ChangePwDTO;
 import com.win.front.dto.CommentDTO;
 import com.win.front.dto.CommentDeleteDTO;
+import com.win.front.dto.HeartCheckDTO;
 import com.win.front.dto.PostDTO;
 import com.win.front.dto.PostUpdateDTO;
 import com.win.front.dto.SignInDTO;
@@ -104,6 +105,22 @@ public interface RetrofitAPI {
     // 해당 포스트의 댓글 수를 가져오는 API
     @GET("post_comment_cnt/{post_number}")
     Call<String> getPostCommentCntResponse(@Path("post_number") String post_number);
+
+    // 해당 포스트의 좋아요 수를 가져오는 API
+    @GET("post_heart_cnt/{post_number}")
+    Call<String> getPostHeartCntResponse(@Path("post_number") String post_number);
+
+    // 현재 로그인한 사용자가 해당 포스트에 좋아요를 눌렀는지 판별하는 함수
+    @POST("heart_check")
+    Call<Boolean> getIsHeartCheckResponse(@Body HeartCheckDTO heartCheckDTO);
+
+    // 현재 로그인한 사용자가 해당 포스트에 좋아요 버튼을 눌렀을 때 해당 포스트의 좋아요 추가
+    @POST("heart_plus")
+    Call<Boolean> getHeartPlusResponse(@Body HeartCheckDTO heartCheckDTO);
+
+    // 현재 로그인한 사용자가 해당 포스트에 좋아요 버튼을 눌렀을 때 해당 포스트의 좋아요 삭제
+    @POST("heart_min")
+    Call<Boolean> getHeartMinResponse(@Body HeartCheckDTO heartCheckDTO);
 
     // 현재 로그인한 사용자의 포스트를 가져오는 API
     @GET("my_post/{id}")

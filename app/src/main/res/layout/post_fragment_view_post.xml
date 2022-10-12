@@ -32,9 +32,15 @@
             <ImageView
                 android:layout_width="71dp"
                 android:layout_height="19dp"
-                android:layout_marginLeft="120dp"
+                android:layout_marginLeft="115dp"
                 android:layout_gravity="center_vertical"
                 android:background="@drawable/community_text"
+                />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"
                 />
 
         </LinearLayout>
@@ -109,14 +115,48 @@
                 android:orientation="vertical"
                 >
 
-                <TextView
-                    android:id="@+id/comment_text"
+                <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="50dp"
-                    android:textSize="16dp"
-                    android:fontFamily="@font/notosans_kr_bold"
-                    android:text="댓글"
-                    />
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    >
+
+                    <ImageView
+                        android:id="@+id/post_all_view_heart"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:background="@drawable/good_heart_no"
+                        android:layout_marginRight="10dp"
+                        android:layout_gravity="center"
+                        />
+
+                    <TextView
+                        android:id="@+id/post_all_view_heart_cnt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/notosans_kr_bold"
+                        android:textSize="16dp"
+                        android:layout_marginRight="10dp"
+                        />
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:background="@drawable/comment_img"
+                        android:layout_marginRight="6dp"
+                        android:layout_gravity="center"
+                        />
+
+                    <TextView
+                        android:id="@+id/comment_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="50dp"
+                        android:textSize="16dp"
+                        android:fontFamily="@font/notosans_kr_bold"
+                        />
+
+                </LinearLayout>
+
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
