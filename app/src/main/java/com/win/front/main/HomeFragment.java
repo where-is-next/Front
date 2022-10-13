@@ -212,21 +212,34 @@ public class HomeFragment extends Fragment{
         // 포스트 랜덤 셋팅
         Random random = new Random();
         Set<PostListItem> set = new HashSet<>();
-        while (true) {
-            set.add(randomPostList.get(random.nextInt(randomPostList.size())));
 
-            if (set.size() == 4) {
-                break;
+        if (randomPostList.size() != 0) {
+            if (randomPostList.size() >= 4) {
+                while (true) {
+                    set.add(randomPostList.get(random.nextInt(randomPostList.size())));
+
+                    if (set.size() == 4) {
+                        break;
+                    }
+                }
+            } else {
+                while (true) {
+                    set.add(randomPostList.get(random.nextInt(randomPostList.size())));
+
+                    if (set.size() == randomPostList.size()) {
+                        break;
+                    }
+                }
             }
-        }
 
-        Iterator<PostListItem> iter = set.iterator();
-        while (iter.hasNext()) {
-            PostListItem next = iter.next();
-            homeGridViewAdapter.addItem(next.getTitle(), next.getNickname(),
-                    next.getDate(), next.getContents(), next.getImageURI(),next.getPost_number());
+            Iterator<PostListItem> iter = set.iterator();
+            while (iter.hasNext()) {
+                PostListItem next = iter.next();
+                homeGridViewAdapter.addItem(next.getTitle(), next.getNickname(),
+                        next.getDate(), next.getContents(), next.getImageURI(), next.getPost_number());
 
-            System.out.println("포스트 넘버 : " + next.getPost_number());
+                System.out.println("포스트 넘버 : " + next.getPost_number());
+            }
         }
 
         ViewGroup.LayoutParams params = gridView.getLayoutParams();

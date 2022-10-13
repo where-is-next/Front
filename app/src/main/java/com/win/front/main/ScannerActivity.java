@@ -169,6 +169,7 @@ public class ScannerActivity extends AppCompatActivity {
         LayoutInflater inflater= getLayoutInflater();
         View view = inflater.inflate(R.layout.custom_alert_dialog_icon_text, null);
         ((TextView)view.findViewById(R.id.first_text)).setText(message);
+        ((TextView)view.findViewById(R.id.second_text)).setText("포인트 50원 적립!");
 
         String link = "scan/" + location + ".png";
 

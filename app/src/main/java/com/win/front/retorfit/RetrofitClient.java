@@ -11,8 +11,8 @@ public class RetrofitClient {
     private RetrofitClient() {
         //retrofit 설정
         //사용하고 있는 서버 BASE 주소
-//        String baseUrl = "http://15.164.135.151:8080/";
-        String baseUrl = "http://192.168.0.31:8080/";
+        String baseUrl = "http://15.164.135.151:8080/";
+//        String baseUrl = "http://192.168.0.31:8080/";
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(baseUrl)
                 .addConverterFactory(GsonConverterFactory.create())
