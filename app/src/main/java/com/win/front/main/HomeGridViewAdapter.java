@@ -66,7 +66,7 @@ public class HomeGridViewAdapter extends BaseAdapter{
         converView = inflater.inflate(R.layout.home_fragment_grid_view_item, viewGroup, false);
 
         ImageView imageView = converView.findViewById(R.id.home_grid_view_image);
-        TextView textView = converView.findViewById(R.id.home_grid_view_contents);
+        TextView textView = converView.findViewById(R.id.home_grid_view_title);
         TextView tv_commnt_cnt = converView.findViewById(R.id.home_grid_view_comment_cnt);
         TextView tv_heart_cnt = converView.findViewById(R.id.home_grid_view_heart_cnt);
 
@@ -77,10 +77,10 @@ public class HomeGridViewAdapter extends BaseAdapter{
             imageView.setColorFilter(Color.parseColor("#BDBDBD"), PorterDuff.Mode.MULTIPLY);
         }
 
-        if (myItem.getContents().length() > 14) {
-            textView.setText(myItem.getContents().substring(0, 14) + " ...");
+        if (myItem.getTitle().length() > 14) {
+            textView.setText(myItem.getTitle().substring(0, 14) + " ...");
         } else {
-            textView.setText(myItem.getContents());
+            textView.setText(myItem.getTitle());
         }
 
         // 댓글 수 셋팅

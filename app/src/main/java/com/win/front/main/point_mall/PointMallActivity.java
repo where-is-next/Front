@@ -292,6 +292,7 @@ public class PointMallActivity extends AppCompatActivity {
         }
 
         // 텍스트 셋팅
+        ((TextView)view.findViewById(R.id.goods_brand)).setText("[" + brand + "]");
         ((TextView)view.findViewById(R.id.goods_text)).setText("[" + name + "]");
 
         AlertDialog alert = new AlertDialog.Builder(this)
